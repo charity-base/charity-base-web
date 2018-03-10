@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
-import { List, Avatar, Button, Spin } from 'antd';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { List, Avatar, Button, Spin } from 'antd'
 
 
 const handleFetchErrors = res => {
@@ -32,17 +33,38 @@ class CharitiesList extends Component {
     skip: 0,
   }
   componentDidMount() {
-    this.getData((res) => {
+    this.getData(this.props.queryString, 0, res => {
       this.setState({
         data: res.charities,
         loading: false,
         limit: res.query.limit,
         skip: res.query.skip + res.query.limit,
-      });
-    });
+      })
+    })
   }
-  getData = callback => {
-    fetchRequest(`http://localhost:4000/api/v0.3.0/charities?fields=activities&limit=${this.state.limit}&skip=${this.state.skip}`)
+  componentWillReceiveProps(nextProps) {
+    if (this.props.queryString !== nextProps.queryString) {
+      this.setState({
+        loading: true,
+        loadingMore: false,
+        showLoadingMore: true,
+        data: [],
+        limit: 10,
+        skip: 0,
+      })
+      this.getData(nextProps.queryString, 0, res => {
+        this.setState({
+          data: res.charities,
+          loading: false,
+          limit: res.query.limit,
+          skip: res.query.skip + res.query.limit,
+        })
+      })
+    }
+  }
+  getData = (queryString, skip, callback) => {
+    const qs = queryString ? queryString.split('?')[1] + '&' : ''
+    fetchRequest(`http://localhost:4000/api/v0.3.0/charities?${qs}fields=activities&limit=${this.state.limit}&skip=${skip}`)
     .then(res => callback(res))
     .catch(err => console.log(err))
   }
@@ -50,8 +72,7 @@ class CharitiesList extends Component {
     this.setState({
       loadingMore: true,
     });
-    this.getData(res => {
-      console.log("res", res)
+    this.getData(this.props.queryString, this.state.skip, res => {
       const data = this.state.data.concat(res.charities)
       this.setState({
         data,
@@ -67,7 +88,7 @@ class CharitiesList extends Component {
     });
   }
   render() {
-    const { loading, loadingMore, showLoadingMore, data, skip, limit } = this.state;
+    const { loading, loadingMore, showLoadingMore, data, limit } = this.state;
     const isMore = data.length/limit === Math.round(data.length/limit)
     const loadMore = showLoadingMore ? (
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
@@ -96,6 +117,9 @@ class CharitiesList extends Component {
       />
     );
   }
+}
+CharitiesList.propTypes = {
+  queryString: PropTypes.string,
 }
 
 export { CharitiesList };
