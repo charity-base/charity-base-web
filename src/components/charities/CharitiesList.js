@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import { List, Avatar, Button, Spin } from 'antd'
 
 
@@ -108,7 +109,7 @@ class CharitiesList extends Component {
           <List.Item actions={[<a>edit</a>, <a>more</a>]}>
             <List.Item.Meta
               avatar={<Avatar src={`https://ui-avatars.com/api/?name=${item.name}`} />}
-              title={<a href="">{item.name}</a>}
+              title={<Link to={`/charities/${item.ids['GB-CHC']}`}>{item.name}</Link>}
               description={item.activities}
             />
             <div>{item.ids['GB-CHC']}</div>
