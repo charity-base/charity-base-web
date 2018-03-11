@@ -72,6 +72,7 @@ class FilterBar extends React.Component {
           <Icon type="filter"/>
           FILTERS
         </SideBarTitle>
+        {filters.length === 0 && 'no filters applied'}
         {filters.map((filter, index) => {
           const isLongName = filter.name.length > 20;
           const filterElem = (
@@ -81,26 +82,28 @@ class FilterBar extends React.Component {
           );
           return isLongName ? <Tooltip title={filter.name} key={filter.id}>{filterElem}</Tooltip> : filterElem;
         })}
-        {inputVisible && (
-          <Input
-            ref={this.saveInputRef}
-            type="text"
-            size="small"
-            style={{ width: 78 }}
-            value={inputValue}
-            onChange={this.handleInputChange}
-            onBlur={this.handleInputConfirm}
-            onPressEnter={this.handleInputConfirm}
-          />
-        )}
-        {!inputVisible && (
-          <Tag
-            onClick={this.showInput}
-            style={{ background: '#fff', borderStyle: 'dashed' }}
-          >
-            <Icon type="plus" /> Add Filter
-          </Tag>
-        )}
+        <div style={{ margin: '20px 0 20px 0' }}>
+          {inputVisible && (
+            <Input
+              ref={this.saveInputRef}
+              type="text"
+              size="small"
+              style={{ width: '100%' }}
+              value={inputValue}
+              onChange={this.handleInputChange}
+              onBlur={this.handleInputConfirm}
+              onPressEnter={this.handleInputConfirm}
+            />
+          )}
+          {!inputVisible && (
+            <Tag
+              onClick={this.showInput}
+              style={{ background: '#fff', borderStyle: 'dashed', width: '100%', textAlign: 'center' }}
+            >
+              <Icon type="plus" /> Add Filter
+            </Tag>
+          )}
+        </div>
       </SideBarContainer>
     );
   }
