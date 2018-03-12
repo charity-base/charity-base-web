@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import './App.css'
 
 import { LocaleProvider, Layout, Menu } from 'antd'
@@ -9,7 +10,7 @@ import { Router } from './Router'
 
 const { Header, Footer } = Layout;
 
-const HeaderTitle = styled.a`
+const HeaderTitle = styled(Link)`
   color: #EC407A;
   line-height: 59px;
   font-size: 32px;
@@ -29,16 +30,18 @@ class App extends Component {
       <LocaleProvider locale={enGB}>
         <Layout>
           <Header>
-            <HeaderTitle href="https://charitybase.uk">CharityBase</HeaderTitle>
+            <HeaderTitle to="/">CharityBase</HeaderTitle>
             <Menu
               theme="dark"
               mode="horizontal"
-              defaultSelectedKeys={['2']}
+              defaultSelectedKeys={['1']}
               style={{ lineHeight: '64px' }}
             >
-              <Menu.Item key="1"><a href="https://charitybase.uk/api">API</a></Menu.Item>
-              <Menu.Item key="2">nav 2</Menu.Item>
-              <Menu.Item key="3">nav 3</Menu.Item>
+              <Menu.Item key="1"><Link to="/">Charities</Link></Menu.Item>
+              <Menu.Item key="2"><Link to="/faq">FAQ</Link></Menu.Item>
+              <Menu.Item key="3">nav 2</Menu.Item>
+              <Menu.Item key="4">nav 3</Menu.Item>
+              <Menu.Item key="5"><a href="https://charitybase.uk/docs">API Documentation</a></Menu.Item>
             </Menu>
           </Header>
           <Router />
