@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import './App.css'
 
 import { LocaleProvider, Layout, Menu } from 'antd'
@@ -10,7 +10,7 @@ import { Router } from './Router'
 
 const { Header, Footer } = Layout;
 
-const HeaderTitle = styled(Link)`
+const HeaderTitle = styled(NavLink)`
   color: #EC407A;
   line-height: 59px;
   font-size: 32px;
@@ -34,14 +34,27 @@ class App extends Component {
             <Menu
               theme="dark"
               mode="horizontal"
-              defaultSelectedKeys={['1']}
               style={{ lineHeight: '64px' }}
+              selectable={false}
             >
-              <Menu.Item key="1"><Link to="/">Charities</Link></Menu.Item>
-              <Menu.Item key="2"><Link to="/faq">FAQ</Link></Menu.Item>
-              <Menu.Item key="3">nav 2</Menu.Item>
-              <Menu.Item key="4">nav 3</Menu.Item>
-              <Menu.Item key="5"><a href="https://charitybase.uk/docs">API Documentation</a></Menu.Item>
+              <Menu.Item key="1">
+                <NavLink
+                  to="/"
+                  exact
+                  activeStyle={{
+                    color: 'rgba(255,255,255,0.9)',
+                   }}
+                >Charities</NavLink>
+              </Menu.Item>
+              <Menu.Item key="2">
+                <NavLink
+                  to="/faq"
+                  activeStyle={{
+                    color: 'rgba(255,255,255,0.9)',
+                   }}
+                >FAQ</NavLink>
+              </Menu.Item>
+              <Menu.Item key="3"><a href="https://charitybase.uk/docs">API Documentation</a></Menu.Item>
             </Menu>
           </Header>
           <Router />
