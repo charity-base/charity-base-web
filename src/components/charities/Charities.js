@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { CharitiesList } from './CharitiesList'
 import { FilterBar } from './FilterBar'
+import { DownloadResults } from './DownloadResults'
 
 import { Layout, Breadcrumb } from 'antd'
 
@@ -16,6 +17,7 @@ class Charities extends Component {
           <Breadcrumb.Item>charitybase.uk</Breadcrumb.Item>
           <Breadcrumb.Item>charities{this.props.queryString}</Breadcrumb.Item>
         </Breadcrumb>
+        <DownloadResults queryString={this.props.queryString}/>
         <Layout style={{ padding: '24px 0', background: '#fff' }}>
           <Sider width={200} style={{ background: '#fff' }}>
             <FilterBar queryString={this.props.queryString} />
