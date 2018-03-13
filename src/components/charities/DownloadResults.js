@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import numeral from 'numeral'
 
 import { Button, Modal } from 'antd'
 
@@ -8,6 +9,7 @@ class DownloadResults extends Component {
     isModalOpen: false,
     isLoading: false,
     isUploaded: false,
+    fileName: null,
     blob: null,
   }
   downloadResults = () => {
@@ -16,7 +18,8 @@ class DownloadResults extends Component {
     fetch(`http://localhost:4000/api/v0.3.0/download-charities${this.props.queryString}`)
     .then(x => x.blob())
     .then(blob => {
-      this.setState({ isLoading: false, isUploaded: true, blob })
+      const fileName = `charity-base-download-${Math.round(new Date().getTime()/1000)}.txt`
+      this.setState({ isLoading: false, isUploaded: true, fileName, blob })
     })
     .catch(x => console.log(x))
   }
@@ -25,12 +28,13 @@ class DownloadResults extends Component {
       isModalOpen: false,
       isLoading: false,
       isUploaded: false,
+      fileName: null,
       blob: null,
     })
   }
   render() {
     return (
-      <div>
+      <div style={{ position: 'absolute', top: 0, right: 0 }}>
         <Modal
           title="Download Results"
           visible={this.state.isModalOpen}
@@ -42,11 +46,12 @@ class DownloadResults extends Component {
             <a
               href={window.URL.createObjectURL(this.state.blob)}
               target="_blank"
-              download="charity-base-download.txt"
+              download={this.state.fileName}
               onClick={this.reset}
             >
-              charity-base-download.txt ({this.state.blob.size} bytes)
+              {this.state.fileName}
             </a>
+            ({numeral(this.state.blob.size).format('0b')})
           </p>)}
           {this.state.isLoading && (
             <p>Creating file.  This could take a minute...</p>
@@ -54,11 +59,12 @@ class DownloadResults extends Component {
         </Modal>
         <Button
           type="default"
+          size="small"
           icon="download"
           loading={this.state.isLoading}
           onClick={this.downloadResults}
         >
-          Download Results
+          Download
         </Button>
       </div>
     )
