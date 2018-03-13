@@ -17,8 +17,8 @@ class Charities extends Component {
           <Breadcrumb.Item>charitybase.uk</Breadcrumb.Item>
           <Breadcrumb.Item>charities{this.props.queryString}</Breadcrumb.Item>
         </Breadcrumb>
-        <DownloadResults queryString={this.props.queryString}/>
-        <Layout style={{ padding: '24px 0', background: '#fff' }}>
+        <Layout style={{ position: 'relative', padding: '24px 0', background: '#fff' }}>
+          <DownloadResults queryString={this.props.queryString}/>
           <Sider width={200} style={{ background: '#fff' }}>
             <FilterBar queryString={this.props.queryString} />
           </Sider>
