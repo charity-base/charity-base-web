@@ -34,7 +34,7 @@ class DownloadResults extends Component {
   }
   render() {
     return (
-      <div style={{ position: 'absolute', top: 0, right: 0 }}>
+      <div>
         <Modal
           title="Download Results"
           visible={this.state.isModalOpen}
@@ -58,8 +58,9 @@ class DownloadResults extends Component {
           )}
         </Modal>
         <Button
-          type="default"
+          type="primary"
           size="small"
+          style={{ width: '100%' }}
           icon="download"
           loading={this.state.isLoading}
           onClick={this.downloadResults}

@@ -2,26 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { List, Avatar, Button, Spin } from 'antd'
-
-
-const handleFetchErrors = res => {
-  if (!res.ok) {
-    return res.json()
-    .catch(() => {
-      throw Error(res.statusText)
-    })
-    .then(({ message }) => {
-      throw Error(message || res.statusText)
-    });
-  }
-  return res;
-}
-
-export const fetchRequest = (url, options) => {
-  return fetch(url, options)
-  .then(handleFetchErrors)
-  .then(res => res.json())
-}
+import { fetchJSON } from '../../lib/fetchHelpers'
 
 
 class CharitiesList extends Component {
@@ -65,7 +46,7 @@ class CharitiesList extends Component {
   }
   getData = (queryString, skip, callback) => {
     const qs = queryString ? queryString.split('?')[1] + '&' : ''
-    fetchRequest(`http://localhost:4000/api/v0.3.0/charities?${qs}fields=activities&limit=${this.state.limit}&skip=${skip}`)
+    fetchJSON(`http://localhost:4000/api/v0.3.0/charities?${qs}fields=activities&limit=${this.state.limit}&skip=${skip}`)
     .then(res => callback(res))
     .catch(err => console.log(err))
   }
@@ -100,7 +81,6 @@ class CharitiesList extends Component {
     ) : null;
     return (
       <List
-        className="demo-loadmore-list"
         loading={loading}
         itemLayout="horizontal"
         loadMore={loadMore}
