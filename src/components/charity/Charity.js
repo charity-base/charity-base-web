@@ -1,45 +1,31 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-
-import { Layout, Breadcrumb, Spin } from 'antd'
+import { Layout, Breadcrumb, Card } from 'antd'
+import { fetchJSON } from '../../lib/fetchHelpers'
+import { CharityMenuBar } from './CharityMenuBar'
+import { CharityInfo } from './CharityInfo'
 
 const { Content } = Layout
 
-const handleFetchErrors = res => {
-  if (!res.ok) {
-    return res.json()
-    .catch(() => {
-      throw Error(res.statusText)
-    })
-    .then(({ message }) => {
-      throw Error(message || res.statusText)
-    });
-  }
-  return res;
-}
-
-export const fetchRequest = (url, options) => {
-  return fetch(url, options)
-  .then(handleFetchErrors)
-  .then(res => res.json())
-}
-
-const CharityInfo = ({ charity }) => (
-  <div>
-    <div>{charity.name}</div>
-    <div>£{charity.income.latest.total}</div>
-  </div>
-)
-
+const menuItems = [
+  { text: 'Overview', icon: 'profile' },
+  { text: 'Contact', icon: 'phone' },
+  { text: 'People', icon: 'team' },
+  { text: 'Places', icon: 'environment-o' },
+  { text: 'Categories', icon: 'tags-o' },
+  { text: 'Finances', icon: 'bank' },
+  { text: 'Reports', icon: 'file-pdf' },
+]
 
 class Charity extends Component {
   state = {
     charity: null,
     isLoading: true,
+    selectedKey: menuItems[0].text,
   }
   componentDidMount() {
-    fetchRequest(`http://localhost:4000/api/v0.3.0/charities?ids.GB-CHC=${this.props.charityId}&fields=all`)
+    fetchJSON(`http://localhost:4000/api/v0.3.0/charities?ids.GB-CHC=${this.props.charityId}&fields=all`)
     .then(res => this.setState({
       isLoading: false,
       charity: res.charities.length === 1 ? res.charities[0] : null
@@ -50,7 +36,8 @@ class Charity extends Component {
     })
   }
   render() {
-    const { isLoading, charity } = this.state
+    const { isLoading, charity, selectedKey } = this.state
+    console.log(charity)
     return (
       <Content style={{ padding: '0 50px' }}>
         <Breadcrumb style={{ margin: '16px 0' }}>
@@ -58,11 +45,16 @@ class Charity extends Component {
           <Breadcrumb.Item><Link to="/">charities</Link></Breadcrumb.Item>
           <Breadcrumb.Item>{this.props.charityId}</Breadcrumb.Item>
         </Breadcrumb>
-        <Layout style={{ padding: '24px 0', background: '#fff' }}>
+        <Layout style={{ position: 'relative', padding: '24px 0', background: '#fff' }}>
+          <CharityMenuBar
+            menuItems={menuItems}
+            selectedKey={selectedKey}
+            onSelect={selectedKey => this.setState({ selectedKey })}
+          />
           <Content style={{ padding: '0 24px', minHeight: 280 }}>
-            {isLoading && <Spin />}
+            {isLoading && <Card loading />}
             {!isLoading && charity && (
-              <CharityInfo charity={charity} />
+              <CharityInfo charity={charity} selectedKey={selectedKey} />
             )}
             {!isLoading && !charity && (
               'No charity found'
