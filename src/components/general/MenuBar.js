@@ -4,7 +4,7 @@ import { Layout, Menu, Icon } from 'antd'
 
 const { Sider } = Layout
 
-const CharityMenuBar = ({ menuItems, selectedKey, onSelect }) => (
+const MenuBar = ({ menuItems, selectedKey, onSelect }) => (
   <Sider width={200} style={{ background: '#fff', marginTop: '50px' }}>
     <Menu
       onClick={e => onSelect(e.key)}
@@ -15,10 +15,10 @@ const CharityMenuBar = ({ menuItems, selectedKey, onSelect }) => (
     </Menu>
   </Sider>
 )
-CharityMenuBar.propTypes = {
+MenuBar.propTypes = {
   menuItems: PropTypes.array,
   selectedKey: PropTypes.string,
   onSelect: PropTypes.func,
 }
 
-export { CharityMenuBar }
+export { MenuBar }
