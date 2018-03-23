@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { Layout, Breadcrumb, Card } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
-import { CharityMenuBar } from './CharityMenuBar'
+import { MenuBar } from '../general/MenuBar'
 import { CharityInfo } from './CharityInfo'
 
 const { Content } = Layout
@@ -45,7 +45,7 @@ class Charity extends Component {
           <Breadcrumb.Item>{this.props.charityId}</Breadcrumb.Item>
         </Breadcrumb>
         <Layout style={{ position: 'relative', padding: '24px 0', background: '#fff' }}>
-          <CharityMenuBar
+          <MenuBar
             menuItems={menuItems}
             selectedKey={selectedKey}
             onSelect={selectedKey => this.setState({ selectedKey })}
