@@ -37,7 +37,6 @@ class Charity extends Component {
   }
   render() {
     const { isLoading, charity, selectedKey } = this.state
-    console.log(charity)
     return (
       <Content style={{ padding: '0 50px' }}>
         <Breadcrumb style={{ margin: '16px 0' }}>

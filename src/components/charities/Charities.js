@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { CharitiesList } from './CharitiesList'
+import qs from 'query-string'
 import { FilterBar } from './FilterBar'
+import { CharitiesSearch } from './CharitiesSearch'
+import { CharitiesList } from './CharitiesList'
 
 import { Layout, Breadcrumb } from 'antd'
 
@@ -10,6 +12,7 @@ const { Content, Sider } = Layout
 
 class Charities extends Component {
   render() {
+    const query = qs.parse(this.props.queryString)
     return (
       <Content style={{ padding: '0 50px' }}>
         <Breadcrumb style={{ margin: '16px 0' }}>
@@ -21,6 +24,7 @@ class Charities extends Component {
             <FilterBar queryString={this.props.queryString} />
           </Sider>
           <Content style={{ padding: '0 24px', minHeight: 280 }}>
+            <CharitiesSearch query={query} />
             <CharitiesList queryString={this.props.queryString} />
           </Content>
         </Layout>
