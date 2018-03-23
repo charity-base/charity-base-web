@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { Tag, Input, Tooltip, Icon } from 'antd'
+import { Tag, Tooltip, Icon, Cascader } from 'antd'
 import { DownloadResults } from './DownloadResults'
 
 const SideBarContainer = styled.div`
@@ -19,53 +19,65 @@ const SideBarTitle = styled.div`
   margin-bottom: 20px;
 `
 
+
+const options = [{
+  value: 'income.latest.total',
+  label: 'Income',
+  children: [{
+    value: '>',
+    label: 'greater than',
+    children: [{
+      value: '1000',
+      label: '£1000',
+    }],
+  }, {
+    value: '<',
+    label: 'less than',
+    children: [{
+      value: '1000',
+      label: '£1000',
+    }, {
+      value: '2000',
+      label: '£2000',
+    }],
+  }],
+}]
+
+
+
 class AddFilter extends Component {
   state = {
     inputVisible: false,
-    inputValue: '',
   }
-  showInput = () => {
-    this.setState({ inputVisible: true }, () => this.input.focus());
-  }
-
-  handleInputChange = (e) => {
-    // this.setState({ inputValue: toString(e) });
-    this.setState({ inputValue: e.target.value });
-  }
-
-  handleInputConfirm = () => {
-    const { inputValue } = this.state
+  handleInputConfirm = values => {
+    const inputValue = values.join('')
     this.props.onNewFilter(inputValue)
-    this.setState({
-      inputVisible: false,
-      inputValue: '',
-    });
+    this.setState({ inputVisible: false })
   }
-  saveInputRef = input => this.input = input
+  isSubstring = (long, short) => (long.indexOf(short) > -1)
+  searchOptions = (search, path) => {
+    const searchTerms = search.trim().split(' ')
+    const totalValuePath = path.map(x => x.value).join('')
+    const totalLabelPath = path.map(x => x.label).join('')
+    const totalPath = `${totalValuePath} ${totalLabelPath}`
+    return searchTerms && searchTerms.reduce((agg, term) => agg && this.isSubstring(totalPath.toLowerCase(), term.toLowerCase()), true)
+  }
   render() {
-    const { inputValue, inputVisible } = this.state;
+    const { inputVisible } = this.state;
     return (
       <div>
-      {inputVisible && (
-        <Input
-          ref={this.saveInputRef}
-          type="text"
-          size="small"
+        <Cascader
+          size='small'
           style={{ width: '100%' }}
-          value={inputValue}
-          onChange={this.handleInputChange}
-          onBlur={this.handleInputConfirm}
-          onPressEnter={this.handleInputConfirm}
+          options={options}
+          onChange={this.handleInputConfirm}
+          showSearch={{ filter: this.searchOptions, matchInputWidth: false, render: (search, path) => path.map(x => x.label).join(' ') }}
+          value={[]}
+          placeholder=''
+          displayRender={inputVisible ? undefined : () => <div style={{textAlign: 'center'}}><Icon type='plus'/> Add Filter</div>}
+          onPopupVisibleChange={isOpen => this.setState({ inputVisible: isOpen })}
+          allowClear={false}
         />
-      )}
-      {!inputVisible && (
-        <Tag
-          onClick={this.showInput}
-          style={{ background: '#fff', borderStyle: 'dashed', width: '100%', textAlign: 'center' }}
-        >
-          <Icon type="plus" /> Add Filter
-        </Tag>
-      )}
       </div>
     )
   }
@@ -94,14 +106,12 @@ class FilterBar extends Component {
   handleClose = removedFilter => {
     const filters = this.state.filters.filter(x => x.id !== removedFilter.id)
     this.updateRoute(filters)
-    // this.setState({ filters })
   }
   onNewFilter = inputValue => {
     const { filters } = this.state
     if (!inputValue) return
     if (filters.filter(x => x.name === inputValue).length > 0) return
     const maxId = filters.reduce((agg, x) => x.id > agg ? x.id : agg, 0)
-    // todo: prevent adding existing filter?
     const newFilter = {id: maxId + 1, name: inputValue}
     const newFilters = [...filters, newFilter];
     this.updateRoute(newFilters)
