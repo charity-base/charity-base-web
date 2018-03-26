@@ -1,19 +1,30 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import qs from 'query-string'
 import { DebounceInput } from 'react-debounce-input'
 
-const charitySearchInputStyles = {
-  width: '100%',
-  borderWidth: '0 0 1px 0',
-  outlineWidth: 0,
-  borderColor: 'rgba(0,0,0,.3)',
-  fontSize: '18px',
-  padding: '3px',
-  fontWeight: 300,
-  color: 'rgba(0,0,0,.7)',
-  marginBottom: '20px',
-}
+const SearchInputContainer = styled.div`
+  margin-bottom: 20px;
+  background-color: #F4F4F4;
+  padding: 10px;
+  border-radius: 10px;
+`
+
+const SearchInput = styled(DebounceInput)`
+  width: 100%;
+  border-width: 0 0 1px 0;
+  outline-width: 0;
+  border-color: rgba(0,0,0,.3);
+  font-size: 18px;
+  padding: 3px;
+  font-weight: 300;
+  color: rgba(0,0,0,.7);
+  background-color: inherit;
+  ::placeholder {
+    color: rgba(0,0,0,.4);
+  }
+`
 
 class CharitiesSearch extends Component {
   state = {
@@ -31,14 +42,15 @@ class CharitiesSearch extends Component {
   }
   render() {
     return (
-      <DebounceInput
-        style={charitySearchInputStyles}
-        minLength={0}
-        debounceTimeout={300}
-        placeholder="Search charities"
-        value={this.state.query.search || ''}
-        onChange={this.onChange}
-      />
+      <SearchInputContainer>
+        <SearchInput
+          minLength={0}
+          debounceTimeout={300}
+          placeholder="Search charities"
+          value={this.state.query.search || ''}
+          onChange={this.onChange}
+        />
+      </SearchInputContainer>
     )
   }
 }
