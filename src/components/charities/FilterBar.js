@@ -47,11 +47,11 @@ const options = [{
   children: [{
     value: 'names.',
     label: 'at least',
-    children: [...Array(300).keys()].map(value => ({ value, label: value + 1 })),
+    children: [...Array(300).keys()].map(value => ({ value, label: `${value + 1}` })),
   }, {
     value: '(!negate)names.',
     label: 'fewer than',
-    children: [...Array(300).keys()].map(value => ({ value, label: value + 1 })),
+    children: [...Array(300).keys()].map(value => ({ value, label: `${value + 1}` })),
   }],
 }, {
   value: 'trustees.incorporated=true',
