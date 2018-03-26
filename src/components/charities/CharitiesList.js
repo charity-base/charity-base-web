@@ -46,7 +46,7 @@ class CharitiesList extends Component {
   }
   getData = (queryString, skip, callback) => {
     const qs = queryString ? queryString.split('?')[1] + '&' : ''
-    fetchJSON(`http://localhost:4000/api/v0.3.0/charities?${qs}fields=activities&limit=${this.state.limit}&skip=${skip}`)
+    fetchJSON(`http://localhost:4000/api/v0.3.0/charities?${qs}fields=activities&limit=${this.state.limit}&skip=${skip}&sort=-income.latest.total`)
     .then(res => callback(res))
     .catch(err => console.log(err))
   }
