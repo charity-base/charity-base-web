@@ -42,17 +42,17 @@ const options = [{
   label: 'Operates in',
   children: [...new Set(areasOfOperation)].map(value => ({ value, label: value })),
 }, {
-  value: 'categories.name=',
+  value: 'categories.id=',
   label: 'Type of work',
-  children: categories.map(x => ({ value: x.name, label: x.name })),
+  children: categories.map(x => ({ value: x.id, label: x.name })),
 }, {
-  value: 'beneficiaries.name=',
+  value: 'beneficiaries.id=',
   label: 'Beneficiaries',
-  children: beneficiaries.map(x => ({ value: x.name, label: x.name })),
+  children: beneficiaries.map(x => ({ value: x.id, label: x.name })),
 }, {
-  value: 'operations.name=',
+  value: 'operations.id=',
   label: 'Operations',
-  children: operations.map(x => ({ value: x.name, label: x.name })),
+  children: operations.map(x => ({ value: x.id, label: x.name })),
 }, {
   value: 'trustees.',
   label: '# Trustees',

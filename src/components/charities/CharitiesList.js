@@ -85,14 +85,13 @@ class CharitiesList extends Component {
         itemLayout="horizontal"
         loadMore={loadMore}
         dataSource={data}
-        renderItem={item => (
-          <List.Item actions={[<a>edit</a>, <a>more</a>]}>
+        renderItem={({ ids, name, activities }) => (
+          <List.Item>
             <List.Item.Meta
-              avatar={<Avatar src={`https://ui-avatars.com/api/?name=${item.name}`} />}
-              title={<Link to={`/charities/${item.ids['GB-CHC']}`}>{item.name}</Link>}
-              description={item.activities}
+              avatar={<Avatar src={`https://ui-avatars.com/api/?name=${name}`} />}
+              title={<Link to={`/charities/${ids['GB-CHC']}`}>{name}</Link>}
+              description={activities}
             />
-            <div>{item.ids['GB-CHC']}</div>
           </List.Item>
         )}
       />
@@ -103,4 +102,4 @@ CharitiesList.propTypes = {
   queryString: PropTypes.string,
 }
 
-export { CharitiesList };
+export { CharitiesList }

@@ -6,21 +6,23 @@ import { DebounceInput } from 'react-debounce-input'
 
 const SearchInputContainer = styled.div`
   margin-bottom: 20px;
-  background-color: #F4F4F4;
+  background-color: #FAFAFA;
+  border-color: #F8BBD0;
+  border-style: solid;
+  border-width: 1px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
 `
 
 const SearchInput = styled(DebounceInput)`
   width: 100%;
-  border-width: 0 0 1px 0;
+  border-width: 0;
   outline-width: 0;
-  border-color: rgba(0,0,0,.3);
   font-size: 18px;
   padding: 3px;
   font-weight: 300;
-  color: rgba(0,0,0,.7);
   background-color: inherit;
+  color: rgba(0,0,0,.7);
   ::placeholder {
     color: rgba(0,0,0,.4);
   }
@@ -46,6 +48,7 @@ class CharitiesSearch extends Component {
         <SearchInput
           minLength={0}
           debounceTimeout={300}
+          type="search"
           placeholder="Search charities"
           value={this.state.query.search || ''}
           onChange={this.onChange}
