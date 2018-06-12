@@ -24,39 +24,45 @@ const HeaderTitle = styled(NavLink)`
   }
 `
 
+const NavBar = () => (
+  <Header>
+    <HeaderTitle to="/">CharityBase</HeaderTitle>
+    <Menu
+      theme="dark"
+      mode="horizontal"
+      style={{ lineHeight: '64px' }}
+      selectable={false}
+    >
+      <Menu.Item key="1">
+        <NavLink
+          to="/"
+          exact
+          activeStyle={{
+            color: 'rgba(255,255,255,0.9)',
+           }}
+        >Charities</NavLink>
+      </Menu.Item>
+      <Menu.Item key="2">
+        <NavLink
+          to="/faq"
+          activeStyle={{
+            color: 'rgba(255,255,255,0.9)',
+           }}
+        >FAQ</NavLink>
+      </Menu.Item>
+      <Menu.Item key="3">
+        <a href="https://charitybase.uk/docs/v1.0.0">API</a>
+      </Menu.Item>
+    </Menu>
+  </Header>
+)
+
 class App extends Component {
   render() {
     return (
       <LocaleProvider locale={enGB}>
-        <Layout>
-          <Header>
-            <HeaderTitle to="/">CharityBase</HeaderTitle>
-            <Menu
-              theme="dark"
-              mode="horizontal"
-              style={{ lineHeight: '64px' }}
-              selectable={false}
-            >
-              <Menu.Item key="1">
-                <NavLink
-                  to="/"
-                  exact
-                  activeStyle={{
-                    color: 'rgba(255,255,255,0.9)',
-                   }}
-                >Charities</NavLink>
-              </Menu.Item>
-              <Menu.Item key="2">
-                <NavLink
-                  to="/faq"
-                  activeStyle={{
-                    color: 'rgba(255,255,255,0.9)',
-                   }}
-                >FAQ</NavLink>
-              </Menu.Item>
-              <Menu.Item key="3"><a href="https://charitybase.uk/docs">API Documentation</a></Menu.Item>
-            </Menu>
-          </Header>
+        <Layout style={{ height: '100vh' }}>
+          <NavBar />
           <Router />
           <Footer style={{ textAlign: 'center' }}>
             CharityBase 2018 | <a href='https://github.com/tythe-org'>github.com/tythe-org</a>

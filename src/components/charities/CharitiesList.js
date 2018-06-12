@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { List, Avatar, Button, Spin } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
+import { NoneText } from '../general/NoneText'
 
 
 class CharitiesList extends Component {
@@ -19,8 +20,8 @@ class CharitiesList extends Component {
       this.setState({
         data: res.charities,
         loading: false,
-        limit: res.query.limit,
-        skip: res.query.skip + res.query.limit,
+        limit: res.query.meta.size,
+        skip: res.query.meta.from + res.query.meta.size,
       })
     })
   }
@@ -38,15 +39,16 @@ class CharitiesList extends Component {
         this.setState({
           data: res.charities,
           loading: false,
-          limit: res.query.limit,
-          skip: res.query.skip + res.query.limit,
+          limit: res.query.meta.size,
+          skip: res.query.meta.from + res.query.meta.size,
         })
       })
     }
   }
   getData = (queryString, skip, callback) => {
     const qs = queryString ? queryString.split('?')[1] + '&' : ''
-    fetchJSON(`http://localhost:4000/api/v0.3.0/charities?${qs}fields=activities&limit=${this.state.limit}&skip=${skip}&sort=-income.latest.total`)
+    const url = `http://localhost:4000/api/v2.0.0/charities?${qs}fields=*&limit=${this.state.limit}&skip=${skip}&sort=income.latest.total:desc`
+    fetchJSON(url)
     .then(res => callback(res))
     .catch(err => console.log(err))
   }
@@ -59,8 +61,8 @@ class CharitiesList extends Component {
       this.setState({
         data,
         loadingMore: false,
-        limit: res.query.limit,
-        skip: res.query.skip + res.query.limit,
+        limit: res.query.meta.size,
+        skip: res.query.meta.from + res.query.meta.size,
       }, () => {
         // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
         // In real scene, you can using public method of react-virtualized:
@@ -76,7 +78,7 @@ class CharitiesList extends Component {
       <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
         {loadingMore && <Spin />}
         {!loadingMore && isMore && <Button onClick={this.onLoadMore}>Show More</Button>}
-        {!loadingMore && !isMore && <div>No more results</div>}
+        {!loadingMore && !isMore && <NoneText>end of results</NoneText>}
       </div>
     ) : null;
     return (

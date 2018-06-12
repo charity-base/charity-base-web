@@ -49,7 +49,7 @@ class CharitiesSearch extends Component {
           minLength={0}
           debounceTimeout={300}
           type="search"
-          placeholder="Search charities"
+          placeholder="Search charities, places, activities, people..."
           value={this.state.query.search || ''}
           onChange={this.onChange}
         />
