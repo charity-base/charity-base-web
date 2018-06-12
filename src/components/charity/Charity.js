@@ -36,11 +36,10 @@ class Charity extends Component {
       console.log(err)
     })
   }
-  onViewSelect = (view, goBackPage=false) => {
+  onViewSelect = view => {
     const viewQuery = view === 'overview' ? '' : `?view=${view}`
     const path = `/charities/${this.props.charityId}${viewQuery}`
-    const { push, goBack } = this.context.router.history
-    return goBackPage ? goBack() : push(path)
+    this.context.router.history.push(path)
   }
   goBack = () => {
     this.context.router.history.goBack()
@@ -72,10 +71,10 @@ class Charity extends Component {
               </MenuBarHeader>
             )}
           />
-          <Content style={{ padding: '0 24px', height: '100%', overflowY: 'scroll' }}>
+          <Content style={{ padding: '24px 24px', height: '100%', overflowY: 'scroll' }}>
             {isLoading && <Card loading />}
             {!isLoading && charity && (
-              <CharityInfo charity={charity} view={view} onViewSelect={this.onViewSelect} />
+              <CharityInfo charity={charity} view={view} onViewSelect={this.onViewSelect} goBack={this.goBack} />
             )}
             {!isLoading && !charity && (
               'No charity found'
