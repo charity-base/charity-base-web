@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import { Layout, Card, Icon, Row, Col, Divider } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { MenuBar, MenuBarHeader } from '../general/MenuBar'
@@ -20,8 +19,6 @@ const menuItems = [
   { id: 'finances', text: 'Finances', icon: 'bank' },
   { id: 'reports', text: 'Reports', icon: 'file-pdf' },
 ]
-
-
 
 class Charity extends Component {
   state = {
@@ -45,6 +42,9 @@ class Charity extends Component {
     const { push, goBack } = this.context.router.history
     return goBackPage ? goBack() : push(path)
   }
+  goBack = () => {
+    this.context.router.history.goBack()
+  }
   render() {
     const { isLoading, charity } = this.state
     const { charityId, view } = this.props
@@ -57,12 +57,14 @@ class Charity extends Component {
             onSelect={this.onViewSelect}
             renderHeader={() => (
               <MenuBarHeader>
-                <div style={{ fontSize: '12px' }}><Link to='/'>
-                  <Row justify='space-around' type='flex'>
-                    <Col span={4}><Icon type="arrow-left"/></Col>
-                    <Col span={20}>Back to Search</Col>
-                  </Row>
-                </Link></div>
+                <div style={{ fontSize: '12px' }}>
+                  <a onClick={this.goBack}>
+                    <Row justify='space-around' type='flex'>
+                      <Col span={4}><Icon type="arrow-left"/></Col>
+                      <Col span={20}>Back to Search</Col>
+                    </Row>
+                  </a>
+                </div>
                 <Divider />
                 <div style={{ marginTop: '5px' }}><CopyUrl /></div>
                 <div style={{ marginTop: '5px' }}><DownloadResults queryString={`?ids.GB-CHC=${charityId}&fields=all`}/></div>
