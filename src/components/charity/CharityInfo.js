@@ -12,9 +12,7 @@ import { CharityPlaces, CharityPlacesOverview } from './CharityPlaces'
 import { CharityReports } from './CharityReports'
 import { NoneText } from '../general/NoneText'
 import { CopyUrl } from '../general/CopyUrl'
-import { DownloadResults } from '../general/DownloadResults'
 import { InfoText } from '../general/InfoText'
-
 
 const CharityHeader = styled.div`
   font-size: 28px;
@@ -24,7 +22,6 @@ const CharitySubheader = styled.div`
   font-size: 16px;
   color: rgba(0,0,0,.5);
 `
-
 
 const SmallIcon = styled.img`
   width: 40px;
@@ -36,24 +33,19 @@ class CharityOverview extends Component {
     const { charity, onViewSelect } = this.props
     return (
       <div>
-        <Row gutter={16} type="flex" justify="start" align="top">
-          <Col xxl={20} xl={20} lg={20} md={18} sm={24} xs={24}>
-            <CharityHeader>
-              {charity.name}
-              {charity.isWelsh && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/5/59/Flag_of_Wales_2.svg" />}
-              {charity.isSchool && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Mortarboard.svg" />}
-            </CharityHeader>
-            {charity.alternativeNames.filter(x => x !== charity.name).length > 0 && (
-              <CharitySubheader>
-                Working names:  {charity.alternativeNames.filter(x => x !== charity.name).map((x, i) => <span key={i}>"{x}" <Divider type="vertical" /> </span>)}
-              </CharitySubheader>
-            )}
-          </Col>
-          <Col xxl={4} xl={4} lg={4} md={6} sm={24} xs={24}>
-            <div><CopyUrl /></div>
-            <div><DownloadResults queryString={`?ids.GB-CHC=${charity.ids['GB-CHC']}&fields=all`}/></div>
-          </Col>
-        </Row>
+        <div>
+          <CharityHeader>
+            {charity.name}
+            {charity.isWelsh && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/5/59/Flag_of_Wales_2.svg" />}
+            {charity.isSchool && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Mortarboard.svg" />}
+          </CharityHeader>
+          {charity.alternativeNames.filter(x => x !== charity.name).length > 0 && (
+            <CharitySubheader>
+              Working names:  {charity.alternativeNames.filter(x => x !== charity.name).map((x, i) => <span key={i}>"{x}" <Divider type="vertical" /> </span>)}
+            </CharitySubheader>
+          )}
+        </div>
+        <Divider />
         <InfoText>
           {charity.activities}
         </InfoText>
@@ -138,12 +130,12 @@ const viewNames = {
 }
 
 
-const CharityInfo = ({ view, charity, onViewSelect }) => (
+const CharityInfo = ({ view, charity, onViewSelect, goBack }) => (
   <div>
     <CharityOverview charity={charity} onViewSelect={onViewSelect} />
     <InfoModal
       visible={Object.keys(viewNames).indexOf(view) > -1}
-      onCancel={() => onViewSelect('overview', true)}
+      onCancel={goBack}
     >
       <Card.Meta
         title={charity.name}
@@ -180,6 +172,7 @@ CharityInfo.propTypes = {
   view: PropTypes.string,
   charity: PropTypes.object,
   onViewSelect: PropTypes.func,
+  goBack: PropTypes.func,
 }
 
 export { CharityInfo }
