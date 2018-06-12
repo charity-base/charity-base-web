@@ -3,10 +3,14 @@ import PropTypes from 'prop-types'
 import { Modal, Checkbox } from 'antd'
 
 class CheckboxModal extends Component {
-  state = { ...this.props.modalConfig }
+  state = {
+    name: null,
+    options: [],
+  }
   componentDidUpdate(prevProps) {
-    if (this.props.modalConfig.name !== prevProps.modalConfig.name) {
-      this.setState({ ...this.props.modalConfig })
+    const { name, options } = this.props
+    if (name !== prevProps.name) {
+      this.setState({ name, options })
     }
   }
   changeCheckbox = (i, isChecked) => {
@@ -20,10 +24,8 @@ class CheckboxModal extends Component {
     })
   }
   onOk = () => {
-    const { options } = this.state
-    const checkedIds = options.reduce((agg, x) => (x.isChecked ? [...agg, x.id] : agg), [])
-    const filterString = `${this.state.fieldName}=${checkedIds.join(',')}`
-    this.props.onOk(filterString)
+    const checkedOptions = this.state.options.filter(x => x.isChecked)
+    this.props.onOk(checkedOptions)
   }
   render() {
     return (
@@ -33,11 +35,10 @@ class CheckboxModal extends Component {
         onOk={this.onOk}
         onCancel={this.props.onCancel}
       >
-        {this.state.name && this.state.options.map(({ id, name, isChecked }, i) => (
+        {this.state.options && this.state.options.map(({ name, isChecked }, i) => (
           <div key={i}>
             <Checkbox
               checked={isChecked}
-              disabled={false}
               onChange={e => this.changeCheckbox(i, e.target.checked)}
             >
               {name}
@@ -52,7 +53,8 @@ CheckboxModal.propTypes = {
   isOpen: PropTypes.bool,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
-  modalConfig: PropTypes.object,
+  name: PropTypes.string,
+  options: PropTypes.array,
 }
 
 export { CheckboxModal }
