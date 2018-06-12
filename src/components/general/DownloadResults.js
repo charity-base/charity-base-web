@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 
-import { Button, Modal } from 'antd'
+import { Modal, Button } from 'antd'
 
 class DownloadResults extends Component {
   state = {
@@ -15,7 +15,7 @@ class DownloadResults extends Component {
   downloadResults = () => {
     this.setState({ isLoading: true, isModalOpen: true })
 
-    fetch(`http://localhost:4000/api/v0.3.0/download-charities${this.props.queryString}`)
+    fetch(`http://localhost:4000/api/v2.0.0/download-charities${this.props.queryString}`)
     .then(x => x.blob())
     .then(blob => {
       const fileName = `charity-base-download-${Math.round(new Date().getTime()/1000)}.txt`
@@ -57,15 +57,8 @@ class DownloadResults extends Component {
             <p>Creating file.  This could take a minute...</p>
           )}
         </Modal>
-        <Button
-          type="primary"
-          size="small"
-          style={{ width: '100%' }}
-          icon="download"
-          loading={this.state.isLoading}
-          onClick={this.downloadResults}
-        >
-          Download
+        <Button icon='download' onClick={this.downloadResults}>
+          Download JSON
         </Button>
       </div>
     )

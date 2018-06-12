@@ -1,5 +1,6 @@
-import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import React from 'react'
+import { Switch, Route, Redirect } from 'react-router-dom'
+import qs from 'query-string'
 import { Charities } from './components/charities'
 import { Charity } from './components/charity'
 import { FAQ } from './components/faq'
@@ -7,10 +8,10 @@ import { FAQ } from './components/faq'
 const Router = () => (
   <Switch>
     <Route exact path="/" render={({ location }) => (
-      <Charities queryString={location.search} />
+      <Charities queryString={location.search} query={qs.parse(location.search)} />
     )} />
-    <Route path="/charities/:charityId" render={({ match }) => (
-      <Charity charityId={match.params.charityId} />
+    <Route path="/charities/:charityId" render={({ match, location }) => (
+      <Charity charityId={match.params.charityId} view={qs.parse(location.search).view} />
     )} />
     <Route exact path="/faq" render={() => (
       <FAQ />
@@ -19,4 +20,4 @@ const Router = () => (
   </Switch>
 )
 
-export { Router };
+export { Router }

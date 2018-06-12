@@ -1,145 +1,185 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import numeral from 'numeral'
+import { Card, Col, Row, Timeline, Divider, Modal } from 'antd'
+import { SectionOverview } from './SectionOverview'
+import { CharitySubsidiaries, CharitySubsidiariesOverview } from './CharitySubsidiaries'
+import { CharityCategories, CharityCategoriesOverview } from './CharityCategories'
+import { CharityContact, CharityContactOverview } from './CharityContact'
+import { CharityFinancial, CharityFinancialOverview } from './CharityFinancial'
+import { CharityPeople, CharityPeopleOverview } from './CharityPeople'
+import { CharityPlaces, CharityPlacesOverview } from './CharityPlaces'
+import { CharityReports } from './CharityReports'
+import { NoneText } from '../general/NoneText'
+import { CopyUrl } from '../general/CopyUrl'
+import { DownloadResults } from '../general/DownloadResults'
+import { InfoText } from '../general/InfoText'
+
 
 const CharityHeader = styled.div`
   font-size: 28px;
 `
 
-const CharityOverview = ({ charity }) => (
-  <div>
-    <div>AKA: {charity.alternativeNames.filter(x => x !== charity.name).join(', ')}</div>
-    <div>Charity Commission Id: {charity.ids['GB-CHC']}</div>
-    <div>Companies House Id: {charity.companiesHouseNumber || 'none'}</div>
-    <div>Activities: {charity.activities}</div>
-    <div>{charity.subsidiaries.length} subsidiaries</div>
-    <div>Area of Benefit: {charity.areaOfBenefit}</div>
-    <div>Areas of Operation: {charity.areasOfOperation.map(x => x.name).join(',')}</div>
-    <div>Contact: {JSON.stringify(charity.contact)}</div>
-    <div>Is Welsh: {charity.isWelsh ? 'True' : 'False'}</div>
-    <div>Is School: {charity.isSchool ? 'True' : 'False'}</div>
-    <div>Trustees Incorporated: {charity.trustees.incorporated ? 'True' : 'False'}</div>
-    <div>Trustees: {charity.trustees.names.join(',')}</div>
-    <a href={charity.website}>{charity.website}</a>
-    <div>Latest Income: {numeral(charity.income.latest.total).format('($ 0.0 a)').replace('$', '£')}</div>
-    <div>Financial Year End: {charity.fyend}</div>
-    <div>Categories: {charity.categories.map(x => x.name).join(',')}</div>
-    <div>Beneficiaries: {charity.beneficiaries.map(x => x.name).join(',')}</div>
-    <div>Operations: {charity.operations.map(x => x.name).join(',')}</div>
-  </div>
-)
+const CharitySubheader = styled.div`
+  font-size: 16px;
+  color: rgba(0,0,0,.5);
+`
+
+
+const SmallIcon = styled.img`
+  width: 40px;
+  margin-left: 20px;
+`
+
+class CharityOverview extends Component {
+  render() {
+    const { charity, onViewSelect } = this.props
+    return (
+      <div>
+        <Row gutter={16} type="flex" justify="start" align="top">
+          <Col xxl={20} xl={20} lg={20} md={18} sm={24} xs={24}>
+            <CharityHeader>
+              {charity.name}
+              {charity.isWelsh && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/5/59/Flag_of_Wales_2.svg" />}
+              {charity.isSchool && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Mortarboard.svg" />}
+            </CharityHeader>
+            {charity.alternativeNames.filter(x => x !== charity.name).length > 0 && (
+              <CharitySubheader>
+                Working names:  {charity.alternativeNames.filter(x => x !== charity.name).map((x, i) => <span key={i}>"{x}" <Divider type="vertical" /> </span>)}
+              </CharitySubheader>
+            )}
+          </Col>
+          <Col xxl={4} xl={4} lg={4} md={6} sm={24} xs={24}>
+            <div><CopyUrl /></div>
+            <div><DownloadResults queryString={`?ids.GB-CHC=${charity.ids['GB-CHC']}&fields=all`}/></div>
+          </Col>
+        </Row>
+        <InfoText>
+          {charity.activities}
+        </InfoText>
+        <Row gutter={16} type="flex" justify="center" align="top">
+          <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
+            <SectionOverview title="Charity Commission (England & Wales)" bordered={false} >
+              <InfoText>Charity Number: {charity.ids['GB-CHC']}</InfoText>
+              <div>
+              <Timeline>
+                <Timeline.Item color="green">Registered 1970</Timeline.Item>
+                <Timeline.Item color="red">Deregistered 1982</Timeline.Item>
+                <Timeline.Item color="green">Registered 1984</Timeline.Item>
+              </Timeline>
+              </div>
+            </SectionOverview>
+          </Col>
+          <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
+            <SectionOverview title="Companies House (UK)" bordered={false} >
+              {charity.companiesHouseNumber || <NoneText>none recorded</NoneText>}
+            </SectionOverview>
+          </Col>
+        </Row>
+        <Row gutter={16} type="flex" justify="space-around" align="top">
+          {[
+            <CharityContactOverview
+              {...charity.contact}
+              website={charity.website}
+              onClick={() => onViewSelect('contact')}
+            />,
+            <CharityPeopleOverview
+              {...charity}
+              onClick={() => onViewSelect('people')}
+            />,
+            <CharitySubsidiariesOverview
+              subsidiaries={charity.subsidiaries}
+              onClick={() => onViewSelect('subsidiaries')}
+            />,
+            <CharityPlacesOverview
+              {...charity}
+              onClick={() => onViewSelect('places')}
+            />,
+            <CharityCategoriesOverview
+              {...charity}
+              onClick={() => onViewSelect('categories')}
+            />,
+            <CharityFinancialOverview
+              {...charity}
+              onClick={() => onViewSelect('finances')}
+            />,
+          ].map((x, i) => (
+            <Col key={i} xxl={8} xl={8} lg={12} md={24} sm={24} xs={24}>
+              {x}
+            </Col>
+          ))}
+        </Row>
+      </div>
+    )
+  }
+}
 CharityOverview.propTypes = {
   charity: PropTypes.object,
+  onViewSelect: PropTypes.func,
+}
+
+const InfoModal = props => (
+  <Modal {...props}
+    bodyStyle={{ maxHeight: '80vh', overflowY: 'scroll', textAlign: 'center' }}
+    width={600}
+    footer={null}
+  />
+)
+
+
+const viewNames = {
+  subsidiaries: 'Subsidiaries',
+  contact: 'Contact',
+  people: 'People',
+  places: 'Places',
+  categories: 'Categories',
+  finances: 'Finances',
+  reports: 'Reports',
 }
 
 
-const CharityContact = ({ email, person, phone, postcode, address, website }) => (
+const CharityInfo = ({ view, charity, onViewSelect }) => (
   <div>
-    <div>Website: {website}</div>
-    <div>Email: {email}</div>
-    <div>Person: {person}</div>
-    <div>Phone: {phone}</div>
-    <div>Postcode: {postcode}</div>
-    <div>Address: {address.join(', ')}</div>
-  </div>
-)
-CharityContact.propTypes = {
-  website: PropTypes.string,
-  email: PropTypes.string,
-  person: PropTypes.string,
-  phone: PropTypes.string,
-  postcode: PropTypes.string,
-  address: PropTypes.array,
-}
-
-
-const CharityPeople = ({ trustees }) => (
-  <div>
-    <div>One of Trustees is incorporated entity: {trustees.incorporated ? 'True' : 'False'}</div>
-    <div>{trustees.names.length} Trustees: {trustees.names.map((x, i) => <div key={i}>{x}</div>)}</div>
-  </div>
-)
-CharityPeople.propTypes = {
-  trustees: PropTypes.object,
-}
-
-
-const CharityPlaces = ({ areaOfBenefit, areasOfOperation }) => (
-  <div>
-    <div>Area of Benefit: {areaOfBenefit}</div>
-    <div>Areas of Operation: {areasOfOperation.map((x, i) => <div key={i}>{x.name}</div>)}</div>
-  </div>
-)
-CharityPlaces.propTypes = {
-  areaOfBenefit: PropTypes.string,
-  areasOfOperation: PropTypes.array,
-}
-
-
-const CharityCategories = ({ categories, beneficiaries, operations }) => (
-  <div>
-    <div><b>Activities:</b> {categories.map((x, i) => <div key={i}>{x.name}</div>)}</div>
-    <div><b>Beneficiaries:</b>  {beneficiaries.map((x, i) => <div key={i}>{x.name}</div>)}</div>
-    <div><b>Operations:</b>  {operations.map((x, i) => <div key={i}>{x.name}</div>)}</div>
-  </div>
-)
-CharityCategories.propTypes = {
-  categories: PropTypes.array,
-  beneficiaries: PropTypes.array,
-  operations: PropTypes.array,
-}
-
-
-const CharityFinancial = ({ income, fyend }) => (
-  <div>
-    <div>Latest Income: {numeral(income.latest.total).format('($ 0.0 a)').replace('$', '£')}</div>
-    <div>Financial Year End: {fyend}</div>
-  </div>
-)
-CharityFinancial.propTypes = {
-  income: PropTypes.object,
-  fyend: PropTypes.string,
-}
-
-
-const CharityReports = () => (
-  <div>
-    <div>Link to reports..</div>
-  </div>
-)
-CharityReports.propTypes = {}
-
-
-const CharityInfo = ({ selectedKey, charity }) => (
-  <div>
-    <CharityHeader>{charity.name}</CharityHeader>
-    {selectedKey === 'Overview' && (
-      <CharityOverview charity={charity} />
-    )}
-    {selectedKey === 'Contact' && (
-      <CharityContact {...charity.contact} website={charity.website} />
-    )}
-    {selectedKey === 'People' && (
-      <CharityPeople trustees={charity.trustees} />
-    )}
-    {selectedKey === 'Places' && (
-      <CharityPlaces areaOfBenefit={charity.areaOfBenefit} areasOfOperation={charity.areasOfOperation} />
-    )}
-    {selectedKey === 'Categories' && (
-      <CharityCategories categories={charity.categories} beneficiaries={charity.beneficiaries} operations={charity.operations} />
-    )}
-    {selectedKey === 'Finances' && (
-      <CharityFinancial income={charity.income} fyend={charity.fyend} />
-    )}
-    {selectedKey === 'Reports' && (
-      <CharityReports />
-    )}
+    <CharityOverview charity={charity} onViewSelect={onViewSelect} />
+    <InfoModal
+      visible={Object.keys(viewNames).indexOf(view) > -1}
+      onCancel={() => onViewSelect('overview', true)}
+    >
+      <Card.Meta
+        title={charity.name}
+        description={viewNames[view]}
+      />
+      <InfoText>
+        <CopyUrl />
+      </InfoText>
+      {view === 'subsidiaries' && (
+        <CharitySubsidiaries name={charity.name} subsidiaries={charity.subsidiaries} />
+      )}
+      {view === 'contact' && (
+        <CharityContact {...charity.contact} />
+      )}
+      {view === 'people' && (
+        <CharityPeople trustees={charity.trustees} />
+      )}
+      {view === 'places' && (
+        <CharityPlaces areaOfBenefit={charity.areaOfBenefit} areasOfOperation={charity.areasOfOperation} />
+      )}
+      {view === 'categories' && (
+        <CharityCategories {...charity} />
+      )}
+      {view === 'finances' && (
+        <CharityFinancial income={charity.income} fyend={charity.fyend} />
+      )}
+      {view === 'reports' && (
+        <CharityReports />
+      )}
+    </InfoModal>
   </div>
 )
 CharityInfo.propTypes = {
-  selectedKey: PropTypes.string,
+  view: PropTypes.string,
   charity: PropTypes.object,
+  onViewSelect: PropTypes.func,
 }
 
 export { CharityInfo }

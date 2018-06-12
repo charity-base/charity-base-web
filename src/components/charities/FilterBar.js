@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import numeral from 'numeral'
-import { Tag, Tooltip, Icon, Cascader } from 'antd'
-import { DownloadResults } from './DownloadResults'
-import { areasOfOperation, categories, beneficiaries, operations } from '../../lib/filterValues'
+import { Tag, Tooltip, Icon, Cascader, Divider } from 'antd'
+import { DownloadResults } from '../general/DownloadResults'
+import { areasOfOperation, causes, beneficiaries, operations } from '../../lib/filterValues'
+import { CopyUrl } from '../general/CopyUrl'
+import { MenuBarHeader } from '../general/MenuBar'
 
 const SideBarContainer = styled.div`
-  padding: 15px;
   border-right: solid rgba(0,0,0,0.1) 1px;
   height: 100%;
 `
@@ -38,13 +39,13 @@ const options = [{
   value: 'isSchool=true',
   label: 'Is a school'
 }, {
-  value: 'areasOfOperation.name=',
+  value: 'areasOfOperation.id=',
   label: 'Operates in',
-  children: [...new Set(areasOfOperation)].map(value => ({ value, label: value })),
+  children: [...new Set(areasOfOperation)].map(x => ({ value: x.id, label: x.name })),
 }, {
-  value: 'categories.id=',
+  value: 'causes.id=',
   label: 'Type of work',
-  children: categories.map(x => ({ value: x.id, label: x.name })),
+  children: causes.map(x => ({ value: x.id, label: x.name })),
 }, {
   value: 'beneficiaries.id=',
   label: 'Beneficiaries',
@@ -111,7 +112,6 @@ class AddFilter extends Component {
     return (
       <div>
         <Cascader
-          size='small'
           style={{ width: '100%' }}
           expandTrigger='hover'
           options={options}
@@ -168,37 +168,37 @@ class FilterBar extends Component {
     const { filters } = this.state;
     return (
       <SideBarContainer>
-        <SideBarTitle>
-          <Icon type="filter"/>
-          FILTERS
-        </SideBarTitle>
-        {filters.length === 0 && (
-          <div style={{textAlign: 'center', color: 'rgba(0,0,0,0.4)', fontSize: '12px'}}>no filters applied</div>
-        )}
-        {filters.map((filter, index) => {
-          const isLongName = filter.name.length > 20;
-          const filterElem = (
-            <Tag closable afterClose={() => this.handleClose(filter)}>
-              {isLongName ? `${filter.name.slice(0, 20)}...` : filter.name}
-            </Tag>
-          )
-          return (
-            <div
-              style={{marginBottom: '10px'}}
-              key={filter.name}
-            >
-              {isLongName ? <Tooltip title={filter.name}>{filterElem}</Tooltip> : filterElem}
-            </div>
-          )
-        })}
-        <div style={{ margin: '20px 0 20px 0' }}>
-          <AddFilter onNewFilter={this.onNewFilter} />
-          <div
-            style={{ width: '100%', textAlign: 'center', marginTop: '20px' }}
-          >
-            <DownloadResults queryString={this.props.queryString}/>
+        <MenuBarHeader>
+          <SideBarTitle>
+            <Icon type="filter"/>
+            FILTERS
+          </SideBarTitle>
+          {filters.length === 0 && (
+            <div style={{textAlign: 'center', color: 'rgba(0,0,0,0.4)', fontSize: '12px'}}>no filters applied</div>
+          )}
+          {filters.map((filter, index) => {
+            const isLongName = filter.name.length > 20;
+            const filterElem = (
+              <Tag closable afterClose={() => this.handleClose(filter)}>
+                {isLongName ? `${filter.name.slice(0, 20)}...` : filter.name}
+              </Tag>
+            )
+            return (
+              <div
+                style={{marginBottom: '10px'}}
+                key={filter.name}
+              >
+                {isLongName ? <Tooltip title={filter.name}>{filterElem}</Tooltip> : filterElem}
+              </div>
+            )
+          })}
+          <div style={{ margin: '20px 0 20px 0' }}>
+            <AddFilter onNewFilter={this.onNewFilter} />
           </div>
-        </div>
+          <Divider />
+          <div style={{ marginTop: '5px' }}><CopyUrl /></div>
+          <div style={{ marginTop: '5px' }}><DownloadResults queryString={this.props.queryString}/></div>
+        </MenuBarHeader>
       </SideBarContainer>
     );
   }
