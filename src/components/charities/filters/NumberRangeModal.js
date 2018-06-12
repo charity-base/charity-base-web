@@ -14,7 +14,7 @@ const marks = {
 class NumberRangeModal extends Component {
   state = {
     name: null,
-    valueRange: [0, 10000000000],
+    valueRange: [3, 6],
   }
   componentDidUpdate(prevProps) {
     const { name } = this.props
@@ -45,7 +45,6 @@ class NumberRangeModal extends Component {
             range
             marks={marks}
             step={0.01}
-            defaultValue={[0, 3]}
             value={this.state.valueRange}
             min={0}
             max={10}
