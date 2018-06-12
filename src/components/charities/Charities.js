@@ -3,26 +3,20 @@ import PropTypes from 'prop-types'
 import { FilterBar } from './FilterBar'
 import { CharitiesSearch } from './CharitiesSearch'
 import { CharitiesList } from './CharitiesList'
-
-import { Layout, Breadcrumb } from 'antd'
+import { Layout } from 'antd'
 
 const { Content, Sider } = Layout
-
 
 class Charities extends Component {
   render() {
     const { query, queryString } = this.props
     return (
-      <Content style={{ padding: '0 50px' }}>
-        <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>charitybase.uk</Breadcrumb.Item>
-          <Breadcrumb.Item>charities{queryString}</Breadcrumb.Item>
-        </Breadcrumb>
-        <Layout style={{ position: 'relative', padding: '24px 0', background: '#fff', height: '50vh !important', maxHeight: '50vh !important', overflowY: 'scroll' }}>
+      <Content style={{ position: 'fixed', top: '80px', bottom: '20px', left: '50px', right: '50px', margin: 0, padding: 0 }}>
+        <Layout style={{ background: '#FFF', border: '1px solid #DDD', borderRadius: '5px', overflowY: 'scroll', position: 'relative', height: '100%' }}>
           <Sider width={200} style={{ background: '#fff' }}>
             <FilterBar queryString={queryString} />
           </Sider>
-          <Content style={{ padding: '0 24px', minHeight: 280 }}>
+          <Content style={{ padding: '24px 24px', height: '100%', overflowY: 'scroll' }}>
             <CharitiesSearch query={query} />
             <CharitiesList queryString={queryString} />
           </Content>
