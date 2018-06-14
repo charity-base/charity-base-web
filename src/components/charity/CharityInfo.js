@@ -76,7 +76,7 @@ class CharityOverview extends Component {
               onClick={() => onViewSelect('contact')}
             />,
             <CharityPeopleOverview
-              {...charity}
+              {...charity.people}
               onClick={() => onViewSelect('people')}
             />,
             <CharitySubsidiariesOverview
@@ -151,7 +151,7 @@ const CharityInfo = ({ view, charity, onViewSelect, goBack }) => (
         <CharityContact {...charity.contact} />
       )}
       {view === 'people' && (
-        <CharityPeople trustees={charity.trustees} />
+        <CharityPeople {...charity.people} {...charity.trustees} />
       )}
       {view === 'places' && (
         <CharityPlaces areaOfBenefit={charity.areaOfBenefit} areasOfOperation={charity.areasOfOperation} />
