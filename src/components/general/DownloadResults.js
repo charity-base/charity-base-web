@@ -57,7 +57,7 @@ class DownloadResults extends Component {
             <p>Creating file.  This could take a minute...</p>
           )}
         </Modal>
-        <Button icon='download' onClick={this.downloadResults}>
+        <Button icon='download' style={{ width: '100%', color: '#EC407A', borderColor: '#EC407A' }} onClick={this.downloadResults}>
           Download JSON
         </Button>
       </div>

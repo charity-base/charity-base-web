@@ -34,6 +34,7 @@ class CheckboxModal extends Component {
         visible={this.props.isOpen}
         onOk={this.onOk}
         onCancel={this.props.onCancel}
+        okText='Filter'
       >
         {this.state.options && this.state.options.map(({ name, isChecked }, i) => (
           <div key={i}>
