@@ -1,10 +1,52 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import { List, Avatar, Button, Spin } from 'antd'
+import { List, Avatar, Button, Spin, Icon } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { NoneText } from '../general/NoneText'
 
+
+const IncomeIcon = ({ income }) => (
+  <svg style={{ width: '50px', height: '50px', }}>
+    <circle
+      cx='25px'
+      cy='25px'
+      fill='#EEE'
+      r={2*Math.log10(income || 1)}
+    />
+    <line
+      stroke='#EEE'
+      strokeWidth="1"
+      x1='0px'
+      x2='25px'
+      y1='25px'
+      y2='25px'
+    />
+  </svg>
+)
+IncomeIcon.propTypes = {
+  income: PropTypes.number,
+}
+
+const IncomeLabel = styled.span`
+  height: 50px;
+  line-height: 50px;
+  vertical-align: top;
+  font-size: 16px;
+  margin-right: 5px;
+  letter-spacing: 1px;
+`
+
+const Income = ({ income }) => (
+  <div>
+    <IncomeLabel>
+      {numeral(income).format('($0a)').replace('$', '£')}
+    </IncomeLabel>
+    <IncomeIcon type='pay-circle' income={income} />
+  </div>
+)
 
 class CharitiesList extends Component {
   state = {
@@ -47,7 +89,7 @@ class CharitiesList extends Component {
   }
   getData = (queryString, skip, callback) => {
     const qs = queryString ? queryString.split('?')[1] + '&' : ''
-    const url = `http://localhost:4000/api/v2.0.0/charities?${qs}fields=*&limit=${this.state.limit}&skip=${skip}&sort=income.latest.total:desc`
+    const url = `http://localhost:4000/api/v2.0.0/charities?${qs}fields=ids,name,alternativeNames,activities,income.latest.total&limit=${this.state.limit}&skip=${skip}`
     fetchJSON(url)
     .then(res => callback(res))
     .catch(err => console.log(err))
@@ -83,21 +125,32 @@ class CharitiesList extends Component {
     ) : null;
     return (
       <List
+        size="large"
+        itemLayout="vertical"
         loading={loading}
-        itemLayout="horizontal"
         loadMore={loadMore}
         dataSource={data}
-        renderItem={({ ids, name, activities }) => (
-          <List.Item>
+        renderItem={({ ids, name, activities, income, alternativeNames }) => (
+          <List.Item
+            actions={[
+              <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
+              <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
+              <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
+            ]}
+            extra={
+              <Income income={income && income.latest.total} />
+            }
+          >
             <List.Item.Meta
               avatar={<Avatar src={`https://ui-avatars.com/api/?name=${name}`} />}
               title={<Link to={`/charities/${ids['GB-CHC']}`}>{name}</Link>}
-              description={activities}
+              description={alternativeNames.filter(x => x !== name).join(', ')}
             />
+            {activities && `${activities.slice(0,120)}...`}
           </List.Item>
         )}
       />
-    );
+    )
   }
 }
 CharitiesList.propTypes = {

@@ -6,9 +6,9 @@ import { DividerTitle } from '../general/DividerTitle'
 
 const CharityPeopleOverview = ({ trustees, employees, volunteers, onClick }) => (
   <SectionOverview title="People" onClick={onClick} hoverable>
-    <p>{trustees} Trustees</p>
-    <p>{employees} Employees</p>
-    <p>{volunteers} Volunteers</p>
+    {trustees > 0 && <p>{trustees} Trustees</p>}
+    {employees > 0 && <p>{employees} Employees</p>}
+    {volunteers > 0 && <p>{volunteers} Volunteers</p>}
   </SectionOverview>
 )
 CharityPeopleOverview.propTypes = {

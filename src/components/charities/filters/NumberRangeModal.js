@@ -39,6 +39,7 @@ class NumberRangeModal extends Component {
         visible={this.props.isOpen}
         onOk={this.onOk}
         onCancel={this.props.onCancel}
+        okText='Filter'
       >
         <div style={{ padding: '20px' }}>
           <Slider

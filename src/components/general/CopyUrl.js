@@ -12,7 +12,7 @@ class CopyUrl extends Component {
         text={window.location.href}
         onCopy={this.onCopy}
       >
-        <Button icon='share-alt'>
+        <Button icon='share-alt' style={{ width: '100%', color: '#EC407A', borderColor: '#EC407A' }}>
           Copy URL
         </Button>
       </CopyToClipboard>

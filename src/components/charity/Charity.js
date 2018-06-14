@@ -14,7 +14,7 @@ const menuItems = [
   { id: 'contact', text: 'Contact', icon: 'phone' },
   { id: 'people', text: 'People', icon: 'team' },
   { id: 'subsidiaries', text: 'Subsidiaries', icon: 'switcher' },
-  { id: 'places', text: 'Places', icon: 'environment-o' },
+  { id: 'places', text: 'Places', icon: 'global' },
   { id: 'categories', text: 'Type of Work', icon: 'tags-o' },
   { id: 'finances', text: 'Finances', icon: 'bank' },
   { id: 'reports', text: 'Reports', icon: 'file-pdf' },
