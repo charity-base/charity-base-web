@@ -33,29 +33,30 @@ const NavBar = () => (
       style={{ lineHeight: '64px' }}
       selectable={false}
     >
-      <Menu.Item key="1">
-        <NavLink
-          to="/"
-          exact
-          activeStyle={{
-            color: 'rgba(255,255,255,0.9)',
-           }}
-        >Charities</NavLink>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <NavLink
-          to="/faq"
-          activeStyle={{
-            color: 'rgba(255,255,255,0.9)',
-           }}
-        >FAQ</NavLink>
-      </Menu.Item>
-      <Menu.Item key="3">
-        <a href="https://charitybase.uk/docs/v1.0.0">API</a>
-      </Menu.Item>
     </Menu>
   </Header>
 )
+
+// <Menu.Item key="1">
+//   <NavLink
+//     to="/"
+//     exact
+//     activeStyle={{
+//       color: 'rgba(255,255,255,0.9)',
+//      }}
+//   >Charities</NavLink>
+// </Menu.Item>
+// <Menu.Item key="2">
+//   <NavLink
+//     to="/faq"
+//     activeStyle={{
+//       color: 'rgba(255,255,255,0.9)',
+//      }}
+//   >FAQ</NavLink>
+// </Menu.Item>
+// <Menu.Item key="3">
+//   <a href="https://charitybase.uk/docs/v1.0.0">API</a>
+// </Menu.Item>
 
 class App extends Component {
   render() {

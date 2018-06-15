@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
-
+import { apiEndpoint } from '../../lib/constants'
 import { Modal, Button } from 'antd'
 
 class DownloadResults extends Component {
@@ -15,7 +15,7 @@ class DownloadResults extends Component {
   downloadResults = () => {
     this.setState({ isLoading: true, isModalOpen: true })
 
-    fetch(`http://localhost:4000/api/v2.0.0/download-charities${this.props.queryString}`)
+    fetch(`${apiEndpoint}/download-charities${this.props.queryString}`)
     .then(x => x.blob())
     .then(blob => {
       const fileName = `charity-base-download-${Math.round(new Date().getTime()/1000)}.txt`
@@ -57,7 +57,7 @@ class DownloadResults extends Component {
             <p>Creating file.  This could take a minute...</p>
           )}
         </Modal>
-        <Button icon='download' style={{ width: '100%', color: '#EC407A', borderColor: '#EC407A' }} onClick={this.downloadResults}>
+        <Button icon='download' style={{ width: '100%' }} onClick={this.downloadResults}>
           Download JSON
         </Button>
       </div>
