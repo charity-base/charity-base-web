@@ -14,7 +14,7 @@ const Text = styled.div`
 class LocationModal extends Component {
   state = {
     name: null,
-    value: 5,
+    value: 3,
     postcode: '',
     errorMessage: '',
     isFetchingPostcode: false,
@@ -31,7 +31,7 @@ class LocationModal extends Component {
       return this.setState({ errorMessage: 'Please enter a postcode' })
     }
     this.setState({ isFetchingPostcode: true })
-    fetch(`http://api.postcodes.io/postcodes/${postcode}`)
+    fetch(`https://api.postcodes.io/postcodes/${postcode}`)
     .then(x => x.json())
     .then(({ status, error, result }) => {
       this.setState({ errorMessage: error, isFetchingPostcode: false })

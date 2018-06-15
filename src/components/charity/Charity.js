@@ -6,6 +6,7 @@ import { MenuBar, MenuBarHeader } from '../general/MenuBar'
 import { CharityInfo } from './CharityInfo'
 import { CopyUrl } from '../general/CopyUrl'
 import { DownloadResults } from '../general/DownloadResults'
+import { apiEndpoint } from '../../lib/constants'
 
 const { Content } = Layout
 
@@ -26,7 +27,7 @@ class Charity extends Component {
     isLoading: true,
   }
   componentDidMount() {
-    fetchJSON(`http://localhost:4000/api/v2.0.0/charities?ids.GB-CHC=${this.props.charityId}&fields=all`)
+    fetchJSON(`${apiEndpoint}/charities?ids.GB-CHC=${this.props.charityId}&fields=*`)
     .then(res => this.setState({
       isLoading: false,
       charity: res.charities.length === 1 ? res.charities[0] : null
@@ -66,7 +67,7 @@ class Charity extends Component {
                 </div>
                 <Divider />
                 <div style={{ marginTop: '5px' }}><CopyUrl /></div>
-                <div style={{ marginTop: '5px' }}><DownloadResults queryString={`?ids.GB-CHC=${charityId}&fields=all`}/></div>
+                <div style={{ marginTop: '5px' }}><DownloadResults queryString={`?ids.GB-CHC=${charityId}&fields=*`}/></div>
                 <Divider />
               </MenuBarHeader>
             )}

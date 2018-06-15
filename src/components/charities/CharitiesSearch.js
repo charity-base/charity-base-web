@@ -5,7 +5,7 @@ import qs from 'query-string'
 import { DebounceInput } from 'react-debounce-input'
 
 const SearchInputContainer = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   background-color: #FAFAFA;
   border-color: #F8BBD0;
   border-style: solid;
@@ -29,17 +29,9 @@ const SearchInput = styled(DebounceInput)`
 `
 
 class CharitiesSearch extends Component {
-  state = {
-    query: this.props.query,
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (qs.stringify(prevProps.query) !== qs.stringify(this.props.query)) {
-      this.setState({ query: this.props.query })
-    }
-  }
   onChange = e => {
     const searchText = e.target.value
-    const newQuery = { ...this.state.query, search: searchText || undefined }
+    const newQuery = { ...this.props.query, search: searchText || undefined }
     this.context.router.history.push(`?${qs.stringify(newQuery)}`)
   }
   render() {
@@ -50,7 +42,7 @@ class CharitiesSearch extends Component {
           debounceTimeout={300}
           type="search"
           placeholder="Search charities, places, activities, people..."
-          value={this.state.query.search || ''}
+          value={this.props.query.search || ''}
           onChange={this.onChange}
         />
       </SearchInputContainer>

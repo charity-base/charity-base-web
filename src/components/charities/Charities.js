@@ -1,11 +1,32 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import { FilterBar } from './FilterBar'
 import { CharitiesSearch } from './CharitiesSearch'
+import { CharitiesSort } from './CharitiesSort'
 import { CharitiesList } from './CharitiesList'
 import { Layout } from 'antd'
 
 const { Content, Sider } = Layout
+
+
+const FixedHeader = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  padding: 24px;
+  background-color: #FFF;
+  z-index: 999;
+`
+
+const ScrollableContent = styled.div`
+  padding: 120px 24px 24px 24px;
+  height: 100%;
+  overflow-y: scroll;
+`
+
 
 class Charities extends Component {
   render() {
@@ -16,9 +37,14 @@ class Charities extends Component {
           <Sider width={200} style={{ background: '#fff' }}>
             <FilterBar queryString={queryString} />
           </Sider>
-          <Content style={{ padding: '24px 24px', height: '100%', overflowY: 'scroll' }}>
-            <CharitiesSearch query={query} />
-            <CharitiesList queryString={queryString} />
+          <Content style={{ position: 'relative' }}>
+            <FixedHeader>
+              <CharitiesSearch query={query} />
+              <CharitiesSort query={query} />
+            </FixedHeader>
+            <ScrollableContent>
+              <CharitiesList queryString={queryString} />
+            </ScrollableContent>
           </Content>
         </Layout>
       </Content>

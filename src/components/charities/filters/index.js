@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Icon } from 'antd'
 import { AddFilter } from './AddFilter'
+import qs from 'query-string'
 
 const SideBarTitle = styled.div`
   color: rgba(0,0,0,0.6);
@@ -13,24 +14,17 @@ const SideBarTitle = styled.div`
   margin-bottom: 20px;
 `
 
-const parseQueryString = queryString => (
-  queryString.length > 1 ? [...new Set(queryString.split('?')[1].split('&'))].map((name, id) => ({ id, name })) : []
-)
-
 class Filters extends Component {
   state = {
-    filters: parseQueryString(this.props.queryString),
+    filters: qs.parse(this.props.queryString),
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.queryString !== this.props.queryString) {
-      this.setState({ filters: parseQueryString(this.props.queryString) })
+      this.setState({ filters: qs.parse(this.props.queryString) })
     }
   }
   updateRoute = filters => {
-    this.context.router.history.push(`?${filters.map(x => x.name).join('&')}`)
-  }
-  updateFilters = filters => {
-    this.updateRoute(filters)
+    this.context.router.history.push(`?${qs.stringify(filters)}`)
   }
   render() {
     const { filters } = this.state
@@ -41,7 +35,7 @@ class Filters extends Component {
           FILTERS
         </SideBarTitle>
         <AddFilter
-          updateFilters={this.updateFilters}
+          updateFilters={this.updateRoute}
           filters={filters}
         />
       </div>

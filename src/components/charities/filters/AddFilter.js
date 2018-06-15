@@ -8,22 +8,23 @@ import { LocationModal } from './LocationModal'
 
 const TagsList = ({ filters, maxDisplayLength, handleClose }) => (
   <div style={{ margin: '20px 0 20px 0' }}>
-    {filters.length === 0 && (
+    {Object.keys(filters).length === 0 && (
       <div style={{textAlign: 'center', color: 'rgba(0,0,0,0.4)', fontSize: '12px'}}>no filters applied</div>
     )}
-    {filters.map((filter, index) => {
-      const isLongName = filter.name.length > maxDisplayLength
+    {Object.keys(filters).map((name, i) => {
+      const tagText = `${name}=${filters[name]}`
+      const isLongName = tagText.length > maxDisplayLength
       return (
         <div
           style={{marginBottom: '10px'}}
-          key={filter.name}
+          key={name}
         >
           <Tag
             closable
-            afterClose={() => handleClose(filter)}
+            afterClose={() => handleClose(name)}
             style={{ borderColor: '#EC407A' }}
           >
-            {isLongName ? `${filter.name.slice(0, maxDisplayLength)}...` : filter.name}
+            {isLongName ? `${tagText.slice(0, maxDisplayLength)}...` : tagText}
           </Tag>
         </div>
       )
@@ -31,7 +32,7 @@ const TagsList = ({ filters, maxDisplayLength, handleClose }) => (
   </div>
 )
 TagsList.propTypes = {
-  filters: PropTypes.array,
+  filters: PropTypes.object,
   maxDisplayLength: PropTypes.number,
   handleClose: PropTypes.func,
 }
@@ -66,40 +67,43 @@ class AddFilter extends Component {
       ))}
     </Menu>
   )
-  appendFilter = filterString => {
+  appendFilter = (name, value) => {
     const { filters } = this.props
-    if (!filterString) return filters
-    if (filters.filter(x => x.name === filterString).length > 0) return filters
-    const maxId = filters.reduce((agg, x) => x.id > agg ? x.id : agg, 0)
-    const newFilter = {id: maxId + 1, name: filterString}
-    return [...filters, newFilter]
+    return { ...filters, [name] : value }
   }
   onCheckboxOk = options => {
     const checkedIds = options.map(x => x.id)
-    const filterString = `${this.state.modalConfig.fieldName}=${checkedIds.join(',')}`
+    const { fieldName } = this.state.modalConfig
+    const value = checkedIds.join(',')
     this.setState({ modalConfig: {} })
-    this.props.updateFilters(this.appendFilter(filterString))
+    this.props.updateFilters(this.appendFilter(fieldName, value))
   }
   onNumberRangeOk = valueRange => {
-    const filterString = `${this.state.modalConfig.fieldName}=${valueRange.join(',')}`
+    const { fieldName } = this.state.modalConfig
+    const value = valueRange.join(',')
     this.setState({ modalConfig: {} })
-    this.props.updateFilters(this.appendFilter(filterString))
+    this.props.updateFilters(this.appendFilter(fieldName, value))
   }
   onLocationOk = (km, lat, lon) => {
-    const filterString = `${this.state.modalConfig.fieldName}=${km}km,${lat},${lon}`
+    const { fieldName } = this.state.modalConfig
+    const value = `${km}km,${lat},${lon}`
     this.setState({ modalConfig: {} })
-    this.props.updateFilters(this.appendFilter(filterString))
+    this.props.updateFilters(this.appendFilter(fieldName, value))
   }
-  handleClose = removedFilter => {
-    const filters = this.props.filters.filter(x => x.id !== removedFilter.id)
+  handleClose = fieldName => {
+    const filters = { ...this.props.filters, [fieldName]: undefined }
     this.props.updateFilters(filters)
+  }
+  removeSort = obj => {
+    const { sort, ...rest } = obj
+    return rest
   }
   render() {
     const { filters } = this.props
     return (
       <div>
         <TagsList
-          filters={filters}
+          filters={this.removeSort(filters)}
           maxDisplayLength={19}
           handleClose={this.handleClose}
         />
@@ -131,7 +135,7 @@ class AddFilter extends Component {
 }
 AddFilter.propTypes = {
   updateFilters: PropTypes.func.isRequired,
-  filters: PropTypes.array,
+  filters: PropTypes.object,
 }
 
 export { AddFilter }

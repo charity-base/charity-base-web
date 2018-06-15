@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import { List, Avatar, Button, Spin, Icon } from 'antd'
+import { List, Avatar, Button, Spin, } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { NoneText } from '../general/NoneText'
-
+import { apiEndpoint } from '../../lib/constants'
 
 const IncomeIcon = ({ income }) => (
   <svg style={{ width: '50px', height: '50px', }}>
@@ -48,6 +48,7 @@ const Income = ({ income }) => (
   </div>
 )
 
+
 class CharitiesList extends Component {
   state = {
     loading: true,
@@ -58,7 +59,23 @@ class CharitiesList extends Component {
     skip: 0,
   }
   componentDidMount() {
-    this.getData(this.props.queryString, 0, res => {
+    this.refreshSearch(this.props.queryString)
+  }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.queryString !== nextProps.queryString) {
+      this.refreshSearch(nextProps.queryString)
+    }
+  }
+  refreshSearch = queryString => {
+    this.setState({
+      loading: true,
+      loadingMore: false,
+      showLoadingMore: true,
+      data: [],
+      limit: 10,
+      skip: 0,
+    })
+    this.getData(queryString, 0, res => {
       this.setState({
         data: res.charities,
         loading: false,
@@ -67,29 +84,9 @@ class CharitiesList extends Component {
       })
     })
   }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.queryString !== nextProps.queryString) {
-      this.setState({
-        loading: true,
-        loadingMore: false,
-        showLoadingMore: true,
-        data: [],
-        limit: 10,
-        skip: 0,
-      })
-      this.getData(nextProps.queryString, 0, res => {
-        this.setState({
-          data: res.charities,
-          loading: false,
-          limit: res.query.meta.size,
-          skip: res.query.meta.from + res.query.meta.size,
-        })
-      })
-    }
-  }
   getData = (queryString, skip, callback) => {
     const qs = queryString ? queryString.split('?')[1] + '&' : ''
-    const url = `http://localhost:4000/api/v2.0.0/charities?${qs}fields=ids,name,alternativeNames,activities,income.latest.total&limit=${this.state.limit}&skip=${skip}`
+    const url = `${apiEndpoint}/charities?${qs}fields=ids,name,alternativeNames,activities,income.latest.total&limit=${this.state.limit}&skip=${skip}`
     fetchJSON(url)
     .then(res => callback(res))
     .catch(err => console.log(err))
@@ -122,7 +119,7 @@ class CharitiesList extends Component {
         {!loadingMore && isMore && <Button onClick={this.onLoadMore}>Show More</Button>}
         {!loadingMore && !isMore && <NoneText>end of results</NoneText>}
       </div>
-    ) : null;
+    ) : null
     return (
       <List
         size="large"
@@ -133,9 +130,9 @@ class CharitiesList extends Component {
         renderItem={({ ids, name, activities, income, alternativeNames }) => (
           <List.Item
             actions={[
-              <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
-              <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
-              <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
+              // <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
+              // <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
+              // <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
             ]}
             extra={
               <Income income={income && income.latest.total} />
