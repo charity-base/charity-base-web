@@ -5,12 +5,11 @@ import { areasOfOperation, causes, beneficiaries, operations } from '../../../li
 import { CheckboxModal } from './CheckboxModal'
 import { NumberRangeModal } from './NumberRangeModal'
 import { LocationModal } from './LocationModal'
+import { NoneText } from '../../general/NoneText'
 
 const TagsList = ({ filters, maxDisplayLength, handleClose }) => (
   <div style={{ margin: '20px 0 20px 0' }}>
-    {Object.keys(filters).length === 0 && (
-      <div style={{textAlign: 'center', color: 'rgba(0,0,0,0.4)', fontSize: '12px'}}>no filters applied</div>
-    )}
+    <div style={{ textAlign: 'center', height: '16px' }}>{Object.keys(filters).length === 0 && <NoneText size={12}>no filters applied</NoneText>}</div>
     {Object.keys(filters).map((name, i) => {
       const tagText = `${name}=${filters[name]}`
       const isLongName = tagText.length > maxDisplayLength
