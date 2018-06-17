@@ -34,7 +34,7 @@ const menuItems = [
   { id: 'places', text: 'Places', icon: 'global' },
   { id: 'categories', text: 'Type of Work', icon: 'tags-o' },
   { id: 'finances', text: 'Finances', icon: 'bank' },
-  { id: 'reports', text: 'Reports', icon: 'file-pdf' },
+  // { id: 'reports', text: 'Reports', icon: 'file-pdf' },
 ]
 
 class Charity extends Component {
