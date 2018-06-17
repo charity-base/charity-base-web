@@ -18,7 +18,7 @@ class DownloadResults extends Component {
     fetch(`${apiEndpoint}/download-charities${this.props.queryString}`)
     .then(x => x.blob())
     .then(blob => {
-      const fileName = `charity-base-download-${Math.round(new Date().getTime()/1000)}.txt`
+      const fileName = `charity-base-${Math.round(new Date().getTime()/1000)}.jsonl.gz`
       this.setState({ isLoading: false, isUploaded: true, fileName, blob })
     })
     .catch(x => console.log(x))
