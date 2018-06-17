@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Card, Col, Row, Timeline, Divider, Modal } from 'antd'
+import { Card, Col, Row, Modal } from 'antd'
 import { SectionOverview } from './SectionOverview'
 import { CharitySubsidiaries, CharitySubsidiariesOverview } from './CharitySubsidiaries'
 import { CharityCategories, CharityCategoriesOverview } from './CharityCategories'
