@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Layout, Card, Icon, Row, Col, Divider } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
@@ -7,8 +8,23 @@ import { CharityInfo } from './CharityInfo'
 import { CopyUrl } from '../general/CopyUrl'
 import { DownloadResults } from '../general/DownloadResults'
 import { apiEndpoint } from '../../lib/constants'
+import { FixedHeader, ScrollableContent } from '../general/Layout'
 
 const { Content } = Layout
+
+const CharityHeader = styled.div`
+  font-size: 28px;
+`
+
+const CharitySubheader = styled.div`
+  font-size: 16px;
+  color: rgba(0,0,0,.5);
+`
+
+const SmallIcon = styled.img`
+  width: 40px;
+  margin-left: 20px;
+`
 
 const menuItems = [
   { id: 'overview', text: 'Overview', icon: 'profile' },
@@ -72,10 +88,26 @@ class Charity extends Component {
               </MenuBarHeader>
             )}
           />
-          <Content style={{ padding: '24px 24px', height: '100%', overflowY: 'scroll' }}>
+          <Content style={{ position: 'relative' }}>
             {isLoading && <Card loading />}
             {!isLoading && charity && (
-              <CharityInfo charity={charity} view={view} onViewSelect={this.onViewSelect} goBack={this.goBack} />
+              <FixedHeader>
+                <CharityHeader>
+                  {charity.name}
+                  {charity.isWelsh && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/5/59/Flag_of_Wales_2.svg" />}
+                  {charity.isSchool && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Mortarboard.svg" />}
+                </CharityHeader>
+                {charity.alternativeNames.filter(x => x !== charity.name).length > 0 && (
+                  <CharitySubheader>
+                    Working names:  {charity.alternativeNames.filter(x => x !== charity.name).map((x, i) => <span key={i}>"{x}" <Divider type="vertical" /> </span>)}
+                  </CharitySubheader>
+                )}
+              </FixedHeader>
+            )}
+            {!isLoading && charity && (
+              <ScrollableContent>
+                <CharityInfo charity={charity} view={view} onViewSelect={this.onViewSelect} goBack={this.goBack} />
+              </ScrollableContent>
             )}
             {!isLoading && !charity && (
               'No charity found'

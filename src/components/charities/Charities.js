@@ -6,27 +6,9 @@ import { CharitiesSearch } from './CharitiesSearch'
 import { CharitiesSort } from './CharitiesSort'
 import { CharitiesList } from './CharitiesList'
 import { Layout } from 'antd'
+import { FixedHeader, ScrollableContent } from '../general/Layout'
 
 const { Content, Sider } = Layout
-
-
-const FixedHeader = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 120px;
-  padding: 24px;
-  background-color: #FFF;
-  z-index: 999;
-`
-
-const ScrollableContent = styled.div`
-  padding: 120px 24px 24px 24px;
-  height: 100%;
-  overflow-y: scroll;
-`
-
 
 class Charities extends Component {
   render() {

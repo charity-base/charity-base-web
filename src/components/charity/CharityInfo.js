@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import { Card, Col, Row, Timeline, Divider, Modal } from 'antd'
 import { SectionOverview } from './SectionOverview'
 import { CharitySubsidiaries, CharitySubsidiariesOverview } from './CharitySubsidiaries'
@@ -14,57 +13,24 @@ import { NoneText } from '../general/NoneText'
 import { CopyUrl } from '../general/CopyUrl'
 import { InfoText } from '../general/InfoText'
 
-const CharityHeader = styled.div`
-  font-size: 28px;
-`
-
-const CharitySubheader = styled.div`
-  font-size: 16px;
-  color: rgba(0,0,0,.5);
-`
-
-const SmallIcon = styled.img`
-  width: 40px;
-  margin-left: 20px;
-`
 
 class CharityOverview extends Component {
   render() {
     const { charity, onViewSelect } = this.props
     return (
       <div>
-        <div>
-          <CharityHeader>
-            {charity.name}
-            {charity.isWelsh && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/5/59/Flag_of_Wales_2.svg" />}
-            {charity.isSchool && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Mortarboard.svg" />}
-          </CharityHeader>
-          {charity.alternativeNames.filter(x => x !== charity.name).length > 0 && (
-            <CharitySubheader>
-              Working names:  {charity.alternativeNames.filter(x => x !== charity.name).map((x, i) => <span key={i}>"{x}" <Divider type="vertical" /> </span>)}
-            </CharitySubheader>
-          )}
-        </div>
-        <Divider />
         <InfoText>
           {charity.activities}
         </InfoText>
         <Row gutter={16} type="flex" justify="center" align="top">
           <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
-            <SectionOverview title="Charity Commission (England & Wales)" bordered={false} >
-              <InfoText>Charity Number: {charity.ids['GB-CHC']}</InfoText>
-              <div>
-              <Timeline>
-                <Timeline.Item color="green">Registered 1970</Timeline.Item>
-                <Timeline.Item color="red">Deregistered 1982</Timeline.Item>
-                <Timeline.Item color="green">Registered 1984</Timeline.Item>
-              </Timeline>
-              </div>
+            <SectionOverview bordered={false} >
+              <InfoText>Charity Commission Number: <strong>{charity.ids['GB-CHC']}</strong></InfoText>
             </SectionOverview>
           </Col>
           <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
-            <SectionOverview title="Companies House (UK)" bordered={false} >
-              {charity.companiesHouseNumber || <NoneText>none recorded</NoneText>}
+            <SectionOverview bordered={false} >
+              <InfoText>Companies House Number: <strong>{charity.companiesHouseNumber || <NoneText>N/A</NoneText>}</strong></InfoText>
             </SectionOverview>
           </Col>
         </Row>

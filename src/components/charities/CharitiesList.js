@@ -79,8 +79,8 @@ class CharitiesList extends Component {
       this.setState({
         data: res.charities,
         loading: false,
-        limit: res.query.meta.size,
-        skip: res.query.meta.from + res.query.meta.size,
+        limit: res.query.size,
+        skip: res.query.from + res.query.size,
       })
     })
   }
@@ -100,8 +100,8 @@ class CharitiesList extends Component {
       this.setState({
         data,
         loadingMore: false,
-        limit: res.query.meta.size,
-        skip: res.query.meta.from + res.query.meta.size,
+        limit: res.query.size,
+        skip: res.query.from + res.query.size,
       }, () => {
         // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
         // In real scene, you can using public method of react-virtualized:
