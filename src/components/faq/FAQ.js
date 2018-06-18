@@ -1,54 +1,74 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { MenuBar } from '../general/MenuBar'
-import { Layout, Breadcrumb } from 'antd'
+import { Layout } from 'antd'
+import { ScrollableContent } from '../general/Layout'
 
 const { Content } = Layout
 
+const Question = styled.div`
+  font-size: 20px;
+  font-weight: 500;
+  padding-top: 10px;
+  padding-bottom: 10px;
+`
 
-const menuItems = [
-  { id: 'diff_from_cc', text: 'How is different to Charity Commission services?', icon: 'profile' },
-]
+const SubHeading = styled.div`
+  padding-left: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  padding-bottom: 5px;
+  padding-top: 10px;
+`
+
+const Answer = styled.div`
+  padding-left: 20px;
+  font-size: 14px;
+`
 
 class FAQ extends Component {
-  state = {
-    selectedId: menuItems[0].id,
-  }
   render() {
-    const { selectedId } = this.state
     return (
-      <Content style={{ padding: '0 50px' }}>
-        <Breadcrumb style={{ margin: '16px 0' }}>
-          <Breadcrumb.Item>charitybase.uk</Breadcrumb.Item>
-          <Breadcrumb.Item>faq</Breadcrumb.Item>
-        </Breadcrumb>
-        <Layout style={{ padding: '24px 0', background: '#fff' }}>
-          <MenuBar
-            menuItems={menuItems}
-            selectedId={selectedId}
-            onSelect={selectedId => this.setState({ selectedId })}
-          />
-          <Content style={{ padding: '0 24px', minHeight: 280 }}>
-            <div>
-              <b>Data</b>
-              All data from CC sources and additional scraped (favicon, long/lat, companies house)
-            </div>
-            <div>
-              <b>Download</b>
-              Download all fields. No cap on download size. CSV or JSON
-            </div>
-            <div>
-              <b>API</b>
-              Free REST API for pulling data into your own web services
-            </div>
-            <div>
-              <b>Filtering</b>
-              Exploit full functionality of API through web user interface.
-            </div>
-            <div>
-              <b>Open Source</b>
-              Maintened by an open source community, and constantly improving.
-            </div>
+      <Content style={{ position: 'fixed', top: '80px', bottom: '20px', left: '50px', right: '50px', margin: 0, padding: 0 }}>
+        <Layout style={{ background: '#FFF', border: '1px solid #DDD', borderRadius: '5px', overflowY: 'scroll', position: 'relative', height: '100%' }}>
+          <Content style={{ position: 'relative' }}>
+            <ScrollableContent paddingTop={24}>
+              <Question>
+                How is this different from the Charity Commission's website?
+              </Question>
+              <SubHeading>
+                More Data (and cleaner too)
+              </SubHeading>
+              <Answer>
+                The Charity Commission has a few online sources of data: an <a rel='noopener noreferrer' target='_blank' href='http://apps.charitycommission.gov.uk/showcharity/registerofcharities/RegisterHomePage.aspx'>original website</a>, a <a rel='noopener noreferrer' target='_blank' href='http://beta.charitycommission.gov.uk'>beta website</a> and some <a rel='noopener noreferrer' target='_blank' href='http://data.charitycommission.gov.uk/'>raw file downloads</a>.
+                Unfortunately none of these are comprehensive so we've merged them all together and supplemented the information with content from other sources. 
+              </Answer>
+              <SubHeading>
+                Better Search
+              </SubHeading>
+              <Answer>
+                The CharityBase search engine is powerful and allows more filtering options e.g. by location.
+              </Answer>
+              <SubHeading>
+                Full Downloads
+              </SubHeading>
+              <Answer>
+                <div>CharityBase allows downloading the entire results from any query to a file of newline-delimited JSON (<a rel='noopener noreferrer' target='_blank' href='http://jsonlines.org/'>more info</a>). CSV coming soon.</div>
+                <div>You want a download of the entire database?  Just click download without applying any filters!</div>
+              </Answer>
+              <SubHeading>
+                Free API
+              </SubHeading>
+              <Answer>
+                Our REST API makes it very easy to pull charity data into your own website, as well as other fancy things.
+              </Answer>
+              <SubHeading>
+                Open Source
+              </SubHeading>
+              <Answer>
+                All our code is open source at <a rel='noopener noreferrer' target='_blank' href='https://github.com/charity-base'>github.com/charity-base</a> and continuously improving thanks to a growing community of charity data nerds.
+              </Answer>
+            </ScrollableContent>
           </Content>
         </Layout>
       </Content>
@@ -60,20 +80,3 @@ FAQ.propTypes = {
 }
 
 export { FAQ }
-
-
-
-
-// # How is it different to CC?
-
-// ## Data
-// All fields present (beta doesn't have subsidiaries? download doesn't have aims & activities.)
-// Suplementary fields (office location, favicons)
-// Formating (removed CAPS, address -> array, )
-// ## Filtering
-// More options for filtering e.g. by office location.
-// Better text search?
-// ## API
-// Easy to pull charity info into your website (with a few lines of code)
-// ## Downloads
-// No limit on downloads & all fields available

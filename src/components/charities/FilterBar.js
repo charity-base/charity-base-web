@@ -40,7 +40,7 @@ class ResultsCount extends Component {
     const isValidCount = this.state.count && !this.state.isLoading
     return (
       <div style={{ height: '30px', marginTop: '20px', textAlign: 'center' }}>
-        {isValidCount && `${this.formatCount(this.state.count)} charities`}
+        {isValidCount > 0 && `${this.formatCount(this.state.count)} charities`}
       </div>
     )
   }

@@ -15,7 +15,7 @@ const FixedHeader = styled.div`
 `
 
 const ScrollableContent = styled.div`
-  padding: 150px 24px 24px 24px;
+  padding: ${({ paddingTop }) => paddingTop === undefined ? 150 : paddingTop}px 24px 24px 24px;
   height: 100%;
   overflow-y: scroll;
 `

@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
+import { LocaleProvider, Layout, Menu, Divider } from 'antd'
 import './App.css'
-
-import { LocaleProvider, Layout, Menu } from 'antd'
 import enGB from 'antd/lib/locale-provider/en_GB'
 
 import { Router } from './Router'
 
-const { Header, Footer } = Layout;
+const { Header, Footer } = Layout
 
 const HeaderTitle = styled(NavLink)`
   color: #EC407A;
@@ -24,6 +23,16 @@ const HeaderTitle = styled(NavLink)`
   }
 `
 
+const internalNavs = [
+  { to: '/', label: 'Charities', exact: true },
+  { to: '/faq', label: 'FAQ', exact: false },
+]
+
+const externalNavs = [
+  { href: 'https://charitybase.uk/docs/v2.0.0', label: 'API Docs' },
+  { href: 'https://github.com/charity-base', label: 'GitHub' },
+]
+
 const NavBar = () => (
   <Header>
     <HeaderTitle to="/">CharityBase</HeaderTitle>
@@ -33,30 +42,30 @@ const NavBar = () => (
       style={{ lineHeight: '64px' }}
       selectable={false}
     >
+      {internalNavs.map(({ to, label, exact }, i) => (
+        <Menu.Item key={`${i}-internal`}>
+          <NavLink
+            to={to}
+            exact={exact}
+            activeStyle={{
+              color: 'rgba(255,255,255,0.9)',
+             }}
+          >
+            {label}
+          </NavLink>
+        </Menu.Item>
+      ))}
+      <Menu.Item style={{ cursor: 'default' }}>
+        <Divider type='vertical' style={{ marginLeft: '20px', marginRight: '20px' }} />
+      </Menu.Item>
+      {externalNavs.map(({ href, label }, i) => (
+        <Menu.Item key={`${i}-external`} icon='plus'>
+          <a target='_blank' href={href}>{label}</a>
+        </Menu.Item>
+      ))}
     </Menu>
   </Header>
 )
-
-// <Menu.Item key="1">
-//   <NavLink
-//     to="/"
-//     exact
-//     activeStyle={{
-//       color: 'rgba(255,255,255,0.9)',
-//      }}
-//   >Charities</NavLink>
-// </Menu.Item>
-// <Menu.Item key="2">
-//   <NavLink
-//     to="/faq"
-//     activeStyle={{
-//       color: 'rgba(255,255,255,0.9)',
-//      }}
-//   >FAQ</NavLink>
-// </Menu.Item>
-// <Menu.Item key="3">
-//   <a href="https://charitybase.uk/docs/v1.0.0">API</a>
-// </Menu.Item>
 
 class App extends Component {
   render() {
