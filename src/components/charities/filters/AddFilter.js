@@ -5,6 +5,7 @@ import { areasOfOperation, causes, beneficiaries, operations } from '../../../li
 import { CheckboxModal } from './CheckboxModal'
 import { NumberRangeModal } from './NumberRangeModal'
 import { LocationModal } from './LocationModal'
+import { MultiSelectModal } from './MultiSelectModal'
 import { NoneText } from '../../general/NoneText'
 
 const TagsList = ({ filters, maxDisplayLength, handleClose }) => (
@@ -48,7 +49,7 @@ class AddFilter extends Component {
   menuItems = () => ([
     { key: '1', icon: 'environment-o', label: 'Location', modalConfig: { type: 'location', name: 'Location Filter', fieldName: 'addressWithin' }},
     { key: '6', icon: 'bank', label: 'Income', modalConfig: { type: 'numberRange', name: 'Income Filter', fieldName: 'incomeRange' }},
-    { key: '2', icon: 'global', label: 'Regions', modalConfig: { type: 'checkbox', name: 'Regions of Operation Filter', fieldName: 'areasOfOperation.id', options: areasOfOperation.map(x => ({ ...x, isChecked: false })) }},
+    { key: '2', icon: 'global', label: 'Regions', modalConfig: { type: 'multi-select', name: 'Regions of Operation Filter', fieldName: 'areasOfOperation.id', options: areasOfOperation.map(x => ({ ...x, isChecked: false })) }},
     { key: '3', icon: 'medicine-box', label: 'Causes', modalConfig: { type: 'checkbox', name: 'Causes Filter', fieldName: 'causes.id', options: causes.map(x => ({ ...x, isChecked: false })) }},
     { key: '4', icon: 'team', label: 'Beneficiaries', modalConfig: { type: 'checkbox', name: 'Beneficiaries Filter', fieldName: 'beneficiaries.id', options: beneficiaries.map(x => ({ ...x, isChecked: false })) }},
     { key: '5', icon: 'tool', label: 'Operations', modalConfig: { type: 'checkbox', name: 'Operations Filter', fieldName: 'operations.id', options: operations.map(x => ({ ...x, isChecked: false })) }},
@@ -60,8 +61,8 @@ class AddFilter extends Component {
   renderMenu = () => (
     <Menu onClick={this.onMenuClick}>
       {this.menuItems().map(({ key, icon, label }) => (
-        <Menu.Item key={key}>
-          <Icon type={icon} /> {label}
+        <Menu.Item key={key} style={{ paddingTop: '7px', paddingBottom: '7px' }}>
+          <Icon type={icon} style={{ marginRight: '5px' }}/> {label}
         </Menu.Item>
       ))}
     </Menu>
@@ -89,6 +90,13 @@ class AddFilter extends Component {
     this.setState({ modalConfig: {} })
     this.props.updateFilters(this.appendFilter(fieldName, value))
   }
+  onMultiSelectOk = options => {
+    const checkedIds = options.map(x => x.id)
+    const { fieldName } = this.state.modalConfig
+    const value = checkedIds.join(',')
+    this.setState({ modalConfig: {} })
+    this.props.updateFilters(this.appendFilter(fieldName, value))
+  }
   handleClose = fieldName => {
     const filters = { ...this.props.filters, [fieldName]: undefined }
     this.props.updateFilters(filters)
@@ -113,6 +121,13 @@ class AddFilter extends Component {
           isOpen={this.state.modalConfig.type === 'checkbox'}
           onCancel={() => this.setState({ modalConfig: {} })}
           onOk={this.onCheckboxOk}
+          name={this.state.modalConfig.name}
+          options={this.state.modalConfig.options}
+        />
+        <MultiSelectModal
+          isOpen={this.state.modalConfig.type === 'multi-select'}
+          onCancel={() => this.setState({ modalConfig: {} })}
+          onOk={this.onMultiSelectOk}
           name={this.state.modalConfig.name}
           options={this.state.modalConfig.options}
         />
