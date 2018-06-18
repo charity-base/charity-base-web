@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 import { apiEndpoint } from '../../lib/constants'
-import { Modal, Button } from 'antd'
+import { Modal, Button, Row, Col } from 'antd'
 
 class DownloadResults extends Component {
   state = {
@@ -42,17 +42,23 @@ class DownloadResults extends Component {
           footer={null}
           maskClosable={true}
         >
-          {this.state.isUploaded && (<p>
-            <a
-              href={window.URL.createObjectURL(this.state.blob)}
-              target="_blank"
-              download={this.state.fileName}
-              onClick={this.reset}
-            >
-              {this.state.fileName}
-            </a>
-            ({numeral(this.state.blob.size).format('0b')})
-          </p>)}
+          {this.state.isUploaded && (
+            <Row>
+              <Col span={12}>
+                <a
+                  href={window.URL.createObjectURL(this.state.blob)}
+                  target="_blank"
+                  download={this.state.fileName}
+                  onClick={this.reset}
+                >
+                  {this.state.fileName}
+                </a>
+              </Col>
+              <Col span={12}>
+                ({numeral(this.state.blob.size).format('0b')})
+              </Col>
+            </Row>
+          )}
           {this.state.isLoading && (
             <p>Creating file.  This could take a minute...</p>
           )}
