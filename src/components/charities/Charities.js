@@ -5,36 +5,33 @@ import { CharitiesSearch } from './CharitiesSearch'
 import { CharitiesSort } from './CharitiesSort'
 import { CharitiesList } from './CharitiesList'
 import { Layout } from 'antd'
-import { FixedHeader, ScrollableContent } from '../general/Layout'
-
-const { Content, Sider } = Layout
+import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
 
 class Charities extends Component {
   render() {
-    const { query, queryString } = this.props
+    const { query, queryString, isMobile } = this.props
     return (
-      <Content style={{ position: 'fixed', top: '80px', bottom: '20px', left: '50px', right: '50px', margin: 0, padding: 0 }}>
-        <Layout style={{ background: '#FFF', border: '1px solid #DDD', borderRadius: '5px', overflowY: 'scroll', position: 'relative', height: '100%' }}>
-          <Sider width={200} style={{ background: '#fff' }}>
-            <FilterBar queryString={queryString} />
-          </Sider>
-          <Content style={{ position: 'relative' }}>
-            <FixedHeader>
-              <CharitiesSearch query={query} />
-              <CharitiesSort query={query} />
-            </FixedHeader>
-            <ScrollableContent>
-              <CharitiesList queryString={queryString} />
-            </ScrollableContent>
-          </Content>
-        </Layout>
-      </Content>
+      <Page isMobile={isMobile}>
+        <ResponsiveSider isMobile={isMobile}>
+          <FilterBar queryString={queryString} />
+        </ResponsiveSider>
+        <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF' }}>
+          <FixedHeader isMobile={isMobile}>
+            <CharitiesSearch query={query} />
+            <CharitiesSort query={query} />
+          </FixedHeader>
+          <ScrollableContent isMobile={isMobile}>
+            <CharitiesList queryString={queryString} />
+          </ScrollableContent>
+        </Layout.Content>
+      </Page>
     )
   }
 }
 Charities.propTypes = {
   query: PropTypes.object,
   queryString: PropTypes.string,
+  isMobile: PropTypes.bool,
 }
 
 export { Charities }

@@ -1,12 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { Layout, Menu, Icon } from 'antd'
-
-const { Sider } = Layout
+import { Menu, Icon } from 'antd'
 
 const MenuBar = ({ menuItems, selectedId, onSelect, renderHeader }) => (
-  <Sider width={200} style={{ background: '#fff', height: '100%' }}>
+  <div>
     {renderHeader && renderHeader()}
     <Menu
       onClick={e => onSelect(e.key)}
@@ -15,7 +13,7 @@ const MenuBar = ({ menuItems, selectedId, onSelect, renderHeader }) => (
     >
       {menuItems.map(({ id, text, icon }) => <Menu.Item key={id}><Icon type={icon} />{text}</Menu.Item>)}
     </Menu>
-  </Sider>
+  </div>
 )
 MenuBar.propTypes = {
   menuItems: PropTypes.array,
