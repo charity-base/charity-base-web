@@ -30,7 +30,7 @@ const ScrollableContent = styled.div`
 
 const PageContent = styled(Layout.Content)`
   ${({ isMobile }) => isMobile ? `
-    padding-top: 50px;
+    margin-top: 50px;
     background-color #FFF;
   ` : `
     position: fixed;
@@ -69,10 +69,12 @@ const Sider = styled(Layout.Sider)`
   ${({ isMobile }) => isMobile ? `
     background-color #FFF;
     position: fixed;
-    top: 50px;
+    top: 0;
+    margin-top: 50px;
     bottom: 0;
     left: 0;
     z-index: 9;
+    overflow-y: scroll;
   ` : `
     background-color #FFF;
   `}
