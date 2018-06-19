@@ -48,7 +48,6 @@ const PageLayout = styled(Layout)`
     background: #FFF;
     border: 1px solid #DDD;
     border-radius: 5px;
-    overflow-y: scroll;
     position: relative;
     height: 100%;
   `}
