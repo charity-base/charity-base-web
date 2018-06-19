@@ -73,7 +73,6 @@ const Sider = styled(Layout.Sider)`
     bottom: 0;
     left: 0;
     z-index: 9;
-    overflow-y: scroll;
   ` : `
     background-color #FFF;
   `}
