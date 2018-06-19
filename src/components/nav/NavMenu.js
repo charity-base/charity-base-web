@@ -10,7 +10,7 @@ const internalNavs = [
 ]
 
 const externalNavs = [
-  { href: 'https://charitybase.uk/docs/v2.0.0', label: 'API Docs' },
+  { href: 'https://charity-base.github.io/charity-base-docs', label: 'API Docs' },
   { href: 'https://github.com/charity-base', label: 'GitHub' },
 ]
 
