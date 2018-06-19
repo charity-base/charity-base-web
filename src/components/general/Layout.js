@@ -5,12 +5,12 @@ import { Layout } from 'antd'
 
 const FixedHeader = styled.div`
   padding: 24px;
-  ${({ isMobile }) => !isMobile && `
+  ${({ isMobile, height }) => !isMobile && `
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: ${({ height }) => height ? `${height}px` : '150px'};
+    height: ${height || 150}px;
     background-color: #FFF;
     z-index: 999;
     border-width: 0 0 1px 0;
@@ -20,9 +20,10 @@ const FixedHeader = styled.div`
 `
 
 const ScrollableContent = styled.div`
-  padding: 0 24px 24px 24px;
-  ${({ isMobile }) => !isMobile && `
-    padding: ${({ paddingTop }) => paddingTop === undefined ? 150 : paddingTop}px 24px 24px 24px;
+  ${({ isMobile, paddingTop }) => isMobile ? `
+    padding: 0 24px 24px 24px;
+  ` : `
+    padding: ${paddingTop === undefined ? 150 : paddingTop}px 24px 24px 24px;
     height: 100%;
     overflow-y: scroll;
   `}
