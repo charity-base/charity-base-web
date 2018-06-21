@@ -19,15 +19,36 @@ const FixedHeader = styled.div`
   `}
 `
 
-const ScrollableContent = styled.div`
+const Scroll = styled.div`
+  overflow-y: scroll;
+  height: 100%;
+  padding: 24px;
+`
+
+const ScrollContainer = styled.div`
   ${({ isMobile, paddingTop }) => isMobile ? `
     padding: 0 24px 24px 24px;
   ` : `
-    padding: ${paddingTop === undefined ? 150 : paddingTop}px 24px 24px 24px;
+    position: relative;
+    box-sizing: border-box;
+    padding-top: ${paddingTop === undefined ? 150 : paddingTop}px;
     height: 100%;
-    overflow-y: scroll;
   `}
 `
+
+const ScrollableContent = props => (
+  props.isMobile ? (
+    <ScrollContainer {...props} />
+  ) : (
+    <ScrollContainer {...props}>
+      <Scroll>{props.children}</Scroll>
+    </ScrollContainer>
+  )
+)
+ScrollableContent.propTypes = {
+  isMobile: PropTypes.bool,
+  paddingTop: PropTypes.number,
+}
 
 const PageContent = styled(Layout.Content)`
   ${({ isMobile }) => isMobile ? `
