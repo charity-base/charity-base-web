@@ -2,6 +2,7 @@
   "name": "charity-base-web",
   "version": "0.2.0",
   "private": true,
+  "proxy": "https://charitybase.uk",
   "dependencies": {
     "antd": "~3.2.3",
     "numeral": "^2.0.6",
