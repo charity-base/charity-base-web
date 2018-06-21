@@ -13,9 +13,7 @@ const FixedHeader = styled.div`
     height: ${height || 150}px;
     background-color: #FFF;
     z-index: 999;
-    border-width: 0 0 1px 0;
-    border-style: solid;
-    border-color: #FAFAFA;
+    box-shadow: 0 0 1em;
   `}
 `
 
