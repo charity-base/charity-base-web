@@ -13,7 +13,7 @@ class App extends Component {
     const isMobile = innerWidth < 768
     return (
       <LocaleProvider locale={enGB}>
-        <Layout style={{ height: '100vh' }}>
+        <Layout>
           <Router isMobile={isMobile}/>
           <NavBar isMobile={isMobile} />
         </Layout>
