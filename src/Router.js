@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import qs from 'query-string'
 import { Charities } from './components/charities'
 import { Charity } from './components/charity'
-import { FAQ } from './components/faq'
+import { About } from './components/about'
 
 const Router = ({ isMobile }) => (
   <Switch>
@@ -14,8 +14,8 @@ const Router = ({ isMobile }) => (
     <Route path="/charities/:charityId" render={({ match, location }) => (
       <Charity isMobile={isMobile} charityId={match.params.charityId} view={qs.parse(location.search).view} />
     )} />
-    <Route exact path="/faq" render={() => (
-      <FAQ isMobile={isMobile} />
+    <Route exact path="/about" render={() => (
+      <About isMobile={isMobile} />
     )} />
     <Redirect to="/"/>
   </Switch>

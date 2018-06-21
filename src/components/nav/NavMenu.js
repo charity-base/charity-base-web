@@ -6,7 +6,7 @@ import { Menu, Divider } from 'antd'
 
 const internalNavs = [
   { to: '/', label: 'Charities', exact: true },
-  { to: '/faq', label: 'FAQ', exact: false },
+  { to: '/about', label: 'About', exact: false },
 ]
 
 const externalNavs = [

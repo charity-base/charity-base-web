@@ -54,7 +54,7 @@ const PageContent = styled(Layout.Content)`
     background-color #FFF;
   ` : `
     position: fixed;
-    top: 80px;
+    top: 70px;
     bottom: 20px;
     left: 50px;
     right: 50px;
@@ -67,7 +67,7 @@ const PageLayout = styled(Layout)`
   ${({ isMobile }) => !isMobile && `
     background: #FFF;
     border-radius: 5px;
-    padding: 2px;
+    padding: 5px;
     position: relative;
     height: 100%;
   `}
@@ -93,8 +93,10 @@ const Sider = styled(Layout.Sider)`
     bottom: 0;
     left: 0;
     z-index: 9;
+    border-right: solid rgba(0,0,0,0.1) 1px;
   ` : `
     background-color #FFF;
+    border-right: solid rgba(0,0,0,0.1) 1px;
   `}
 `
 

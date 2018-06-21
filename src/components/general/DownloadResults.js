@@ -34,7 +34,7 @@ class DownloadResults extends Component {
   }
   render() {
     return (
-      <div>
+      <span>
         <Modal
           title="Download Results"
           visible={this.state.isModalOpen}
@@ -63,15 +63,20 @@ class DownloadResults extends Component {
             <p>Creating file.  This could take a minute...</p>
           )}
         </Modal>
-        <Button icon='download' style={{ width: '100%' }} onClick={this.downloadResults}>
-          Download JSON
-        </Button>
-      </div>
+        {this.props.linkText ? (
+          <a onClick={this.downloadResults}>{this.props.linkText}</a>
+        ) : (
+          <Button icon='download' style={{ width: '100%' }} onClick={this.downloadResults}>
+            Download JSON
+          </Button>
+        )}
+      </span>
     )
   }
 }
 DownloadResults.propTypes = {
   queryString: PropTypes.string,
+  linkText: PropTypes.string,
 }
 
 export { DownloadResults }
