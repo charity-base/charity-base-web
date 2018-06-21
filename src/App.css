@@ -6,3 +6,10 @@
   top: 4px;
   left: 4px;
 }
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
