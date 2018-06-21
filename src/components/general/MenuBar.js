@@ -3,17 +3,23 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Menu, Icon } from 'antd'
 
+const Container = styled.div`
+  border-right: solid rgba(0,0,0,0.1) 1px;
+  height: 100%;
+`
+
 const MenuBar = ({ menuItems, selectedId, onSelect, renderHeader }) => (
-  <div>
+  <Container>
     {renderHeader && renderHeader()}
     <Menu
       onClick={e => onSelect(e.key)}
       selectedKeys={[selectedId]}
       mode="inline"
+      style={{ borderStyle: 'none' }}
     >
       {menuItems.map(({ id, text, icon }) => <Menu.Item key={id}><Icon type={icon} />{text}</Menu.Item>)}
     </Menu>
-  </div>
+  </Container>
 )
 MenuBar.propTypes = {
   menuItems: PropTypes.array,
@@ -24,9 +30,6 @@ MenuBar.propTypes = {
 
 const MenuBarHeader = styled.div`
   padding: 20px;
-  border-width: 0 1px 0 0;
-  border-style: solid;
-  border-color: #EEE;
   height: 200px;
 `
 
