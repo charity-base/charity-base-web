@@ -66,8 +66,8 @@ const PageContent = styled(Layout.Content)`
 const PageLayout = styled(Layout)`
   ${({ isMobile }) => !isMobile && `
     background: #FFF;
-    border: 1px solid #DDD;
     border-radius: 5px;
+    padding: 2px;
     position: relative;
     height: 100%;
   `}
