@@ -9,6 +9,8 @@ const { Header, Sider } = Layout
 
 const AppHeader = styled(Header)`
   position: fixed;
+  top: 0;
+  left: 0;
   z-index: 1;
   width: 100%;
   height: ${({ isMobile }) => isMobile ? '50px' : '64px'};
