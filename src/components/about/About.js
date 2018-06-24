@@ -27,15 +27,25 @@ const StyledAnchor = styled(Anchor)`
       content: none;
     }
   }
-`
-
-const StyledLink = styled(Anchor.Link)`
+  .ant-anchor-link {
+    padding-bottom: 20px;
+    a.ant-anchor-link-title {
+      :hover {
+        color: #EC407A;
+      }
+    }
+  }
+  .ant-anchor-link-active {
+    padding-bottom: 20px;
+    a.ant-anchor-link-title {
+      color: #EC407A;
+    }
+  }
 `
 
 class About extends Component {
   render() {
-    const hash = window.location.hash.substr(1)
-    console.log(hash)
+    const hash = window.location.toString().split('#')[1]
     const { isMobile } = this.props
     return (
       <Page isMobile={isMobile}>
@@ -49,7 +59,7 @@ class About extends Component {
             <Anchor.Link href="#who-uses-it" title="Who uses it?" />
             <Anchor.Link href="#api" title="What's an API?" />
             <Anchor.Link href="#download" title="Can I Download the Data?" />
-            <StyledLink  href="#other-countries" title="What about other countries?" />
+            <Anchor.Link  href="#other-countries" title="What about other countries?" />
             <Anchor.Link href="#who-makes-it" title="Who's behind it?" />
             <Anchor.Link href="#contact" title="Contact" />
           </StyledAnchor>
@@ -102,7 +112,7 @@ class About extends Component {
             </Question>
             <Answer>
               <p>We hope to add Scottish and Northern Irish charities to the register soon, but don't have a set deadline.</p>
-              <p>Get in touch if you'd like to see these, or any other countries, in our database.</p>
+              <p>Get in touch if you'd like to see these or any other countries in our database.</p>
             </Answer>
 
             <Question id="who-makes-it" hash={hash}>
@@ -115,7 +125,7 @@ class About extends Component {
                   <p>It was initiated in 2016 by <a rel='noopener noreferrer' target='_blank' href='https://twitter.com/dan_kwiat'>Dan Kwiatkowski</a> - a freelance data scientist and fellow of Newspeak House.</p>
                 </Col>
                 <Col xxl={3} xl={5} lg={6} md={8} sm={12} xs={24} style={{ padding: '20px' }}>
-                  <a rel='noopener noreferrer' target='_blank' href='https://twitter.com/dan_kwiat'><img style={{ width: '80px', height: '80px', borderRadius: '80px', }} alt='' src='https://pbs.twimg.com/profile_images/965270037333446658/VlFfhIgy_400x400.jpg' /></a>
+                  <a rel='noopener noreferrer' target='_blank' href='https://twitter.com/dan_kwiat'><img style={{ width: '80px', height: '80px', borderRadius: '80px', }} alt='' src='https://avatars.io/twitter/dan_kwiat' /></a>
                 </Col>
               </Row>
             </Answer>
