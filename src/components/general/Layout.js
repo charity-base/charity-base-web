@@ -100,10 +100,10 @@ const Sider = styled(Layout.Sider)`
   `}
 `
 
-const ResponsiveSider = ({ isMobile, children }) => (
+const ResponsiveSider = ({ isMobile, width, children }) => (
   <Sider
     isMobile={isMobile}
-    width={200}
+    width={width || 230}
     theme='light'
     breakpoint='md'
     collapsedWidth={0}
@@ -113,6 +113,7 @@ const ResponsiveSider = ({ isMobile, children }) => (
 )
 Page.propTypes = {
   isMobile: PropTypes.bool,
+  width: PropTypes.number,
 }
 
 export { FixedHeader, ScrollableContent, Page, ResponsiveSider }
