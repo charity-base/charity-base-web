@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import numeral from 'numeral'
 import { Divider } from 'antd'
 import { DownloadResults } from '../general/DownloadResults'
@@ -10,10 +9,6 @@ import { Filters } from './filters'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { apiEndpoint } from '../../lib/constants'
 
-const SideBarContainer = styled.div`
-  border-right: solid rgba(0,0,0,0.1) 1px;
-  height: 100%;
-`
 
 class ResultsCount extends Component {
   state = {
@@ -50,7 +45,7 @@ ResultsCount.propTypes = {
 }
 
 const FilterBar = ({ queryString }) => (
-  <SideBarContainer>
+  <div>
     <MenuBarHeader>
       <Filters queryString={queryString} />
       <Divider />
@@ -60,7 +55,7 @@ const FilterBar = ({ queryString }) => (
       <div style={{ marginTop: '5px' }}><CopyUrl /></div>
       <div style={{ marginTop: '5px' }}><DownloadResults queryString={queryString}/></div>
     </MenuBarHeader>
-  </SideBarContainer>
+  </div>
 )
 FilterBar.propTypes = {
   queryString: PropTypes.string,

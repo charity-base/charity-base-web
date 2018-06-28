@@ -8,9 +8,7 @@ import { CharityInfo } from './CharityInfo'
 import { CopyUrl } from '../general/CopyUrl'
 import { DownloadResults } from '../general/DownloadResults'
 import { apiEndpoint } from '../../lib/constants'
-import { FixedHeader, ScrollableContent } from '../general/Layout'
-
-const { Content } = Layout
+import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
 
 const CharityHeader = styled.div`
   font-size: 28px;
@@ -63,10 +61,10 @@ class Charity extends Component {
   }
   render() {
     const { isLoading, charity } = this.state
-    const { charityId, view } = this.props
+    const { charityId, view, isMobile } = this.props
     return (
-      <Content style={{ position: 'fixed', top: '80px', bottom: '20px', left: '50px', right: '50px', margin: 0, padding: 0 }}>
-        <Layout style={{ background: '#FFF', border: '1px solid #DDD', borderRadius: '5px', overflowY: 'scroll', position: 'relative', height: '100%' }}>
+      <Page isMobile={isMobile}>
+        <ResponsiveSider isMobile={isMobile}>
           <MenuBar
             menuItems={menuItems}
             selectedId={view}
@@ -88,33 +86,33 @@ class Charity extends Component {
               </MenuBarHeader>
             )}
           />
-          <Content style={{ position: 'relative' }}>
-            {isLoading && <Card loading />}
-            {!isLoading && charity && (
-              <FixedHeader>
-                <CharityHeader>
-                  {charity.name}
-                  {charity.isWelsh && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/5/59/Flag_of_Wales_2.svg" />}
-                  {charity.isSchool && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Mortarboard.svg" />}
-                </CharityHeader>
-                {charity.alternativeNames.filter(x => x !== charity.name).length > 0 && (
-                  <CharitySubheader>
-                    Working names:  {charity.alternativeNames.filter(x => x !== charity.name).map((x, i) => <span key={i}>"{x}" <Divider type="vertical" /> </span>)}
-                  </CharitySubheader>
-                )}
-              </FixedHeader>
-            )}
-            {!isLoading && charity && (
-              <ScrollableContent>
-                <CharityInfo charity={charity} view={view} onViewSelect={this.onViewSelect} goBack={this.goBack} />
-              </ScrollableContent>
-            )}
-            {!isLoading && !charity && (
-              'No charity found'
-            )}
-          </Content>
-        </Layout>
-      </Content>
+        </ResponsiveSider>
+        <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF' }}>
+          {isLoading && <Card loading />}
+          {!isLoading && charity && (
+            <FixedHeader isMobile={isMobile}>
+              <CharityHeader>
+                {charity.name}
+                {charity.isWelsh && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/5/59/Flag_of_Wales_2.svg" />}
+                {charity.isSchool && <SmallIcon src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Mortarboard.svg" />}
+              </CharityHeader>
+              {charity.alternativeNames.filter(x => x !== charity.name).length > 0 && (
+                <CharitySubheader>
+                  Working names:  {charity.alternativeNames.filter(x => x !== charity.name).map((x, i) => <span key={i}>"{x}" <Divider type="vertical" /> </span>)}
+                </CharitySubheader>
+              )}
+            </FixedHeader>
+          )}
+          {!isLoading && charity && (
+            <ScrollableContent isMobile={isMobile}>
+              <CharityInfo charity={charity} view={view} onViewSelect={this.onViewSelect} goBack={this.goBack} />
+            </ScrollableContent>
+          )}
+          {!isLoading && !charity && (
+            'No charity found'
+          )}
+        </Layout.Content>
+      </Page>
     )
   }
 }
@@ -124,6 +122,7 @@ Charity.contextTypes = {
 Charity.propTypes = {
   charityId: PropTypes.string,
   view: PropTypes.string,
+  isMobile: PropTypes.bool,
 }
 Charity.defaultProps = {
   view: "overview",
