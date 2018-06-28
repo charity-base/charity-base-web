@@ -77,9 +77,9 @@ class About extends Component {
               Doesn't that already exist?
             </Question>
             <Answer>
-              <p>The Charity Commission for England and Wales have four online services for accessing their data but none of them are comprehensive: <a rel='noopener noreferrer' target='_blank' href='http://apps.charitycommission.gov.uk/showcharity/registerofcharities/RegisterHomePage.aspx'>original website</a>, <a rel='noopener noreferrer' target='_blank' href='http://beta.charitycommission.gov.uk'>beta website</a>, <a rel='noopener noreferrer' target='_blank' href='http://data.charitycommission.gov.uk/'>Microsoft .bcp files</a> & <a rel='noopener noreferrer' target='_blank' href='http://apps.charitycommission.gov.uk/Showcharity/API/APIHome.aspx'>SOAP API</a>.</p>
+              <p>The Charity Commission for England and Wales have four online services for accessing their data but none of them are comprehensive: <a rel='noopener noreferrer' target='_blank' href='http://apps.charitycommission.gov.uk/showcharity/registerofcharities/RegisterHomePage.aspx'>original website</a>, <a rel='noopener noreferrer' target='_blank' href='http://beta.charitycommission.gov.uk'>beta website</a>, <a rel='noopener noreferrer' target='_blank' href='http://data.charitycommission.gov.uk/'>file downloads</a> & <a rel='noopener noreferrer' target='_blank' href='http://apps.charitycommission.gov.uk/Showcharity/API/APIHome.aspx'>SOAP API</a>.</p>
               <p>CharityBase is an unofficial project to clean up, aggregate and supplement the data they publish and make it accessible to every kind of user.</p>
-              <p>Several other unofficial projects exist including <a rel='noopener noreferrer' target='_blank' href='https://findthatcharity.uk'>find that charity</a> and <a rel='noopener noreferrer' target='_blank' href='https://olib.uk/charity'>CharityData</a>.</p>
+              <p>Several other unofficial projects exist including <a rel='noopener noreferrer' target='_blank' href='https://findthatcharity.uk'>Find that charity</a> and <a rel='noopener noreferrer' target='_blank' href='https://olib.uk/charity'>CharityData</a>.</p>
             </Answer>
 
             <Question id="who-uses-it" hash={hash}>
@@ -89,6 +89,7 @@ class About extends Component {
               <p><strong>Researchers</strong> at universities and non-profits use the raw data to analyse the charity sector and spot trends.</p>
               <p><strong>Developers</strong> and service designers use the API to help build services for and about charities.</p>
               <p><strong>Donors</strong>, grantmakers and philanthropists use the web platform to look up charities and carry out due diligence.</p>
+              <p>If CharityBase is useful to you, please let us know what you’re using it for! And feel free to get in touch with any questions, comments or feedback: <strong>dan@charitybase.uk</strong></p>
             </Answer>
 
             <Question id="api" hash={hash}>
@@ -111,8 +112,8 @@ class About extends Component {
               What About Other Countries?
             </Question>
             <Answer>
-              <p>We hope to add Scottish and Northern Irish charities to the register soon, but don't have a set deadline.</p>
-              <p>Get in touch if you'd like to see these or any other countries in our database.</p>
+              <p>We hope to add Scottish and Northern Irish charities to the register soon but don't have a set deadline.</p>
+              <p>Get in touch if you'd like to see these or any other countries in our database: <strong>dan@charitybase.uk</strong></p>
             </Answer>
 
             <Question id="who-makes-it" hash={hash}>
@@ -121,8 +122,8 @@ class About extends Component {
             <Answer>
               <Row align='justify' type='flex'>
                 <Col xxl={21} xl={19} lg={18} md={16} sm={12} xs={24} >
-                  <p>All the CharityBase code is open source at <a rel='noopener noreferrer' target='_blank' href='https://github.com/charity-base'>github.com/charity-base</a> and continuously improving thanks to a growing community of charity data nerds.</p>
-                  <p>It was initiated in 2016 by <a rel='noopener noreferrer' target='_blank' href='https://twitter.com/dan_kwiat'>Dan Kwiatkowski</a> - a freelance data scientist and fellow of Newspeak House.</p>
+                  <p>All the CharityBase code is open source at <a rel='noopener noreferrer' target='_blank' href='https://github.com/charity-base'>github.com/charity-base</a> and continuously improving thanks to a growing community of charity data enthusiasts.</p>
+                  <p>It was initiated in 2016 by <a rel='noopener noreferrer' target='_blank' href='https://twitter.com/dan_kwiat'>Dan Kwiatkowski</a> - a freelance data scientist and fellow of <a rel='noopener noreferrer' target='_blank' href='https://nwspk.com'>Newspeak House</a>.</p>
                 </Col>
                 <Col xxl={3} xl={5} lg={6} md={8} sm={12} xs={24} style={{ padding: '20px' }}>
                   <a rel='noopener noreferrer' target='_blank' href='https://twitter.com/dan_kwiat'><img style={{ width: '80px', height: '80px', borderRadius: '80px', }} alt='' src='https://avatars.io/twitter/dan_kwiat' /></a>
@@ -135,7 +136,7 @@ class About extends Component {
             </Question>
             <Answer>
               <p>If you encounter any problems or have a feature request, please <a rel='noopener noreferrer' target='_blank' href='https://github.com/charity-base/charity-base-web/issues/new'>add an issue</a>.</p>
-              <p>For any other feedback or questions, email <strong>admin@charitybase.uk</strong></p>
+              <p>For any other feedback or questions, email <strong>dan@charitybase.uk</strong></p>
             </Answer>
 
 
