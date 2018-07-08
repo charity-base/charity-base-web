@@ -94,6 +94,7 @@ const Sider = styled(Layout.Sider)`
     left: 0;
     z-index: 9;
     border-right: solid rgba(0,0,0,0.1) 1px;
+    overflow-y: scroll;
   ` : `
     background-color #FFF;
     border-right: solid rgba(0,0,0,0.1) 1px;
