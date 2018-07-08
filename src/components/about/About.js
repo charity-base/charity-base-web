@@ -62,6 +62,7 @@ class About extends Component {
             <Anchor.Link  href="#other-countries" title="What about other countries?" />
             <Anchor.Link href="#who-makes-it" title="Who's behind it?" />
             <Anchor.Link href="#contact" title="Contact" />
+            <Anchor.Link href="#licence" title="Licence" />
           </StyledAnchor>
         </ResponsiveSider>
         <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF' }}>
@@ -139,8 +140,16 @@ class About extends Component {
               <p>For any other feedback or questions, email <strong>dan@charitybase.uk</strong></p>
             </Answer>
 
-
-
+            <Question id='licence' hash={hash}>
+              Licence
+            </Question>
+            <Answer>
+              <p>The bulk of the database comes from <a rel='noopener noreferrer' target='_blank' href='http://data.charitycommission.gov.uk/'>Charity Commission data files</a> shared under an <a rel='noopener noreferrer' target='_blank' href='https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/'>Open Government Licence</a>.</p>
+              <p>The grant funding data comes from <a rel='noopener noreferrer' target='_blank' href='http://grantnav.threesixtygiving.org/datasets/'>GrantNav</a>, a <a rel='noopener noreferrer' target='_blank' href='http://www.threesixtygiving.org/'>360Giving</a> application released under the terms of the <a rel='noopener noreferrer' target='_blank' href='https://creativecommons.org/licenses/by-sa/4.0/'>Creative Commons Attribution Sharealike licence (CC-BY-SA)</a>.  Here's <a rel='noopener noreferrer' target='_blank' href='http://grantnav.threesixtygiving.org/datasets/#copyright'>copyright and attribution</a> information for the original datasets.</p>
+              <p>Contains OS data © Crown copyright and database right 2018.</p>
+              <p>Contains Royal Mail data © Royal Mail copyright and database right 2018.</p>
+              <p>Contains National Statistics data © Crown copyright and database right 2018.</p>
+            </Answer>
           </ScrollableContent>
         </Layout.Content>
       </Page>
