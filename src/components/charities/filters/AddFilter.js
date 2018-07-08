@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Tag, Icon, Dropdown, Menu, Button } from 'antd'
-import { areasOfOperation, causes, beneficiaries, operations } from '../../../lib/filterValues'
+import { areasOfOperation, causes, beneficiaries, operations, funders } from '../../../lib/filterValues'
 import { CheckboxModal } from './CheckboxModal'
 import { NumberRangeModal } from './NumberRangeModal'
 import { LocationModal } from './LocationModal'
@@ -49,6 +49,7 @@ class AddFilter extends Component {
   menuItems = () => ([
     { key: '1', icon: 'environment-o', label: 'Location', modalConfig: { type: 'location', name: 'Location Filter', fieldName: 'addressWithin' }},
     { key: '6', icon: 'bank', label: 'Income', modalConfig: { type: 'numberRange', name: 'Income Filter', fieldName: 'incomeRange' }},
+    { key: '7', icon: 'gift', label: 'Funder', modalConfig: { type: 'multi-select', name: 'Funders Filter', fieldName: 'funders', options: funders.map(x => ({ ...x, isChecked: false })) }},
     { key: '2', icon: 'global', label: 'Regions', modalConfig: { type: 'multi-select', name: 'Regions of Operation Filter', fieldName: 'areasOfOperation.id', options: areasOfOperation.map(x => ({ ...x, isChecked: false })) }},
     { key: '3', icon: 'medicine-box', label: 'Causes', modalConfig: { type: 'checkbox', name: 'Causes Filter', fieldName: 'causes.id', options: causes.map(x => ({ ...x, isChecked: false })) }},
     { key: '4', icon: 'team', label: 'Beneficiaries', modalConfig: { type: 'checkbox', name: 'Beneficiaries Filter', fieldName: 'beneficiaries.id', options: beneficiaries.map(x => ({ ...x, isChecked: false })) }},
@@ -62,7 +63,7 @@ class AddFilter extends Component {
     <Menu onClick={this.onMenuClick}>
       {this.menuItems().map(({ key, icon, label }) => (
         <Menu.Item key={key} style={{ paddingTop: '7px', paddingBottom: '7px' }}>
-          <Icon type={icon} style={{ marginRight: '5px' }}/> {label}
+          <Icon type={icon} style={{ marginRight: '5px' }}/> {label} {label === 'Funder' && <span style={{ marginLeft: '10px', fontSize: '12px', color: '#EC407A' }}>new!</span>}
         </Menu.Item>
       ))}
     </Menu>

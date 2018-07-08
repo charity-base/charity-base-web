@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Modal, Select } from 'antd'
+import { InfoText } from '../../general/InfoText'
 
 class MultiSelectModal extends Component {
   state = {
@@ -55,6 +56,11 @@ class MultiSelectModal extends Component {
             </Select.Option>
           ))}
         </Select>
+        {this.state.name === 'Funders Filter' && (
+          <InfoText>
+            Uses data from <a rel='noopener noreferrer' target='_blank' href='http://grantnav.threesixtygiving.org/datasets/'>GrantNav</a>, a <a rel='noopener noreferrer' target='_blank' href='http://www.threesixtygiving.org/'>360Giving</a> application released under the terms of the <a rel='noopener noreferrer' target='_blank' href='https://creativecommons.org/licenses/by-sa/4.0/'>Creative Commons Attribution Sharealike license (CC-BY-SA)</a>
+          </InfoText>
+        )}
       </Modal>
     )
   }
