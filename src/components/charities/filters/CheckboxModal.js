@@ -36,13 +36,13 @@ class CheckboxModal extends Component {
         onCancel={this.props.onCancel}
         okText='Filter'
       >
-        {this.state.options && this.state.options.map(({ name, isChecked }, i) => (
+        {this.state.options && this.state.options.map(({ altName, isChecked }, i) => (
           <div key={i}>
             <Checkbox
               checked={isChecked}
               onChange={e => this.changeCheckbox(i, e.target.checked)}
             >
-              {name}
+              {altName}
             </Checkbox>
           </div>
         ))}

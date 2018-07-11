@@ -2,145 +2,179 @@
 const causes = [
   {
     "id" : 102,
-    "name" : "Education/training"
+    "name" : "Education/training",
+    "altName" : "Education",
   },
   {
     "id" : 105,
-    "name" : "The prevention or relief of poverty"
+    "name" : "The prevention or relief of poverty",
+    "altName" : "Poverty",
   },
   {
     "id" : 101,
-    "name" : "General charitable purposes"
+    "name" : "General charitable purposes",
+    "altName" : "General",
   },
   {
     "id" : 103,
-    "name" : "The advancement of health or saving of lives"
+    "name" : "The advancement of health or saving of lives",
+    "altName" : "Health",
   },
   {
     "id" : 104,
-    "name" : "Disability"
+    "name" : "Disability",
+    "altName" : "Disability",
   },
   {
     "id" : 108,
-    "name" : "Religious activities"
+    "name" : "Religious activities",
+    "altName" : "Religion",
   },
   {
     "id" : 110,
-    "name" : "Amateur sport"
+    "name" : "Amateur sport",
+    "altName" : "Sport",
   },
   {
     "id" : 109,
-    "name" : "Arts/culture/heritage/science"
+    "name" : "Arts/culture/heritage/science",
+    "altName" : "Culture",
   },
   {
     "id" : 107,
-    "name" : "Accommodation/housing"
+    "name" : "Accommodation/housing",
+    "altName" : "Housing",
   },
   {
     "id" : 113,
-    "name" : "Economic/community development/employment"
+    "name" : "Economic/community development/employment",
+    "altName" : "Community",
   },
   {
     "id" : 112,
-    "name" : "Environment/conservation/heritage"
+    "name" : "Environment/conservation/heritage",
+    "altName" : "Environment",
   },
   {
     "id" : 115,
-    "name" : "Human rights/religious or racial harmony/equality or diversity"
+    "name" : "Human rights/religious or racial harmony/equality or diversity",
+    "altName" : "Human Rights",
   },
   {
     "id" : 116,
-    "name" : "Recreation"
+    "name" : "Recreation",
+    "altName" : "Recreation",
   },
   {
     "id" : 111,
-    "name" : "Animals"
+    "name" : "Animals",
+    "altName" : "Animals",
   },
   {
     "id" : 117,
-    "name" : "Other charitable purposes"
+    "name" : "Other charitable purposes",
+    "altName" : "Other",
   },
   {
     "id" : 106,
-    "name" : "Overseas aid/famine relief"
+    "name" : "Overseas aid/famine relief",
+    "altName" : "Aid",
   },
   {
     "id" : 114,
-    "name" : "Armed forces/emergency service efficiency"
+    "name" : "Armed forces/emergency service efficiency",
+    "altName" : "Armed Forces",
   }
 ]
 
 const beneficiaries = [
   {
     "id" : 201,
-    "name" : "Children/young people"
+    "name" : "Children/young people",
+    "altName" : "Young",
   },
   {
     "id" : 202,
-    "name" : "Elderly/old people"
+    "name" : "Elderly/old people",
+    "altName" : "Old",
   },
   {
     "id" : 203,
-    "name" : "People with disabilities"
+    "name" : "People with disabilities",
+    "altName" : "Disabled",
   },
   {
     "id" : 205,
-    "name" : "Other charities or voluntary bodies"
+    "name" : "Other charities or voluntary bodies",
+    "altName" : "Other Charities",
   },
   {
     "id" : 206,
-    "name" : "Other defined groups"
+    "name" : "Other defined groups",
+    "altName" : "Other",
   },
   {
     "id" : 207,
-    "name" : "The general public/mankind"
+    "name" : "The general public/mankind",
+    "altName" : "General Public",
   },
   {
     "id" : 204,
-    "name" : "People of a particular ethnic or racial origin"
+    "name" : "People of a particular ethnic or racial origin",
+    "altName" : "Particular Ethnicity",
   }
 ]
 
 const operations = [
   {
     "id" : 301,
-    "name" : "Makes grants to individuals"
+    "name" : "Makes grants to individuals",
+    "altName" : "Grants to Individuals",
   },
   {
     "id" : 302,
-    "name" : "Makes grants to organisations"
+    "name" : "Makes grants to organisations",
+    "altName" : "Grants to Organisations",
   },
   {
     "id" : 303,
-    "name" : "Provides other finance"
+    "name" : "Provides other finance",
+    "altName" : "Other Financial",
   },
   {
     "id" : 307,
-    "name" : "Provides advocacy/advice/information"
+    "name" : "Provides advocacy/advice/information",
+    "altName" : "Advocacy",
   },
   {
     "id" : 308,
-    "name" : "Sponsors or undertakes research"
+    "name" : "Sponsors or undertakes research",
+    "altName" : "Research",
   },
   {
     "id" : 305,
-    "name" : "Provides buildings/facilities/open space"
+    "name" : "Provides buildings/facilities/open space",
+    "altName" : "Facilities",
   },
   {
     "id" : 306,
-    "name" : "Provides services"
+    "name" : "Provides services",
+    "altName" : "Services",
   },
   {
     "id" : 304,
-    "name" : "Provides human resources"
+    "name" : "Provides human resources",
+    "altName" : "Human Resources",
   },
   {
     "id" : 309,
-    "name" : "Acts as an umbrella or resource body"
+    "name" : "Acts as an umbrella or resource body",
+    "altName" : "Acts as Umbrella Body",
   },
   {
     "id" : 310,
-    "name" : "Other charitable activities"
+    "name" : "Other charitable activities",
+    "altName" : "Other",
   }
 ]
 
