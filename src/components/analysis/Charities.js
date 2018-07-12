@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { FilterBar } from './FilterBar'
 import { CharitiesSearch } from './CharitiesSearch'
-import { CharitiesSort } from './CharitiesSort'
 import { CharitiesList } from './CharitiesList'
 import { Layout } from 'antd'
 import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
+import { DateSlider } from './filters/DateSlider'
 
 class Analysis extends Component {
   render() {
@@ -18,7 +18,8 @@ class Analysis extends Component {
         <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF' }}>
           <FixedHeader isMobile={isMobile}>
             <CharitiesSearch query={query} />
-            <CharitiesSort query={query} />
+            <DateSlider query={query} />
+
           </FixedHeader>
           <ScrollableContent isMobile={isMobile}>
             <CharitiesList queryString={queryString} />
