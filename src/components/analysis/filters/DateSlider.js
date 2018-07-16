@@ -7,7 +7,18 @@ import { Row, Col, Slider } from 'antd'
 class DateSlider extends Component {
   state = {
     numberMonths: 1 + 12*((new Date()).getFullYear() - this.props.sinceYear) + (new Date()).getMonth() - (this.props.sinceMonth-1),
-    marks: null,
+    value: null,
+  }
+  componentDidMount() {
+    const grantDateRange = this.props.query.grantDateRange && this.props.query.grantDateRange.split(',')
+    if (grantDateRange && grantDateRange.length === 2) {
+      const intRange = grantDateRange.map(this.intFromDateString)
+      this.onAfterChange(intRange)
+    }
+  }
+  intFromDateString = dateString => {
+    const d = new Date(dateString)
+    return 12*(d.getFullYear() - this.props.sinceYear) + d.getMonth() - (this.props.sinceMonth-1)
   }
   stringDate = (d, readable) => {
     return readable ? (
@@ -20,7 +31,7 @@ class DateSlider extends Component {
     return this.stringDate(new Date(this.props.sinceYear, this.props.sinceMonth - 1 + monthsSince, 1), readable)
   }
   onAfterChange = ([startInt, endInt]) => {
-    this.setState({ marks: this.getMarks([startInt, endInt])})
+    this.setState({ value: [startInt, endInt] })
     const startDateString = this.dateFromMonths(startInt, false)
     const endDateString = this.dateFromMonths(endInt, false)
     const newQuery = { ...this.props.query, grantDateRange: `${startDateString},${endDateString}` || undefined }
@@ -42,10 +53,11 @@ class DateSlider extends Component {
             min={0}
             max={this.state.numberMonths}
             step={1}
-            defaultValue={[0, this.state.numberMonths]}
+            value={this.state.value || [0, this.state.numberMonths]}
+            onChange={value => this.setState({ value })}
             onAfterChange={this.onAfterChange}
-            tipFormatter={x => this.dateFromMonths(x, true)}
-            marks={this.state.marks || this.getMarks([0, this.state.numberMonths])}
+            tipFormatter={null}
+            marks={this.getMarks(this.state.value || [0, this.state.numberMonths])}
           />
         </Col>
       </Row>
