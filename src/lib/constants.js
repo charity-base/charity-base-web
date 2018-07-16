@@ -1,3 +1,5 @@
 const apiEndpoint = '/api/v2.2.0'
 
-export { apiEndpoint }
+const googleApiKey = 'my-google-api-key'
+
+export { apiEndpoint, googleApiKey }
