@@ -8,9 +8,8 @@ import qs from 'query-string'
 import { Menu, Button } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { apiEndpoint, googleApiKey } from '../../lib/constants'
+import { zoomToPrecision, esBoundsToString, gmapsBoundsToString, getCenterZoom, geoHashToLatLon } from '../../lib/mapHelpers'
 import { causes, operations, beneficiaries, funders } from '../../lib/filterValues'
-import { fitBounds } from 'google-map-react/utils'
-import geohash from 'ngeohash'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Treemap } from 'recharts'
 
 const formatMoney = x => numeral(x).format('($0a)').replace('$', '£')
@@ -83,8 +82,9 @@ class CharityMap extends Component {
           center={this.state.center}
           options={{}}
           onChange={({ bounds, zoom, center }) => {
-            const geoBoundsString = `${bounds.nw.lat},${bounds.nw.lng},${bounds.se.lat},${bounds.se.lng}`
-            onBoundsChange(geoBoundsString)
+            const geoBoundsString = gmapsBoundsToString(bounds)
+            const precision = zoomToPrecision(zoom)
+            onBoundsChange(geoBoundsString, precision)
             this.setState({ zoom, center, geoBoundsString })
           }}
           onZoomAnimationStart={() => this.setState({ zooming: true })}
@@ -92,7 +92,7 @@ class CharityMap extends Component {
         >
           {!this.state.zooming && data.sort((a,b) => a.doc_count - b.doc_count).map(x => {
             const size = maxCount > minCount ? (x.doc_count - minCount)/(maxCount - minCount) : 1
-            const { latitude, longitude } = geohash.decode(x.key)
+            const { latitude, longitude } = geoHashToLatLon(x.key)
             return <CharityMarker
               key={x.key}
               count={x.doc_count}
@@ -200,12 +200,12 @@ class CharitiesList extends Component {
   }
   chartContainer = React.createRef()
   componentDidMount() {
-    this.refreshSearch(this.props.queryString, null, true)
+    this.refreshSearch(this.props.queryString, null, null, true)
     this.setChartSize()
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.queryString !== nextProps.queryString) {
-      this.refreshSearch(nextProps.queryString, null, true)
+      this.refreshSearch(nextProps.queryString, null, null, true)
     }
   }
   setChartSize = () => {
@@ -214,24 +214,23 @@ class CharitiesList extends Component {
       height: 400,
     })
   }
-  getGeoBoundsString = geoBoundsObj => geoBoundsObj ? `${geoBoundsObj.top_left.lat},${geoBoundsObj.top_left.lon},${geoBoundsObj.bottom_right.lat},${geoBoundsObj.bottom_right.lon}` : ''
-  refreshSearch = (queryString, geoBounds, isFreshSearch) => {
+  refreshSearch = (queryString, geoBounds, geoPrecision, isFreshSearch) => {
     this.setState({
       loading: true,
       data: [],
     })
-    this.getData(queryString, geoBounds, res => {
+    this.getData(queryString, geoBounds, geoPrecision, res => {
       this.setState({
         data: res.aggregations,
         loading: false,
         isFreshSearch,
-        geoBounds: this.getGeoBoundsString(res.aggregations.addressLocation.map_zoom.bounds),
+        geoBounds: esBoundsToString(res.aggregations.addressLocation.map_zoom.bounds),
       })
     })
   }
-  getData = (queryString, geoBounds, callback) => {
+  getData = (queryString, geoBounds, geoPrecision, callback) => {
     const qs = queryString ? queryString.split('?')[1] + '&' : ''
-    const url = `${apiEndpoint}/aggregate-charities?${qs}hasGrant=true&geoBounds=${geoBounds || ''}`
+    const url = `${apiEndpoint}/aggregate-charities?${qs}hasGrant=true&aggGeoBounds=${geoBounds || ''}&aggGeoPrecision=${geoPrecision || ''}`
     fetchJSON(url)
     .then(res => callback(res))
     .catch(err => console.log(err))
@@ -240,28 +239,10 @@ class CharitiesList extends Component {
     const newQuery = { ...this.props.query, [key]: value || undefined }
     this.context.router.history.push(`?${qs.stringify(newQuery)}`)
   }
-  onBoundsChange = geoBoundsString => {
+  onBoundsChange = (geoBoundsString, geoPrecision) => {
     if (geoBoundsString !== this.state.geoBounds) {
-      this.refreshSearch(this.props.queryString, geoBoundsString, false)
+      this.refreshSearch(this.props.queryString, geoBoundsString, geoPrecision, false)
     }
-  }
-  getCenterZoom = boundingBox => {
-    if (!boundingBox) return {}
-    const { top_left, bottom_right } = boundingBox
-    if (!top_left || !bottom_right) return {}
-    const bounds = {
-      nw: {
-        lat: top_left.lat,
-        lng: top_left.lon,
-      },
-      se: {
-        lat: bottom_right.lat,
-        lng: bottom_right.lon,
-      }
-    }
-    const { width, height } = this.state
-    const { center, zoom } = fitBounds(bounds, { width, height })
-    return { center, zoom }
   }
   render() {
     const { loading, data } = this.state
@@ -340,7 +321,7 @@ class CharitiesList extends Component {
             onBoundsFilter={boundsString => this.onQueryUpdate('addressWithin', boundsString)}
             isGeoFilterApplied={this.props.query && this.props.query.addressWithin ? true : false}
             isFreshSearch={this.state.isFreshSearch}
-            {...this.getCenterZoom(data.addressLocation ? data.addressLocation.map_zoom.bounds : {})}
+            {...getCenterZoom(data.addressLocation ? data.addressLocation.map_zoom.bounds : {}, this.state)}
             size={{ width: this.state.width, height: this.state.height, }}
             loading={loading}
          />
