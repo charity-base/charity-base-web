@@ -74,7 +74,7 @@ class CharityMap extends Component {
     const minCount = Math.min(...data.map(x => x.doc_count))
     const maxCount = Math.max(...data.map(x => x.doc_count))
     return (
-      <div style={{ ...size, opacity: loading || this.state.zooming ? 0.5 : 1 }}>
+      <div style={{ ...size, position: 'relative', opacity: loading || this.state.zooming ? 0.5 : 1 }}>
         <GoogleMapReact
           bootstrapURLKeys={{
             key: googleApiKey,
@@ -109,14 +109,16 @@ class CharityMap extends Component {
         <Button
           onClick={() => onBoundsFilter(this.state.geoBoundsString)}
           disabled={this.state.zooming}
+          style={{ position: 'absolute', top: '10px', right: 5 + size.width/2 }}
         >
           Filter this area
         </Button>
         <Button
           onClick={() => onBoundsFilter(undefined)}
           disabled={this.state.zooming || !isGeoFilterApplied}
+          style={{ position: 'absolute', top: '10px', left: 5 + size.width/2 }}
         >
-          Clear geo filter
+          Reset map filter
         </Button>
       </div>
     )
@@ -193,14 +195,24 @@ class CharitiesList extends Component {
     data: [],
     geoBounds: null,
     isFreshSearch: false,
+    width: null,
+    height: null,
   }
+  chartContainer = React.createRef()
   componentDidMount() {
     this.refreshSearch(this.props.queryString, null, true)
+    this.setChartSize()
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.queryString !== nextProps.queryString) {
       this.refreshSearch(nextProps.queryString, null, true)
     }
+  }
+  setChartSize = () => {
+    this.setState({
+      width: this.chartContainer.current.clientWidth - 182 - 48,
+      height: 400,
+    })
   }
   getGeoBoundsString = geoBoundsObj => geoBoundsObj ? `${geoBoundsObj.top_left.lat},${geoBoundsObj.top_left.lon},${geoBoundsObj.bottom_right.lat},${geoBoundsObj.bottom_right.lon}` : ''
   refreshSearch = (queryString, geoBounds, isFreshSearch) => {
@@ -233,7 +245,6 @@ class CharitiesList extends Component {
       this.refreshSearch(this.props.queryString, geoBoundsString, false)
     }
   }
-  mapSize = { width: 600, height: 500 }
   getCenterZoom = boundingBox => {
     if (!boundingBox) return {}
     const { top_left, bottom_right } = boundingBox
@@ -248,7 +259,8 @@ class CharitiesList extends Component {
         lng: bottom_right.lon,
       }
     }
-    const { center, zoom } = fitBounds(bounds, this.mapSize)
+    const { width, height } = this.state
+    const { center, zoom } = fitBounds(bounds, { width, height })
     return { center, zoom }
   }
   render() {
@@ -272,64 +284,68 @@ class CharitiesList extends Component {
           locations
         </Menu.Item>
       </Menu>
-      {this.state.selectedTab === 'size' && <div>Size: {data.size && (
-        <IncomeChart
-          data={data.size.buckets.map(x => ({
-            name: `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
-            '# Charities': x.doc_count,
-            'Total Income': x.total_income.value,
-            '# Grants': x.grants.filtered_grants.doc_count,
-            'Avg Grant': x.grants.filtered_grants.grants_sum.value/x.grants.filtered_grants.doc_count,
-            // avg_grant_value: x.total_granted.value/x.doc_count,
-          }))}
-        />
-      )}</div>}
-      {this.state.selectedTab === 'categories' && <div><div>Causes: {data.causes && (
-        <RadialChart
-          data={causes.filter(x => x.id !== 101 && x.id !== 117).sort((a,b) => a.id - b.id).map(x => ({
-            name: `${x.altName}`,
-            doc_count: (data.causes.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
-          }))}
-        />
-      )}</div>
-      <div>Beneficiaries: {data.beneficiaries && (
-        <RadialChart
-          data={beneficiaries.filter(x => x.id !== 206).sort((a,b) => a.key - b.key).map(x => ({
-            name: `${x.altName}`,
-            doc_count: (data.beneficiaries.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
-          }))}
-        />
-      )}</div>
-      <div>Operations: {data.operations && (
-        <RadialChart
-          data={operations.filter(x => x.id !== 310).sort((a,b) => a.key - b.key).map(x => ({
-            name: `${x.altName}`,
-            doc_count: (data.operations.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
-          }))}
-        />
-      )}</div></div>}
-      {this.state.selectedTab === 'funders' && <div># Grants: {data.funders && (
-        <SimpleTreemap
-          data={data.funders.filtered_grants.funders.buckets.map(x => ({
-            name: `${(funders.find(f => f.id === x.key) || { name: 'Unknown' }).name}`,
-            size: x.doc_count,
-            value: x.total_awarded.value,
-            avg: x.total_awarded.value/x.doc_count,
-          }))}
-        />
-      )}</div>}
-      {this.state.selectedTab === 'locations' && (
-        <CharityMap
-          data={data.addressLocation ? data.addressLocation.grid.buckets : []}
-          onBoundsChange={this.onBoundsChange}
-          onBoundsFilter={boundsString => this.onQueryUpdate('addressWithin', boundsString)}
-          isGeoFilterApplied={this.props.query && this.props.query.addressWithin ? true : false}
-          isFreshSearch={this.state.isFreshSearch}
-          {...this.getCenterZoom(data.addressLocation ? data.addressLocation.map_zoom.bounds : {})}
-          size={this.mapSize}
-          loading={loading}
-       />
-      )}
+      <div
+        ref={this.chartContainer}
+      >
+        {this.state.selectedTab === 'size' && <div>Size: {data.size && (
+          <IncomeChart
+            data={data.size.buckets.map(x => ({
+              name: `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
+              '# Charities': x.doc_count,
+              'Total Income': x.total_income.value,
+              '# Grants': x.grants.filtered_grants.doc_count,
+              'Avg Grant': x.grants.filtered_grants.grants_sum.value/x.grants.filtered_grants.doc_count,
+              // avg_grant_value: x.total_granted.value/x.doc_count,
+            }))}
+          />
+        )}</div>}
+        {this.state.selectedTab === 'categories' && <div><div>Causes: {data.causes && (
+          <RadialChart
+            data={causes.filter(x => x.id !== 101 && x.id !== 117).sort((a,b) => a.id - b.id).map(x => ({
+              name: `${x.altName}`,
+              doc_count: (data.causes.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
+            }))}
+          />
+        )}</div>
+        <div>Beneficiaries: {data.beneficiaries && (
+          <RadialChart
+            data={beneficiaries.filter(x => x.id !== 206).sort((a,b) => a.key - b.key).map(x => ({
+              name: `${x.altName}`,
+              doc_count: (data.beneficiaries.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
+            }))}
+          />
+        )}</div>
+        <div>Operations: {data.operations && (
+          <RadialChart
+            data={operations.filter(x => x.id !== 310).sort((a,b) => a.key - b.key).map(x => ({
+              name: `${x.altName}`,
+              doc_count: (data.operations.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
+            }))}
+          />
+        )}</div></div>}
+        {this.state.selectedTab === 'funders' && <div># Grants: {data.funders && (
+          <SimpleTreemap
+            data={data.funders.filtered_grants.funders.buckets.map(x => ({
+              name: `${(funders.find(f => f.id === x.key) || { name: 'Unknown' }).name}`,
+              size: x.doc_count,
+              value: x.total_awarded.value,
+              avg: x.total_awarded.value/x.doc_count,
+            }))}
+          />
+        )}</div>}
+        {this.state.selectedTab === 'locations' && this.state.width && (
+          <CharityMap
+            data={data.addressLocation ? data.addressLocation.grid.buckets : []}
+            onBoundsChange={this.onBoundsChange}
+            onBoundsFilter={boundsString => this.onQueryUpdate('addressWithin', boundsString)}
+            isGeoFilterApplied={this.props.query && this.props.query.addressWithin ? true : false}
+            isFreshSearch={this.state.isFreshSearch}
+            {...this.getCenterZoom(data.addressLocation ? data.addressLocation.map_zoom.bounds : {})}
+            size={{ width: this.state.width, height: this.state.height, }}
+            loading={loading}
+         />
+        )}
+      </div>
     </div>)
   }
 }
