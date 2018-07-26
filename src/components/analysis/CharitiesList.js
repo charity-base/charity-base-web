@@ -5,7 +5,7 @@ import { desaturate, transparentize } from 'polished'
 import GoogleMapReact from 'google-map-react'
 import numeral from 'numeral'
 import qs from 'query-string'
-import { Menu } from 'antd'
+import { Menu, Button } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { apiEndpoint, googleApiKey } from '../../lib/constants'
 import { causes, operations, beneficiaries, funders } from '../../lib/filterValues'
@@ -59,6 +59,7 @@ class CharityMap extends Component {
   state = {
     zoom: this.props.zoom,
     center: this.props.center,
+    geoBoundsString: {},
     zooming: false,
   }
   componentWillReceiveProps(nextProps) {
@@ -69,7 +70,7 @@ class CharityMap extends Component {
     this.setState({ center, zoom })
   }
   render() {
-    const { data, onBoundsChange, size, loading } = this.props
+    const { data, onBoundsChange, onBoundsFilter, isGeoFilterApplied, size, loading } = this.props
     const minCount = Math.min(...data.map(x => x.doc_count))
     const maxCount = Math.max(...data.map(x => x.doc_count))
     return (
@@ -82,8 +83,9 @@ class CharityMap extends Component {
           center={this.state.center}
           options={{}}
           onChange={({ bounds, zoom, center }) => {
-            onBoundsChange(bounds)
-            this.setState({ zoom, center })
+            const geoBoundsString = `${bounds.nw.lat},${bounds.nw.lng},${bounds.se.lat},${bounds.se.lng}`
+            onBoundsChange(geoBoundsString)
+            this.setState({ zoom, center, geoBoundsString })
           }}
           onZoomAnimationStart={() => this.setState({ zooming: true })}
           onZoomAnimationEnd={() => this.setState({ zooming: false })}
@@ -104,6 +106,18 @@ class CharityMap extends Component {
             />
           })}
         </GoogleMapReact>
+        <Button
+          onClick={() => onBoundsFilter(this.state.geoBoundsString)}
+          disabled={this.state.zooming}
+        >
+          Filter this area
+        </Button>
+        <Button
+          onClick={() => onBoundsFilter(undefined)}
+          disabled={this.state.zooming || !isGeoFilterApplied}
+        >
+          Clear geo filter
+        </Button>
       </div>
     )
   }
@@ -111,6 +125,8 @@ class CharityMap extends Component {
 CharityMap.propTypes = {
   data: PropTypes.array,
   onBoundsChange: PropTypes.func,
+  onBoundsFilter: PropTypes.func,
+  isGeoFilterApplied: PropTypes.bool,
   center: PropTypes.object,
   zoom: PropTypes.number,
   size: PropTypes.object,
@@ -212,8 +228,7 @@ class CharitiesList extends Component {
     const newQuery = { ...this.props.query, [key]: value || undefined }
     this.context.router.history.push(`?${qs.stringify(newQuery)}`)
   }
-  onBoundsChange = geoBounds => {
-    const geoBoundsString = `${geoBounds.nw.lat},${geoBounds.nw.lng},${geoBounds.se.lat},${geoBounds.se.lng}`
+  onBoundsChange = geoBoundsString => {
     if (geoBoundsString !== this.state.geoBounds) {
       this.refreshSearch(this.props.queryString, geoBoundsString, false)
     }
@@ -307,6 +322,8 @@ class CharitiesList extends Component {
         <CharityMap
           data={data.addressLocation ? data.addressLocation.grid.buckets : []}
           onBoundsChange={this.onBoundsChange}
+          onBoundsFilter={boundsString => this.onQueryUpdate('addressWithin', boundsString)}
+          isGeoFilterApplied={this.props.query && this.props.query.addressWithin ? true : false}
           isFreshSearch={this.state.isFreshSearch}
           {...this.getCenterZoom(data.addressLocation ? data.addressLocation.map_zoom.bounds : {})}
           size={this.mapSize}

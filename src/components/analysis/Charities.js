@@ -16,13 +16,12 @@ class Analysis extends Component {
           <FilterBar queryString={queryString} />
         </ResponsiveSider>
         <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF' }}>
-          <FixedHeader isMobile={isMobile}>
+          <FixedHeader isMobile={isMobile} height={200}>
             <CharitiesSearch query={query} />
             <DateSlider query={query} />
-
           </FixedHeader>
-          <ScrollableContent isMobile={isMobile}>
-            <CharitiesList queryString={queryString} />
+          <ScrollableContent isMobile={isMobile} paddingTop={200}>
+            <CharitiesList queryString={queryString} query={query} />
           </ScrollableContent>
         </Layout.Content>
       </Page>

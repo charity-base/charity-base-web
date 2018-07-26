@@ -58,6 +58,7 @@ class DateSlider extends Component {
             onAfterChange={this.onAfterChange}
             tipFormatter={null}
             marks={this.getMarks(this.state.value || [0, this.state.numberMonths])}
+            disabled={false}
           />
         </Col>
       </Row>

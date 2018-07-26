@@ -2,11 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import { Menu, Divider } from 'antd'
+import { Menu, Divider, Icon } from 'antd'
 
 const internalNavs = [
-  { to: '/', label: 'Charities', exact: true },
-  { to: '/about', label: 'About', exact: false },
+  { to: '/', label: 'Search Charities', icon: 'search', exact: true },
+  { to: '/analysis', label: 'Grants Analysis', icon: 'area-chart', exact: false },
+  { to: '/about', label: 'About', icon: 'question-circle', exact: false },
 ]
 
 const externalNavs = [
@@ -25,7 +26,7 @@ const NavMenu = ({ mode }) => (
     mode={mode}
     selectable={false}
   >
-    {internalNavs.map(({ to, label, exact }, i) => (
+    {internalNavs.map(({ to, label, exact, icon }, i) => (
       <Menu.Item key={`${i}-internal`}>
         <NavLink
           to={to}
@@ -34,6 +35,7 @@ const NavMenu = ({ mode }) => (
             color: 'rgba(255,255,255,0.9)',
            }}
         >
+          <Icon type={icon} />
           {label}
         </NavLink>
       </Menu.Item>
@@ -44,7 +46,10 @@ const NavMenu = ({ mode }) => (
     </Menu.Item>
     {externalNavs.map(({ href, label }, i) => (
       <Menu.Item key={`${i}-external`} icon='plus'>
-        <a target='_blank' href={href}>{label}</a>
+        <a target='_blank' href={href}>
+          <Icon type='link' />
+          {label}
+        </a>
       </Menu.Item>
     ))}
   </StyledMenu>
