@@ -147,12 +147,26 @@ const IncomeChart = ({ data }) => (
     <YAxis yAxisId='left' tickFormatter={x => numeral(x).format('0,0')} orientation='left' stroke='#64B5F6'/>
     <YAxis yAxisId='right' tickFormatter={formatMoney} orientation='right' stroke='#81C784'/>
     <Tooltip labelFormatter={x => <div style={{fontSize: '18px', fontWeight: 500}}>{x}<hr/></div>} formatter={(value, name, props) => `${name[0] === '#' ? numeral(value).format('0,0') : formatMoney(value)}`}/>
-    <Legend/>
+    <Legend verticalAlign='middle' align='left' layout='vertical' height={36} />
     <Bar yAxisId='left' dataKey='# Charities' fill='#64B5F6' />
-    <Bar yAxisId='left' dataKey='# Grants' fill='#1976D2' />
-    <Bar yAxisId='right' dataKey='Total Income' fill='#81C784' />
-    <Bar yAxisId='right' dataKey='Avg Grant' fill='#388E3C' />
-    {false && <Bar yAxisId='left' dataKey='avg_grant_value' fill='red' />}
+    <Bar yAxisId='right' dataKey='Combined Charity Income' fill='#81C784' />
+  </BarChart>
+)
+IncomeChart.propTypes = {
+  data: PropTypes.array,
+}
+
+const GrantChart = ({ data }) => (
+  <BarChart width={900} height={300} data={data}
+      margin={{top: 20, right: 30, left: 20, bottom: 5}}>
+    <CartesianGrid strokeDasharray='3 3'/>
+    <XAxis dataKey='name' label={{ value: 'Grant Size', offset: -5, position: 'insideBottom' }} />
+    <YAxis yAxisId='left' tickFormatter={x => numeral(x).format('0,0')} orientation='left' stroke='#64B5F6'/>
+    <YAxis yAxisId='right' tickFormatter={formatMoney} orientation='right' stroke='#81C784'/>
+    <Tooltip labelFormatter={x => <div style={{fontSize: '18px', fontWeight: 500}}>{x}<hr/></div>} formatter={(value, name, props) => `${name[0] === '#' ? numeral(value).format('0,0') : formatMoney(value)}`}/>
+    <Legend verticalAlign='middle' align='left' layout='vertical' height={36} />
+    <Bar yAxisId='left' dataKey='# Grants' fill='#64B5F6' />
+    <Bar yAxisId='right' dataKey='Combined Grant Value' fill='#81C784' />
   </BarChart>
 )
 IncomeChart.propTypes = {
@@ -193,7 +207,7 @@ SimpleTreemap.propTypes = {
 
 class CharitiesList extends Component {
   state = {
-    selectedTab: 'locations',
+    selectedTab: 'size',
     loading: true,
     data: [],
     geoBounds: null,
@@ -277,15 +291,21 @@ class CharitiesList extends Component {
       <div
         ref={this.chartContainer}
       >
-        {this.state.selectedTab === 'size' && <div>Size: {data.size && (
+        {this.state.selectedTab === 'size' && <div>{data.size && (
           <IncomeChart
             data={data.size.buckets.map(x => ({
               name: `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
               '# Charities': x.doc_count,
-              'Total Income': x.total_income.value,
-              '# Grants': x.grants.filtered_grants.doc_count,
-              'Avg Grant': x.grants.filtered_grants.grants_sum.value/x.grants.filtered_grants.doc_count,
-              // avg_grant_value: x.total_granted.value/x.doc_count,
+              'Combined Charity Income': x.total_income.value,
+            }))}
+          />
+        )}</div>}
+        {this.state.selectedTab === 'size' && <div>{data.grantSize && (
+          <GrantChart
+            data={data.grantSize.filtered_grants.grantSize.buckets.map(x => ({
+              name: `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
+              '# Grants': x.doc_count,
+              'Combined Grant Value': x.total_awarded.value,
             }))}
           />
         )}</div>}
