@@ -173,6 +173,22 @@ IncomeChart.propTypes = {
   data: PropTypes.array,
 }
 
+const GrantDateChart = ({ data }) => (
+  <BarChart width={900} height={300} data={data}
+      margin={{top: 20, right: 30, left: 20, bottom: 5}}>
+    <CartesianGrid strokeDasharray='3 3'/>
+    <XAxis dataKey='name' label={{ value: 'Date Grant Awarded', offset: -5, position: 'insideBottom' }} />
+    <YAxis yAxisId='left' tickFormatter={x => numeral(x).format('0,0')} orientation='left' stroke='#64B5F6'/>
+    <YAxis yAxisId='right' tickFormatter={formatMoney} orientation='right' stroke='#81C784'/>
+    <Tooltip labelFormatter={x => <div style={{fontSize: '18px', fontWeight: 500}}>{x}<hr/></div>} formatter={(value, name, props) => `${name[0] === '#' ? numeral(value).format('0,0') : formatMoney(value)}`}/>
+    <Legend verticalAlign='middle' align='left' layout='vertical' height={36} />
+    <Bar yAxisId='left' dataKey='# Grants' fill='#64B5F6' />
+    <Bar yAxisId='right' dataKey='Combined Grant Value' fill='#81C784' />
+  </BarChart>
+)
+IncomeChart.propTypes = {
+  data: PropTypes.array,
+}
 
 const RadialChart = ({ data }) => (
   <RadarChart cx={300} cy={250} outerRadius={150} width={600} height={500} data={data}>
@@ -304,6 +320,15 @@ class CharitiesList extends Component {
           <GrantChart
             data={data.grantSize.filtered_grants.grantSize.buckets.map(x => ({
               name: `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
+              '# Grants': x.doc_count,
+              'Combined Grant Value': x.total_awarded.value,
+            }))}
+          />
+        )}</div>}
+        {this.state.selectedTab === 'size' && <div>{data.grantDate && (
+          <GrantDateChart
+            data={data.grantDate.filtered_grants.grantDate.buckets.map(x => ({
+              name: `${x.key_as_string}`,
               '# Grants': x.doc_count,
               'Combined Grant Value': x.total_awarded.value,
             }))}
