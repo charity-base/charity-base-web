@@ -66,7 +66,10 @@ class CharityMap extends Component {
     if (!isFreshSearch) {
       return
     }
-    this.setState({ center, zoom })
+    this.setState({
+      center: center ? center : {lat: 53.99736721765253, lng: -2.2980105271564923},
+      zoom: zoom ? zoom : 5,
+    })
   }
   render() {
     const { data, onBoundsChange, onBoundsFilter, isGeoFilterApplied, size, loading } = this.props
@@ -197,6 +200,7 @@ class CharitiesList extends Component {
     isFreshSearch: false,
     width: null,
     height: null,
+    geoPrecision: null,
   }
   chartContainer = React.createRef()
   componentDidMount() {
@@ -205,7 +209,10 @@ class CharitiesList extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.queryString !== nextProps.queryString) {
-      this.refreshSearch(nextProps.queryString, null, null, true)
+      const allGeo = nextProps.query.addressWithin !== this.props.query.addressWithin
+      const geoBounds = allGeo ? null : this.state.geoBounds
+      const geoPrecision = allGeo ? null : this.state.geoPrecision
+      this.refreshSearch(nextProps.queryString, geoBounds, geoPrecision, true)
     }
   }
   setChartSize = () => {
@@ -220,11 +227,13 @@ class CharitiesList extends Component {
       data: [],
     })
     this.getData(queryString, geoBounds, geoPrecision, res => {
+      const isBoundsInvalid = res.aggregations.addressLocation.map_zoom.bounds && res.aggregations.addressLocation.map_zoom.bounds.top_left.lat === res.aggregations.addressLocation.map_zoom.bounds.bottom_right.lat
       this.setState({
         data: res.aggregations,
         loading: false,
         isFreshSearch,
-        geoBounds: esBoundsToString(res.aggregations.addressLocation.map_zoom.bounds),
+        ...(isBoundsInvalid ? {} : {geoBounds: esBoundsToString(res.aggregations.addressLocation.map_zoom.bounds)}),
+        geoPrecision,
       })
     })
   }
@@ -321,7 +330,7 @@ class CharitiesList extends Component {
             onBoundsFilter={boundsString => this.onQueryUpdate('addressWithin', boundsString)}
             isGeoFilterApplied={this.props.query && this.props.query.addressWithin ? true : false}
             isFreshSearch={this.state.isFreshSearch}
-            {...getCenterZoom(data.addressLocation ? data.addressLocation.map_zoom.bounds : {}, this.state)}
+            {...getCenterZoom(this.state.geoBounds, this.state.width, this.state.height)}
             size={{ width: this.state.width, height: this.state.height, }}
             loading={loading}
          />

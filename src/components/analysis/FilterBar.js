@@ -32,10 +32,10 @@ class ResultsCount extends Component {
   }
   formatCount = x => numeral(x).format('0,0')
   render() {
-    const isValidCount = this.state.count && !this.state.isLoading
+    const isValidCount = this.state.count !== null && !this.state.isLoading
     return (
       <div style={{ height: '30px', marginTop: '20px', textAlign: 'center' }}>
-        {isValidCount > 0 && `${this.formatCount(this.state.count)} charities`}
+        {isValidCount && `${this.formatCount(this.state.count)} charities`}
       </div>
     )
   }
