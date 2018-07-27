@@ -269,7 +269,7 @@ class CharitiesList extends Component {
   }
   getData = (queryString, geoBounds, geoPrecision, callback) => {
     const qs = queryString ? queryString.split('?')[1] + '&' : ''
-    const url = `${apiEndpoint}/aggregate-charities?${qs}hasGrant=true&aggGeoBounds=${geoBounds || ''}&aggGeoPrecision=${geoPrecision || ''}`
+    const url = `${apiEndpoint}/aggregate-charities?${qs}hasGrant=true&aggGeoBounds=${geoBounds || ''}&aggGeoPrecision=${geoPrecision || ''}&aggGrantDateInterval=month`
     fetchJSON(url)
     .then(res => callback(res))
     .catch(err => console.log(err))
