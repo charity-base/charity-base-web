@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { desaturate, transparentize } from 'polished'
+import { desaturate, transparentize, lighten } from 'polished'
 import GoogleMapReact from 'google-map-react'
 import numeral from 'numeral'
 import qs from 'query-string'
-import { Menu, Button, Dropdown, Icon } from 'antd'
+import { Menu, Button, Dropdown, Icon, Row, Col } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { apiEndpoint, googleApiKey } from '../../lib/constants'
 import { zoomToPrecision, esBoundsToString, gmapsBoundsToString, getCenterZoom, geoHashToLatLon } from '../../lib/mapHelpers'
@@ -70,8 +70,9 @@ class CharityMap extends Component {
       zoom: zoom ? zoom : 5,
     })
   }
+  onBoundsFilter = boundsString => this.props.onQueryUpdate('addressWithin', boundsString)
   render() {
-    const { data, onBoundsChange, onBoundsFilter, isGeoFilterApplied, size, loading } = this.props
+    const { data, onBoundsChange, isGeoFilterApplied, size, loading } = this.props
     const minCount = Math.min(...data.map(x => x.doc_count))
     const maxCount = Math.max(...data.map(x => x.doc_count))
     return (
@@ -109,14 +110,14 @@ class CharityMap extends Component {
           })}
         </GoogleMapReact>
         <Button
-          onClick={() => onBoundsFilter(this.state.geoBoundsString)}
+          onClick={() => this.onBoundsFilter(this.state.geoBoundsString)}
           disabled={this.state.zooming}
           style={{ position: 'absolute', top: '10px', right: 5 + size.width/2 }}
         >
           Filter this area
         </Button>
         <Button
-          onClick={() => onBoundsFilter(undefined)}
+          onClick={() => this.onBoundsFilter(undefined)}
           disabled={this.state.zooming || !isGeoFilterApplied}
           style={{ position: 'absolute', top: '10px', left: 5 + size.width/2 }}
         >
@@ -129,7 +130,7 @@ class CharityMap extends Component {
 CharityMap.propTypes = {
   data: PropTypes.array,
   onBoundsChange: PropTypes.func,
-  onBoundsFilter: PropTypes.func,
+  onQueryUpdate: PropTypes.func,
   isGeoFilterApplied: PropTypes.bool,
   center: PropTypes.object,
   zoom: PropTypes.number,
@@ -201,24 +202,79 @@ RadialChart.propTypes = {
   data: PropTypes.array,
 }
 
+
+class SimpleTreemapContent extends Component {
+  render() {
+    const { x, y, width, height, index, name, selected } = this.props
+    const isVeryBig = width > 300
+    const isBig = !isVeryBig && width > 100
+    const isMedium = !isVeryBig && !isBig && width > 50
+    return (
+      <g onClick={() => this.props.onSelect(index)} style={{ cursor: 'pointer' }}>
+        <rect
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          style={{
+            // fill: depth < 2 ? colors[Math.floor(index / root.children.length * 6)] : 'none',
+            fill: selected[index] ? lighten(0.1, '#EC407A') : '#EC407A',
+            stroke: '#fff',
+            // strokeWidth: 2 / (depth + 1e-10),
+            // strokeOpacity: 1 / (depth + 1e-10),
+          }}
+        />
+        {
+          name && width > 50 && height > 30 ?
+          <text
+            x={x + width / 2}
+            y={y + height / 2 + 7}
+            textAnchor="middle"
+            fill="#fff"
+            fontSize={16}
+            fontWeight={100}
+            stroke={null}
+          >
+            {isVeryBig && name}
+            {isBig && name.substr(0, 10) + '...'}
+            {isMedium && name.substr(0, 4) + '...'}
+          </text>
+          : null
+        }
+      </g>
+    )
+  }
+}
+SimpleTreemapContent.propTypes = {
+  onSelect: PropTypes.func,
+}
+
+
+
 const SimpleTreemapTooltip = ({ name, count, totalAwarded, averageValue }) => (
   <div>
     <div>{name}</div>
     <div>Number of Grants: {formatCount(count)}</div>
-    <div>Combined Value: {formatMoney(totalAwarded)}</div>
-    <div>Average Value: {formatMoney(averageValue)}</div>
+    <div>Total Granted: {formatMoney(totalAwarded)}</div>
+    <div>Average Grant: {formatMoney(averageValue)}</div>
   </div>
 )
 
 
 class SimpleTreemap extends Component {
   state = {
-    dataKey: 'totalAwarded'
+    dataKey: 'totalAwarded',
+    selected: {},
+  }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data.length !== nextProps.data.length) {
+      this.setState({ selected: {} })
+    }
   }
   keyOptions = () => ({
     count: 'Number of Grants',
-    totalAwarded: 'Combined Value',
-    averageValue: 'Average Value',
+    totalAwarded: 'Total Granted',
+    averageValue: 'Average Grant',
   })
   menu = () => (
     <Menu onClick={({ key }) => this.setState({ dataKey: key })}>
@@ -227,15 +283,50 @@ class SimpleTreemap extends Component {
       ))}
     </Menu>
   )
+  getSelectedFunderIds = selected => {
+    const { data } = this.props
+    return Object.keys(selected).reduce((agg, i) => (selected[i] ? [...agg, data[i].id] : agg), [])
+  }
+  onFundersFilter = selected => {
+    this.setState({ selected: {} })
+    const funderIds = this.getSelectedFunderIds(selected)
+    const queryStringValue = funderIds.length > 0 ? funderIds.join(',') : undefined
+    this.props.onQueryUpdate('funders', queryStringValue)
+  }
+  onFunderSelect = i => {
+    this.setState(s => ({
+      selected: {
+        ...s.selected,
+        [i]: !s.selected[i]
+      }
+    }))
+  }
   render() {
     const { data, width, height } = this.props
     return (
       <div>
-        <Dropdown overlay={this.menu()}>
-          <a className="ant-dropdown-link">
-            {this.keyOptions()[this.state.dataKey]} <Icon type="down" />
-          </a>
-        </Dropdown>
+        <Row>
+          <Col>Area represents:</Col>
+          <Col>
+            <Dropdown overlay={this.menu()}>
+              <a className="ant-dropdown-link" style={{ fontSize: '16px', margin: '24px' }}>{this.keyOptions()[this.state.dataKey]} <Icon type="down" /></a>
+            </Dropdown>
+          </Col>
+        </Row>
+        <Button
+          onClick={() => this.onFundersFilter(this.state.selected)}
+          disabled={this.getSelectedFunderIds(this.state.selected).length === 0}
+          style={{ position: 'relative' }}
+        >
+          Filter selected funders
+        </Button>
+        <Button
+          onClick={() => this.onFundersFilter({})}
+          disabled={false}
+          style={{ position: 'relative' }}
+        >
+          Clear funders filter
+        </Button>
         <Treemap
           width={width}
           height={height}
@@ -245,6 +336,7 @@ class SimpleTreemap extends Component {
           stroke='#fff'
           fill='#EC407A'
           isAnimationActive={false}
+          content={<SimpleTreemapContent selected={this.state.selected} onSelect={this.onFunderSelect} />}
         >
           <Tooltip formatter={(value, name, props) => <SimpleTreemapTooltip {...props.payload} /> } separator='' />
         </Treemap>
@@ -399,6 +491,7 @@ class CharitiesList extends Component {
         {this.state.selectedTab === 'funders' && this.state.width && <div>{data.funders && (
           <SimpleTreemap
             data={data.funders.filtered_grants.funders.buckets.map(x => ({
+              id: x.key,
               name: `${(funders.find(f => f.id === x.key) || { name: 'Unknown' }).name}`,
               count: x.doc_count,
               totalAwarded: x.total_awarded.value,
@@ -406,13 +499,14 @@ class CharitiesList extends Component {
             }))}
             width={this.state.width}
             height={this.state.height}
+            onQueryUpdate={this.onQueryUpdate}
           />
         )}</div>}
         {this.state.selectedTab === 'locations' && this.state.width && (
           <CharityMap
             data={data.addressLocation ? data.addressLocation.grid.buckets : []}
             onBoundsChange={this.onBoundsChange}
-            onBoundsFilter={boundsString => this.onQueryUpdate('addressWithin', boundsString)}
+            onQueryUpdate={this.onQueryUpdate}
             isGeoFilterApplied={this.props.query && this.props.query.addressWithin ? true : false}
             isFreshSearch={this.state.isFreshSearch}
             {...getCenterZoom(this.state.geoBounds, this.state.width, this.state.height)}
