@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import numeral from 'numeral'
 import { Divider } from 'antd'
 import { DownloadResults } from '../general/DownloadResults'
 import { CopyUrl } from '../general/CopyUrl'
@@ -8,7 +7,7 @@ import { MenuBarHeader } from '../general/MenuBar'
 import { Filters } from './filters'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { apiEndpoint } from '../../lib/constants'
-
+import { formatCount, formatMoney } from '../../lib/formatHelpers'
 
 class ResultsCount extends Component {
   state = {
@@ -39,19 +38,18 @@ class ResultsCount extends Component {
     this.setState({ isLoadingGrants: true })
     const url = `${apiEndpoint}/aggregate-charities${queryString}${queryString ? '&' : '?'}hasGrant=true&aggTypes=grantTotal`
     fetchJSON(url)
-    .then(res => console.log(res) || this.setState({ isLoadingGrants: false, grantsCount: res.aggregations.grantTotal.doc_count, grantsValue: res.aggregations.grantTotal.filtered_grants.total_awarded.value }))
+    .then(res => this.setState({ isLoadingGrants: false, grantsCount: res.aggregations.grantTotal.doc_count, grantsValue: res.aggregations.grantTotal.filtered_grants.total_awarded.value }))
     .catch(err => console.log(err))
   }
-  formatCount = x => numeral(x).format('0,0')
   render() {
     const isValidCount = this.state.count !== null && !this.state.isLoading
     const isValidGrantCount = this.state.grantsCount !== null && !this.state.isLoadingGrants
     return (
       <div style={{ height: '120px', marginTop: '20px', textAlign: 'center' }}>
-        {isValidCount && <div>{this.formatCount(this.state.count)} charities</div>}
-        {isValidGrantCount && <div>{this.formatCount(this.state.grantsCount)} grants</div>}
-        {isValidGrantCount && <div>{this.formatCount(this.state.grantsValue)} combined value</div>}
-        {isValidGrantCount && <div>{this.formatCount(this.state.grantsValue/this.state.grantsCount)} avg grant value</div>}
+        {isValidCount && <div>{formatCount(this.state.count)} charities</div>}
+        {isValidGrantCount && <div>{formatCount(this.state.grantsCount)} grants</div>}
+        {isValidGrantCount && <div>{formatMoney(this.state.grantsValue)} granted</div>}
+        {isValidGrantCount && <div>{formatMoney(this.state.grantsValue/this.state.grantsCount)} average grant</div>}
       </div>
     )
   }

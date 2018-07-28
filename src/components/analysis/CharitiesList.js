@@ -5,14 +5,13 @@ import { desaturate, transparentize } from 'polished'
 import GoogleMapReact from 'google-map-react'
 import numeral from 'numeral'
 import qs from 'query-string'
-import { Menu, Button } from 'antd'
+import { Menu, Button, Dropdown, Icon } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { apiEndpoint, googleApiKey } from '../../lib/constants'
 import { zoomToPrecision, esBoundsToString, gmapsBoundsToString, getCenterZoom, geoHashToLatLon } from '../../lib/mapHelpers'
 import { causes, operations, beneficiaries, funders } from '../../lib/filterValues'
+import { formatMoney, formatCount } from '../../lib/formatHelpers'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Treemap } from 'recharts'
-
-const formatMoney = x => numeral(x).format('($0a)').replace('$', '£')
 
 const MarkerContainer = styled.div`
   position: absolute;
@@ -202,28 +201,67 @@ RadialChart.propTypes = {
   data: PropTypes.array,
 }
 
-
-const SimpleTreemap = ({ data }) => (
-  <Treemap
-    width={400}
-    height={200}
-    data={data}
-    dataKey='size'
-    ratio={4/3}
-    stroke='#fff'
-    fill='#EC407A'
-  >
-    <Tooltip formatter={(value, name, props) => props.payload.name} separator='' />
-  </Treemap>
+const SimpleTreemapTooltip = ({ name, count, totalAwarded, averageValue }) => (
+  <div>
+    <div>{name}</div>
+    <div>Number of Grants: {formatCount(count)}</div>
+    <div>Combined Value: {formatMoney(totalAwarded)}</div>
+    <div>Average Value: {formatMoney(averageValue)}</div>
+  </div>
 )
+
+
+class SimpleTreemap extends Component {
+  state = {
+    dataKey: 'totalAwarded'
+  }
+  keyOptions = () => ({
+    count: 'Number of Grants',
+    totalAwarded: 'Combined Value',
+    averageValue: 'Average Value',
+  })
+  menu = () => (
+    <Menu onClick={({ key }) => this.setState({ dataKey: key })}>
+      {Object.keys(this.keyOptions()).map(key => (
+        <Menu.Item key={key}>{this.keyOptions()[key]}</Menu.Item>
+      ))}
+    </Menu>
+  )
+  render() {
+    const { data, width, height } = this.props
+    return (
+      <div>
+        <Dropdown overlay={this.menu()}>
+          <a className="ant-dropdown-link">
+            {this.keyOptions()[this.state.dataKey]} <Icon type="down" />
+          </a>
+        </Dropdown>
+        <Treemap
+          width={width}
+          height={height}
+          data={data}
+          dataKey={this.state.dataKey}
+          ratio={4/3}
+          stroke='#fff'
+          fill='#EC407A'
+          isAnimationActive={false}
+        >
+          <Tooltip formatter={(value, name, props) => <SimpleTreemapTooltip {...props.payload} /> } separator='' />
+        </Treemap>
+      </div>
+    )
+  }
+}
 SimpleTreemap.propTypes = {
   data: PropTypes.array,
+  width: PropTypes.number,
+  height: PropTypes.number,
 }
 
 
 class CharitiesList extends Component {
   state = {
-    selectedTab: 'size',
+    selectedTab: 'funders',
     loading: true,
     data: [],
     geoBounds: null,
@@ -358,14 +396,16 @@ class CharitiesList extends Component {
             }))}
           />
         )}</div></div>}
-        {this.state.selectedTab === 'funders' && <div># Grants: {data.funders && (
+        {this.state.selectedTab === 'funders' && this.state.width && <div>{data.funders && (
           <SimpleTreemap
             data={data.funders.filtered_grants.funders.buckets.map(x => ({
               name: `${(funders.find(f => f.id === x.key) || { name: 'Unknown' }).name}`,
-              size: x.doc_count,
-              value: x.total_awarded.value,
-              avg: x.total_awarded.value/x.doc_count,
+              count: x.doc_count,
+              totalAwarded: x.total_awarded.value,
+              averageValue: x.total_awarded.value/x.doc_count,
             }))}
+            width={this.state.width}
+            height={this.state.height}
           />
         )}</div>}
         {this.state.selectedTab === 'locations' && this.state.width && (
