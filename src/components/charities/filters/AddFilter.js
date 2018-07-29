@@ -103,8 +103,8 @@ class AddFilter extends Component {
     const filters = { ...this.props.filters, [fieldName]: undefined }
     this.props.updateFilters(filters)
   }
-  removeSort = obj => {
-    const { sort, ...rest } = obj
+  removeNonFilters = obj => {
+    const { sort, view, ...rest } = obj
     return rest
   }
   render() {
@@ -112,7 +112,7 @@ class AddFilter extends Component {
     return (
       <div>
         <TagsList
-          filters={this.removeSort(filters)}
+          filters={this.removeNonFilters(filters)}
           maxDisplayLength={19}
           handleClose={this.handleClose}
         />

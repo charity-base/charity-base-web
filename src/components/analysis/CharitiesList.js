@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import qs from 'query-string'
-import { Menu } from 'antd'
+import { Menu, Icon } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { apiEndpoint } from '../../lib/constants'
 import { esBoundsToString, getCenterZoom } from '../../lib/mapHelpers'
@@ -12,7 +12,6 @@ import { CharitiesMap, FundersTreemap, CountMoneyHistogram, RadialChart } from '
 
 class CharitiesList extends Component {
   state = {
-    selectedTab: 'size',
     loading: true,
     data: [],
     geoBounds: null,
@@ -25,6 +24,9 @@ class CharitiesList extends Component {
   componentDidMount() {
     this.refreshSearch(this.props.queryString, null, null, true)
     this.setChartSize()
+    if (!this.props.query.view) {
+      this.setView('charity-location')
+    }
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.queryString !== nextProps.queryString) {
@@ -33,6 +35,9 @@ class CharitiesList extends Component {
       const geoPrecision = allGeo ? null : this.state.geoPrecision
       this.refreshSearch(nextProps.queryString, geoBounds, geoPrecision, true)
     }
+  }
+  setView = view => {
+    this.onQueryUpdate('view', view)
   }
   setChartSize = () => {
     this.setState({
@@ -74,29 +79,44 @@ class CharitiesList extends Component {
   }
   render() {
     const { loading, data } = this.state
+    const { view } = this.props.query
     return (<div>
       <Menu
-        onClick={e => this.setState({ selectedTab: e.key })}
-        selectedKeys={[this.state.selectedTab]}
+        onClick={e => this.setView(e.key)}
+        selectedKeys={[view]}
         mode='horizontal'
       >
-        <Menu.Item key='size'>
-          size
+        <Menu.Item key='grant-size'>
+          <span><Icon type='bank' />Grant Size</span>
         </Menu.Item>
-        <Menu.Item key='categories'>
-          categories
+        <Menu.Item key='grant-date'>
+          <span><Icon type='calendar' />Grant Date</span>
         </Menu.Item>
-        <Menu.Item key='funders'>
-          funders
+        <Menu.Item key='grant-funders'>
+          <span><Icon type='gift' />Grant Funders</span>
         </Menu.Item>
-        <Menu.Item key='locations'>
-          locations
+        <Menu.Item key='charity-location'>
+          <span><Icon type='environment-o' />Recipient Location</span>
         </Menu.Item>
+        <Menu.Item key='charity-size'>
+          <span><Icon type='bank' />Recipient Size</span>
+        </Menu.Item>
+        <Menu.SubMenu title={<span><Icon type='down' />Recipient Tags</span>}>
+          <Menu.Item key='charity-causes'>
+            <span><Icon type='medicine-box' />Causes</span>
+          </Menu.Item>
+          <Menu.Item key='charity-beneficiaries'>
+            <span><Icon type='team' />Beneficiaries</span>
+          </Menu.Item>
+          <Menu.Item key='charity-operations'>
+            <span><Icon type='tool' />Operations</span>
+          </Menu.Item>
+        </Menu.SubMenu>
       </Menu>
       <div
         ref={this.chartContainer}
       >
-        {this.state.selectedTab === 'size' && this.state.width && <div>{data.size && (
+        {view === 'charity-size' && this.state.width && <div>{data.size && (
           <CountMoneyHistogram
             data={data.size.buckets.map(x => ({
               'name': `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
@@ -111,7 +131,7 @@ class CharitiesList extends Component {
             xAxisLabel='Charity Income'
           />
         )}</div>}
-        {this.state.selectedTab === 'size' && this.state.width && <div>{data.grantSize && (
+        {view === 'grant-size' && this.state.width && <div>{data.grantSize && (
           <CountMoneyHistogram
             data={data.grantSize.filtered_grants.grantSize.buckets.map(x => ({
               'name': `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
@@ -126,7 +146,7 @@ class CharitiesList extends Component {
             xAxisLabel='Grant Size'
           />
         )}</div>}
-        {this.state.selectedTab === 'size' && <div>{data.grantDate && (
+        {view === 'grant-date' && <div>{data.grantDate && (
           <CountMoneyHistogram
             data={data.grantDate.filtered_grants.grantDate.buckets.map(x => ({
               'name': `${x.key_as_string}`,
@@ -141,31 +161,31 @@ class CharitiesList extends Component {
             xAxisLabel='Grant Date'
           />
         )}</div>}
-        {this.state.selectedTab === 'categories' && <div><div>Causes: {data.causes && (
+        {view === 'charity-causes' && <div>{data.causes && (
           <RadialChart
             data={causes.filter(x => x.id !== 101 && x.id !== 117).sort((a,b) => a.id - b.id).map(x => ({
               name: `${x.altName}`,
               doc_count: (data.causes.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
             }))}
           />
-        )}</div>
-        <div>Beneficiaries: {data.beneficiaries && (
+        )}</div>}
+        {view === 'charity-beneficiaries' && <div>{data.beneficiaries && (
           <RadialChart
             data={beneficiaries.filter(x => x.id !== 206).sort((a,b) => a.key - b.key).map(x => ({
               name: `${x.altName}`,
               doc_count: (data.beneficiaries.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
             }))}
           />
-        )}</div>
-        <div>Operations: {data.operations && (
+        )}</div>}
+        {view === 'charity-operations' && <div>{data.operations && (
           <RadialChart
             data={operations.filter(x => x.id !== 310).sort((a,b) => a.key - b.key).map(x => ({
               name: `${x.altName}`,
               doc_count: (data.operations.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
             }))}
           />
-        )}</div></div>}
-        {this.state.selectedTab === 'funders' && this.state.width && <div>{data.funders && (
+        )}</div>}
+        {view === 'grant-funders' && this.state.width && <div>{data.funders && (
           <FundersTreemap
             data={data.funders.filtered_grants.funders.buckets.map(x => ({
               id: x.key,
@@ -179,7 +199,7 @@ class CharitiesList extends Component {
             onQueryUpdate={this.onQueryUpdate}
           />
         )}</div>}
-        {this.state.selectedTab === 'locations' && this.state.width && (
+        {view === 'charity-location' && this.state.width && (
           <CharitiesMap
             data={data.addressLocation ? data.addressLocation.grid.buckets : []}
             onBoundsChange={this.onBoundsChange}
