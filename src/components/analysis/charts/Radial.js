@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts'
 
-const RadialChart = ({ data }) => (
-  <RadarChart cx={300} cy={250} outerRadius={150} width={600} height={500} data={data}>
+const RadialChart = ({ data, width, height }) => (
+  <RadarChart cx={width/2} cy={height/2} outerRadius={Math.min(width/2 - 50, 150)} width={width} height={height} data={data}>
     <PolarGrid />
     <PolarAngleAxis dataKey='name' />
     <PolarRadiusAxis/>
@@ -12,6 +12,8 @@ const RadialChart = ({ data }) => (
 )
 RadialChart.propTypes = {
   data: PropTypes.array,
+  width: PropTypes.number,
+  height: PropTypes.number,
 }
 
 export { RadialChart }

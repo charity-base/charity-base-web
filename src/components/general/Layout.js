@@ -85,7 +85,7 @@ Page.propTypes = {
 }
 
 const Sider = styled(Layout.Sider)`
-  ${({ isMobile }) => isMobile ? `
+  ${({ isMobile, isRight }) => isMobile ? `
     background-color #FFF;
     position: fixed;
     top: 0;
@@ -93,17 +93,18 @@ const Sider = styled(Layout.Sider)`
     bottom: 0;
     left: 0;
     z-index: 9;
-    border-right: solid rgba(0,0,0,0.1) 1px;
+    border-${isRight ? 'left' : 'right'}: solid rgba(0,0,0,0.1) 1px;
     overflow-y: scroll;
   ` : `
     background-color #FFF;
-    border-right: solid rgba(0,0,0,0.1) 1px;
+    border-${isRight ? 'left' : 'right'}: solid rgba(0,0,0,0.1) 1px;
   `}
 `
 
-const ResponsiveSider = ({ isMobile, width, children }) => (
+const ResponsiveSider = ({ isMobile, width, isRight, children }) => (
   <Sider
     isMobile={isMobile}
+    isRight={isRight}
     width={width || 230}
     theme='light'
     breakpoint='md'
@@ -114,6 +115,7 @@ const ResponsiveSider = ({ isMobile, width, children }) => (
 )
 Page.propTypes = {
   isMobile: PropTypes.bool,
+  isRight: PropTypes.bool,
   width: PropTypes.number,
 }
 

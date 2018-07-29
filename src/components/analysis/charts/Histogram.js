@@ -9,6 +9,8 @@ const CountMoneyHistogram = ({ data, width, height, rangeKey, countKey, moneyKey
     height={height}
     margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
     data={data}
+    barCategoryGap={3}
+    barGap={0}
   >
     <CartesianGrid strokeDasharray='3 3'/>
     <XAxis dataKey={rangeKey} label={{ value: xAxisLabel, offset: -5, position: 'insideBottom' }} />
@@ -18,7 +20,7 @@ const CountMoneyHistogram = ({ data, width, height, rangeKey, countKey, moneyKey
       labelFormatter={x => <span style={{fontSize: '18px', fontWeight: 500}}>{x}</span>}
       formatter={(value, name) => `${name === countKey ? formatCount(value) : formatMoney(value)}`}
     />
-    <Legend verticalAlign='middle' align='left' layout='vertical' height={36} />
+    <Legend verticalAlign='top' align='center' layout='horizontal' height={36} />
     <Bar yAxisId='left' dataKey={countKey} fill='#64B5F6' />
     <Bar yAxisId='right' dataKey={moneyKey} fill='#81C784' />
   </BarChart>

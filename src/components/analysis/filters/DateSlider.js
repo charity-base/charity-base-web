@@ -6,15 +6,32 @@ import { Row, Col, Slider } from 'antd'
 
 class DateSlider extends Component {
   state = {
-    numberMonths: 1 + 12*((new Date()).getFullYear() - this.props.sinceYear) + (new Date()).getMonth() - (this.props.sinceMonth-1),
-    value: null,
+    value: [null, null],
   }
   componentDidMount() {
-    const grantDateRange = this.props.query.grantDateRange && this.props.query.grantDateRange.split(',')
-    if (grantDateRange && grantDateRange.length === 2) {
-      const intRange = grantDateRange.map(this.intFromDateString)
-      this.onAfterChange(intRange)
+    this.updateStateFromStringRange(this.props.query.grantDateRange)
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.query.grantDateRange !== this.props.query.grantDateRange) {
+      this.updateStateFromStringRange(this.props.query.grantDateRange)
     }
+  }
+  updateStateFromStringRange = grantDateRange => {
+    const rangeStringValues = this.intsFromRangeString(grantDateRange)
+    if (rangeStringValues[0] !== this.state.value[0] || rangeStringValues[1] !== this.state.value[1]) {
+      this.setState({
+        value: rangeStringValues
+      })
+    }
+  }
+  numberMonths = () => {
+    return 1 + 12*((new Date()).getFullYear() - this.props.sinceYear) + (new Date()).getMonth() - (this.props.sinceMonth-1)
+  }
+  intsFromRangeString = rangeString => {
+    if (!rangeString || rangeString.split(',').length !== 2) {
+      return [null, null]
+    }
+    return rangeString.split(',').map(this.intFromDateString)
   }
   intFromDateString = dateString => {
     const d = new Date(dateString)
@@ -43,21 +60,21 @@ class DateSlider extends Component {
   })
   render() {
     return (
-      <Row type='flex' align='middle'>
-        <Col span={6}>
-          <span style={{ fontWeight: 500, fontSize: '18px' }}>Grants awarded between:</span>
+      <Row type='flex' align='middle' justify='center'>
+        <Col span={12}>
+          <span style={{ fontWeight: 500, fontSize: '14px' }}>Filter Grant Date:</span>
         </Col>
-        <Col span={18} style={{padding: '20px'}}>
+        <Col span={12} style={{padding: '20px'}}>
           <Slider
             range
             min={0}
-            max={this.state.numberMonths}
+            max={this.numberMonths()}
             step={1}
-            value={this.state.value || [0, this.state.numberMonths]}
+            value={[this.state.value[0] || 0, this.state.value[1] || this.numberMonths()]}
             onChange={value => this.setState({ value })}
             onAfterChange={this.onAfterChange}
             tipFormatter={null}
-            marks={this.getMarks(this.state.value || [0, this.state.numberMonths])}
+            marks={this.getMarks([this.state.value[0] || 0, this.state.value[1] || this.numberMonths()])}
             disabled={false}
           />
         </Col>

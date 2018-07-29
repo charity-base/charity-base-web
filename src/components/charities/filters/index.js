@@ -1,18 +1,10 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import qs from 'query-string'
 import { Icon } from 'antd'
 import { AddFilter } from './AddFilter'
-import qs from 'query-string'
-
-const SideBarTitle = styled.div`
-  color: rgba(0,0,0,0.6);
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 2px;
-  text-align: center;
-  margin-bottom: 20px;
-`
+import { SideBarTitle } from '../../general/InfoText'
 
 class Filters extends Component {
   state = {
@@ -31,7 +23,7 @@ class Filters extends Component {
     return (
       <div>
         <SideBarTitle>
-          <Icon type="filter"/>
+          <Icon type='filter' style={{ marginRight: '10px' }}/>
           FILTERS
         </SideBarTitle>
         <AddFilter

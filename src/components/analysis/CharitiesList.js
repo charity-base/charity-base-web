@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import qs from 'query-string'
-import { Menu, Icon } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { apiEndpoint } from '../../lib/constants'
 import { esBoundsToString, getCenterZoom } from '../../lib/mapHelpers'
 import { causes, operations, beneficiaries, funders } from '../../lib/filterValues'
 import { formatMoney } from '../../lib/formatHelpers'
 import { CharitiesMap, FundersTreemap, CountMoneyHistogram, RadialChart } from './charts'
-
 
 class CharitiesList extends Component {
   state = {
@@ -17,16 +14,12 @@ class CharitiesList extends Component {
     geoBounds: null,
     isFreshSearch: false,
     width: null,
-    height: null,
+    height: 400,
     geoPrecision: null,
   }
   chartContainer = React.createRef()
   componentDidMount() {
     this.refreshSearch(this.props.queryString, null, null, true)
-    this.setChartSize()
-    if (!this.props.query.view) {
-      this.setView('charity-location')
-    }
   }
   componentDidUpdate(prevProps) {
     if (prevProps.queryString !== this.props.queryString) {
@@ -35,15 +28,13 @@ class CharitiesList extends Component {
       const geoPrecision = allGeo ? null : this.state.geoPrecision
       this.refreshSearch(this.props.queryString, geoBounds, geoPrecision, true)
     }
+    const width = this.chartContainer && this.chartContainer.current && this.chartContainer.current.clientWidth
+    if (width && width !== this.state.width) {
+      this.setState({ width })
+    }
   }
   setView = view => {
-    this.onQueryUpdate('view', view)
-  }
-  setChartSize = () => {
-    this.setState({
-      width: this.chartContainer.current.clientWidth - 182 - 48,
-      height: 400,
-    })
+    this.props.onQueryUpdate('view', view)
   }
   refreshSearch = (queryString, geoBounds, geoPrecision, isFreshSearch) => {
     this.setState({
@@ -68,78 +59,42 @@ class CharitiesList extends Component {
     .then(res => callback(res))
     .catch(err => console.log(err))
   }
-  onQueryUpdate = (key, value) => {
-    const newQuery = { ...this.props.query, [key]: value || undefined }
-    this.context.router.history.push(`?${qs.stringify(newQuery)}`)
-  }
   onBoundsChange = (geoBoundsString, geoPrecision) => {
     if (geoBoundsString !== this.state.geoBounds) {
       this.refreshSearch(this.props.queryString, geoBoundsString, geoPrecision, false)
     }
   }
   render() {
-    const { loading, data } = this.state
-    const { view } = this.props.query
+    const { loading, data, width, height } = this.state
+    const { view, onQueryUpdate } = this.props
     return (<div>
-      <Menu
-        onClick={e => this.setView(e.key)}
-        selectedKeys={[view]}
-        mode='horizontal'
-      >
-        <Menu.Item key='grant-size'>
-          <span><Icon type='bank' />Grant Size</span>
-        </Menu.Item>
-        <Menu.Item key='grant-date'>
-          <span><Icon type='calendar' />Grant Date</span>
-        </Menu.Item>
-        <Menu.Item key='grant-funders'>
-          <span><Icon type='gift' />Grant Funders</span>
-        </Menu.Item>
-        <Menu.Item key='charity-location'>
-          <span><Icon type='environment-o' />Recipient Location</span>
-        </Menu.Item>
-        <Menu.Item key='charity-size'>
-          <span><Icon type='bank' />Recipient Size</span>
-        </Menu.Item>
-        <Menu.SubMenu title={<span><Icon type='down' />Recipient Tags</span>}>
-          <Menu.Item key='charity-causes'>
-            <span><Icon type='medicine-box' />Causes</span>
-          </Menu.Item>
-          <Menu.Item key='charity-beneficiaries'>
-            <span><Icon type='team' />Beneficiaries</span>
-          </Menu.Item>
-          <Menu.Item key='charity-operations'>
-            <span><Icon type='tool' />Operations</span>
-          </Menu.Item>
-        </Menu.SubMenu>
-      </Menu>
       <div
         ref={this.chartContainer}
       >
-        {view === 'charity-size' && this.state.width && <div>{data.size && (
+        {view === 'charity-size' && width && <div>{data.size && (
           <CountMoneyHistogram
             data={data.size.buckets.map(x => ({
               'name': `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
               'Number of Charities': x.doc_count,
               'Combined Income': x.total_income.value,
             }))}
-            width={this.state.width}
-            height={this.state.height}
+            width={width}
+            height={height}
             rangeKey='name'
             countKey='Number of Charities'
             moneyKey='Combined Income'
             xAxisLabel='Charity Income'
           />
         )}</div>}
-        {view === 'grant-size' && this.state.width && <div>{data.grantSize && (
+        {view === 'grant-size' && width && <div>{data.grantSize && (
           <CountMoneyHistogram
             data={data.grantSize.filtered_grants.grantSize.buckets.map(x => ({
               'name': `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
               'Number of Grants': x.doc_count,
               'Combined Value': x.total_awarded.value,
             }))}
-            width={this.state.width}
-            height={this.state.height}
+            width={width}
+            height={height}
             rangeKey='name'
             countKey='Number of Grants'
             moneyKey='Combined Value'
@@ -153,8 +108,8 @@ class CharitiesList extends Component {
               'Number of Grants': x.doc_count,
               'Combined Value': x.total_awarded.value,
             }))}
-            width={this.state.width}
-            height={this.state.height}
+            width={width}
+            height={height}
             rangeKey='name'
             countKey='Number of Grants'
             moneyKey='Combined Value'
@@ -167,6 +122,8 @@ class CharitiesList extends Component {
               name: `${x.altName}`,
               doc_count: (data.causes.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
             }))}
+            width={width}
+            height={height}
           />
         )}</div>}
         {view === 'charity-beneficiaries' && <div>{data.beneficiaries && (
@@ -175,6 +132,8 @@ class CharitiesList extends Component {
               name: `${x.altName}`,
               doc_count: (data.beneficiaries.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
             }))}
+            width={width}
+            height={height}
           />
         )}</div>}
         {view === 'charity-operations' && <div>{data.operations && (
@@ -183,9 +142,11 @@ class CharitiesList extends Component {
               name: `${x.altName}`,
               doc_count: (data.operations.buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
             }))}
+            width={width}
+            height={height}
           />
         )}</div>}
-        {view === 'grant-funders' && this.state.width && <div>{data.funders && (
+        {view === 'grant-funders' && width && <div>{data.funders && (
           <FundersTreemap
             data={data.funders.filtered_grants.funders.buckets.map(x => ({
               id: x.key,
@@ -194,21 +155,21 @@ class CharitiesList extends Component {
               totalAwarded: x.total_awarded.value,
               averageValue: x.total_awarded.value/x.doc_count,
             }))}
-            width={this.state.width}
-            height={this.state.height}
-            onQueryUpdate={this.onQueryUpdate}
+            width={width}
+            height={height}
+            onQueryUpdate={onQueryUpdate}
           />
         )}</div>}
-        {view === 'charity-location' && this.state.width && (
+        {view === 'charity-location' && width && (
           <CharitiesMap
             data={data.addressLocation ? data.addressLocation.grid.buckets : []}
             onBoundsChange={this.onBoundsChange}
-            onQueryUpdate={this.onQueryUpdate}
+            onQueryUpdate={onQueryUpdate}
             isGeoFilterApplied={this.props.query && this.props.query.addressWithin ? true : false}
             isFreshSearch={this.state.isFreshSearch}
-            {...getCenterZoom(this.state.geoBounds, this.state.width, this.state.height)}
-            width={this.state.width}
-            height={this.state.height}
+            {...getCenterZoom(this.state.geoBounds, width, height)}
+            width={width}
+            height={height}
             loading={loading}
          />
         )}
@@ -219,9 +180,8 @@ class CharitiesList extends Component {
 CharitiesList.propTypes = {
   queryString: PropTypes.string,
   query: PropTypes.object,
-}
-CharitiesList.contextTypes = {
-  router: PropTypes.object,
+  view: PropTypes.string,
+  onQueryUpdate: PropTypes.func,
 }
 
 export { CharitiesList }
