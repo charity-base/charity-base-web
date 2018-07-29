@@ -18,9 +18,9 @@ class ResultsCount extends Component {
   componentDidMount() {
     this.countResults(this.props.queryString)
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.queryString !== this.props.queryString) {
-      this.countResults(nextProps.queryString)
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.queryString !== prevProps.queryString) {
+      this.countResults(this.props.queryString)
     }
   }
   countResults = queryString => {

@@ -28,12 +28,12 @@ class CharitiesList extends Component {
       this.setView('charity-location')
     }
   }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.queryString !== nextProps.queryString) {
-      const allGeo = nextProps.query.addressWithin !== this.props.query.addressWithin
+  componentDidUpdate(prevProps) {
+    if (prevProps.queryString !== this.props.queryString) {
+      const allGeo = prevProps.query.addressWithin !== this.props.query.addressWithin
       const geoBounds = allGeo ? null : this.state.geoBounds
       const geoPrecision = allGeo ? null : this.state.geoPrecision
-      this.refreshSearch(nextProps.queryString, geoBounds, geoPrecision, true)
+      this.refreshSearch(this.props.queryString, geoBounds, geoPrecision, true)
     }
   }
   setView = view => {

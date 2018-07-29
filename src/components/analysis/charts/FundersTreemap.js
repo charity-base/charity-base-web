@@ -66,8 +66,8 @@ class FundersTreemap extends Component {
     dataKey: 'totalAwarded',
     selected: {},
   }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.data.length !== nextProps.data.length) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.data.length !== this.props.data.length) {
       this.setState({ selected: {} })
     }
   }

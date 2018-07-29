@@ -68,7 +68,7 @@ const boundsStringToGmaps = boundsString => {
 
 const getCenterZoom = (boundsString, width, height) => {
   const bounds = boundsStringToGmaps(boundsString)
-  if (!bounds) return {}
+  if (!bounds) return { center: {}, zoom: 5, }
   const { center, zoom } = fitBounds(bounds, { width, height })
   return { center, zoom }
 }

@@ -54,15 +54,20 @@ class CharitiesMap extends Component {
     geoBoundsString: {},
     zooming: false,
   }
-  componentWillReceiveProps(nextProps) {
-    const { isFreshSearch, center, zoom } = nextProps
+  componentDidUpdate(prevProps, prevState) {
+    const { isFreshSearch, center, zoom } = this.props
     if (!isFreshSearch) {
       return
     }
-    this.setState({
-      center: center ? center : {lat: 53.99736721765253, lng: -2.2980105271564923},
-      zoom: zoom ? zoom : 5,
-    })
+    if (!center || !center.lat || !center.lng) {
+      return this.setState({
+        center : {lat: 53.99736721765253, lng: -2.2980105271564923},
+        zoom : 5,
+      })
+    }
+    if (center.lat !== prevState.center.lat || center.lng !== prevState.center.lng || zoom !== prevState.zoom) {
+      this.setState({ center, zoom })
+    }
   }
   onBoundsFilter = boundsString => this.props.onQueryUpdate('addressWithin', boundsString)
   render() {

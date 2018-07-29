@@ -21,10 +21,10 @@ class ResultsCount extends Component {
     this.countResults(this.props.queryString)
     this.countGrantsResults(this.props.queryString)
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.queryString !== this.props.queryString) {
-      this.countResults(nextProps.queryString)
-      this.countGrantsResults(nextProps.queryString)
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.queryString !== prevProps.queryString) {
+      this.countResults(this.props.queryString)
+      this.countGrantsResults(this.props.queryString)
     }
   }
   countResults = queryString => {
