@@ -63,7 +63,8 @@ class AddFilter extends Component {
     <Menu onClick={this.onMenuClick}>
       {this.menuItems().map(({ key, icon, label }) => (
         <Menu.Item key={key} style={{ paddingTop: '7px', paddingBottom: '7px' }}>
-          <Icon type={icon} style={{ marginRight: '5px' }}/> {label} {label === 'Funder' && <span style={{ marginLeft: '10px', fontSize: '12px', color: '#EC407A' }}>new!</span>}
+          <Icon type={icon} style={{ marginRight: '10px' }}/>
+          {label}
         </Menu.Item>
       ))}
     </Menu>

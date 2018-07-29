@@ -37,6 +37,7 @@ const NavMenu = ({ mode }) => (
         >
           <Icon type={icon} />
           {label}
+          {label === 'Grants Analysis' && <span style={{ marginLeft: '10px', fontSize: '12px', color: '#EC407A' }}>new!</span>}
         </NavLink>
       </Menu.Item>
     ))}
