@@ -20,11 +20,12 @@ const StyledMenu = styled(Menu)`
   line-height: ${({ isMobile }) => isMobile ? '46px' : '64px'};
 `
 
-const NavMenu = ({ mode }) => (
+const NavMenu = ({ mode, isMobile }) => (
   <StyledMenu
     theme="dark"
     mode={mode}
     selectable={false}
+    isMobile={isMobile}
   >
     {internalNavs.map(({ to, label, exact, icon }, i) => (
       <Menu.Item key={`${i}-internal`}>
@@ -36,16 +37,16 @@ const NavMenu = ({ mode }) => (
            }}
         >
           <Icon type={icon} />
-          {label}
-          {label === 'Grants Analysis' && <span style={{ marginLeft: '10px', fontSize: '12px', color: '#EC407A' }}>new!</span>}
+          {!isMobile && label}
+          {!isMobile && label === 'Grants Analysis' && <span style={{ marginLeft: '10px', fontSize: '12px', color: '#EC407A' }}>new!</span>}
         </NavLink>
       </Menu.Item>
     ))}
-    <Menu.Item style={{ cursor: 'default' }}>
+    {!isMobile && <Menu.Item style={{ cursor: 'default' }}>
       {mode === 'horizontal' && <Divider type='vertical' style={{ marginLeft: '20px', marginRight: '20px', backgroundColor: 'rgba(255,255,255,0.5)' }} />}
       {mode === 'vertical' && <Divider type='horizontal' style={{ backgroundColor: 'rgba(255,255,255,0.5)' }} />}
-    </Menu.Item>
-    {externalNavs.map(({ href, label }, i) => (
+    </Menu.Item>}
+    {!isMobile && externalNavs.map(({ href, label }, i) => (
       <Menu.Item key={`${i}-external`} icon='plus'>
         <a target='_blank' href={href}>
           <Icon type='link' />
@@ -57,6 +58,7 @@ const NavMenu = ({ mode }) => (
 )
 NavMenu.propTypes = {
   mode: PropTypes.string,
+  isMobile: PropTypes.bool,
 }
 
 export { NavMenu }

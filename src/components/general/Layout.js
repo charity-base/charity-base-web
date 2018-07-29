@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { Layout } from 'antd'
+import { Layout, Icon } from 'antd'
 
 const FixedHeader = styled.div`
   padding: 24px;
@@ -91,7 +91,7 @@ const Sider = styled(Layout.Sider)`
     top: 0;
     margin-top: 50px;
     bottom: 0;
-    left: 0;
+    ${isRight ? 'right': 'left'}: 0;
     z-index: 9;
     border-${isRight ? 'left' : 'right'}: solid rgba(0,0,0,0.1) 1px;
     overflow-y: scroll;
@@ -101,18 +101,47 @@ const Sider = styled(Layout.Sider)`
   `}
 `
 
-const ResponsiveSider = ({ isMobile, width, isRight, children }) => (
-  <Sider
-    isMobile={isMobile}
-    isRight={isRight}
-    width={width || 230}
-    theme='light'
-    breakpoint='md'
-    collapsedWidth={0}
-  >
-    {children}
-  </Sider>
-)
+const SiderToggle = styled(Icon)`
+  ${({ isRight }) => `
+    position: fixed;
+    top: 16px;
+    ${isRight ? 'right' : 'left'}: 12px;
+    z-index: 10;
+    color: rgba(255, 255, 255, 0.8);
+  `}
+`
+
+class ResponsiveSider extends React.Component {
+  state = {
+    collapsed: true
+  }
+  render() {
+    const { isMobile, width, isRight, children } = this.props
+    const { collapsed } = this.state
+    return ([
+      <Sider key={'1'}
+        isMobile={isMobile}
+        isRight={isRight}
+        width={width || 230}
+        theme='light'
+        breakpoint='md'
+        collapsed={isMobile && this.state.collapsed}
+        collapsedWidth={0}
+        trigger={null}
+      >
+        {children}
+      </Sider>,
+      isMobile && (
+        <SiderToggle
+          key={'2'}
+          type={(isRight && collapsed || !isRight && !collapsed) ? 'menu-fold' : 'menu-unfold'}
+          onClick={() => this.setState(s => ({ collapsed: !s.collapsed }))}
+          isRight={isRight}
+        />
+      ),
+    ])
+  }
+}
 Page.propTypes = {
   isMobile: PropTypes.bool,
   isRight: PropTypes.bool,

@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import { Layout, Button } from 'antd'
+import { Layout } from 'antd'
 import { NavMenu } from './NavMenu'
 
-const { Header, Sider } = Layout
+const { Header } = Layout
 
 const AppHeader = styled(Header)`
   position: fixed;
@@ -31,47 +31,15 @@ const HeaderTitle = styled(NavLink)`
   }
 `
 
-const NavSider = ({ isOpen }) => (
-  <Sider
-    width='100'
-    breakpoint='md'
-    collapsedWidth={0}
-    trigger={null}
-    collapsed={!isOpen}
-    style={{ position: 'fixed', zIndex: 9, top: '50px', bottom: 0, right: 0 }}
-  >
-    <NavMenu mode='vertical' />
-  </Sider>
-)
-NavSider.propTypes = {
-  isOpen: PropTypes.bool
-}
-
-const ToggleButton = styled(Button)`
-  position: fixed;
-  top: 9px;
-  right: 9px;
-  border-style: none;
-`
-
 class NavBar extends Component {
-  state = {
-    isMenuOpen: false
-  }
-  openMenu = () => {
-    this.setState(s => ({ isMenuOpen: !s.isMenuOpen }))
-  }
   render() {
     const { isMobile } = this.props
-    const { isMenuOpen } = this.state
-    return([
-      <AppHeader key='1' isMobile={isMobile}>
-        <HeaderTitle isMobile={isMobile} to="/">CharityBase</HeaderTitle>
-        {isMobile && <ToggleButton icon='info-circle' ghost onClick={this.openMenu} />}
-        {!isMobile && <NavMenu mode='horizontal' />}
-      </AppHeader>,
-      <NavSider key='2' isOpen={isMenuOpen} />
-    ])
+    return(
+      <AppHeader isMobile={isMobile}>
+        {!isMobile && <HeaderTitle isMobile={isMobile} to="/">CharityBase</HeaderTitle>}
+        <NavMenu mode='horizontal' isMobile={isMobile} />
+      </AppHeader>
+    )
   }
 }
 NavBar.propTypes = {
