@@ -9,7 +9,7 @@ import { formatMoney, formatCount } from '../../../lib/formatHelpers'
 class SimpleTreemapContent extends Component {
   render() {
     const { x, y, width, height, index, name, selected } = this.props
-    const isVeryBig = width > 300
+    const isVeryBig = width > 350
     const isBig = !isVeryBig && width > 100
     const isMedium = !isVeryBig && !isBig && width > 50
     return (

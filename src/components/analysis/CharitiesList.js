@@ -7,12 +7,12 @@ import { apiEndpoint } from '../../lib/constants'
 import { esBoundsToString, getCenterZoom } from '../../lib/mapHelpers'
 import { causes, operations, beneficiaries, funders } from '../../lib/filterValues'
 import { formatMoney } from '../../lib/formatHelpers'
-import { CharitiesMap, FundersTreemap, IncomeChart, GrantChart, GrantDateChart, RadialChart } from './charts'
+import { CharitiesMap, FundersTreemap, CountMoneyHistogram, RadialChart } from './charts'
 
 
 class CharitiesList extends Component {
   state = {
-    selectedTab: 'funders',
+    selectedTab: 'size',
     loading: true,
     data: [],
     geoBounds: null,
@@ -96,31 +96,49 @@ class CharitiesList extends Component {
       <div
         ref={this.chartContainer}
       >
-        {this.state.selectedTab === 'size' && <div>{data.size && (
-          <IncomeChart
+        {this.state.selectedTab === 'size' && this.state.width && <div>{data.size && (
+          <CountMoneyHistogram
             data={data.size.buckets.map(x => ({
-              name: `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
-              '# Charities': x.doc_count,
-              'Combined Charity Income': x.total_income.value,
+              'name': `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
+              'Number of Charities': x.doc_count,
+              'Combined Income': x.total_income.value,
             }))}
+            width={this.state.width}
+            height={this.state.height}
+            rangeKey='name'
+            countKey='Number of Charities'
+            moneyKey='Combined Income'
+            xAxisLabel='Charity Income'
           />
         )}</div>}
-        {this.state.selectedTab === 'size' && <div>{data.grantSize && (
-          <GrantChart
+        {this.state.selectedTab === 'size' && this.state.width && <div>{data.grantSize && (
+          <CountMoneyHistogram
             data={data.grantSize.filtered_grants.grantSize.buckets.map(x => ({
-              name: `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
-              '# Grants': x.doc_count,
-              'Combined Grant Value': x.total_awarded.value,
+              'name': `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
+              'Number of Grants': x.doc_count,
+              'Combined Value': x.total_awarded.value,
             }))}
+            width={this.state.width}
+            height={this.state.height}
+            rangeKey='name'
+            countKey='Number of Grants'
+            moneyKey='Combined Value'
+            xAxisLabel='Grant Size'
           />
         )}</div>}
         {this.state.selectedTab === 'size' && <div>{data.grantDate && (
-          <GrantDateChart
+          <CountMoneyHistogram
             data={data.grantDate.filtered_grants.grantDate.buckets.map(x => ({
-              name: `${x.key_as_string}`,
-              '# Grants': x.doc_count,
-              'Combined Grant Value': x.total_awarded.value,
+              'name': `${x.key_as_string}`,
+              'Number of Grants': x.doc_count,
+              'Combined Value': x.total_awarded.value,
             }))}
+            width={this.state.width}
+            height={this.state.height}
+            rangeKey='name'
+            countKey='Number of Grants'
+            moneyKey='Combined Value'
+            xAxisLabel='Grant Date'
           />
         )}</div>}
         {this.state.selectedTab === 'categories' && <div><div>Causes: {data.causes && (
@@ -169,7 +187,8 @@ class CharitiesList extends Component {
             isGeoFilterApplied={this.props.query && this.props.query.addressWithin ? true : false}
             isFreshSearch={this.state.isFreshSearch}
             {...getCenterZoom(this.state.geoBounds, this.state.width, this.state.height)}
-            size={{ width: this.state.width, height: this.state.height, }}
+            width={this.state.width}
+            height={this.state.height}
             loading={loading}
          />
         )}

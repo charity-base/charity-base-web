@@ -66,11 +66,11 @@ class CharitiesMap extends Component {
   }
   onBoundsFilter = boundsString => this.props.onQueryUpdate('addressWithin', boundsString)
   render() {
-    const { data, onBoundsChange, isGeoFilterApplied, size, loading } = this.props
+    const { data, onBoundsChange, isGeoFilterApplied, width, height, loading } = this.props
     const minCount = Math.min(...data.map(x => x.doc_count))
     const maxCount = Math.max(...data.map(x => x.doc_count))
     return (
-      <div style={{ ...size, position: 'relative', opacity: loading || this.state.zooming ? 0.5 : 1 }}>
+      <div style={{ width, height, position: 'relative', opacity: loading || this.state.zooming ? 0.5 : 1 }}>
         <GoogleMapReact
           bootstrapURLKeys={{
             key: googleApiKey,
@@ -106,14 +106,14 @@ class CharitiesMap extends Component {
         <Button
           onClick={() => this.onBoundsFilter(this.state.geoBoundsString)}
           disabled={this.state.zooming}
-          style={{ position: 'absolute', top: '10px', right: 5 + size.width/2 }}
+          style={{ position: 'absolute', top: '10px', right: 5 + width/2 }}
         >
           Filter this area
         </Button>
         <Button
           onClick={() => this.onBoundsFilter(undefined)}
           disabled={this.state.zooming || !isGeoFilterApplied}
-          style={{ position: 'absolute', top: '10px', left: 5 + size.width/2 }}
+          style={{ position: 'absolute', top: '10px', left: 5 + width/2 }}
         >
           Reset map filter
         </Button>
@@ -128,7 +128,8 @@ CharitiesMap.propTypes = {
   isGeoFilterApplied: PropTypes.bool,
   center: PropTypes.object,
   zoom: PropTypes.number,
-  size: PropTypes.object,
+  width: PropTypes.number,
+  height: PropTypes.number,
   isFreshSearch: PropTypes.bool,
   loading: PropTypes.bool,
 }
