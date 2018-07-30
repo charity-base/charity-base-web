@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { desaturate, transparentize } from 'polished'
 import GoogleMapReact from 'google-map-react'
-import { Button } from 'antd'
+import { Button, Row, Col } from 'antd'
 import { googleApiKey } from '../../../lib/constants'
-import { zoomToPrecision, gmapsBoundsToString, geoHashToLatLon } from '../../../lib/mapHelpers'
+import { zoomToPrecision, gmapsBoundsToString, geoHashToLatLon, geoHashToBoundingBox, getCenterZoom } from '../../../lib/mapHelpers'
+import { ContainerWidthConsumer } from '../../general/ContainerWidthConsumer'
+import { Alerts } from '../../general/Alerts'
 
 const MarkerContainer = styled.div`
   position: absolute;
@@ -49,92 +51,108 @@ CharityMarker.defaultProps = {
 
 class CharitiesMap extends Component {
   state = {
-    zoom: this.props.zoom,
-    center: this.props.center,
-    geoBoundsString: {},
+    geoBoundsString: null,
     zooming: false,
   }
   componentDidUpdate(prevProps, prevState) {
-    const { isFreshSearch, center, zoom } = this.props
+    const { isFreshSearch, geoBoundsString } = this.props
     if (!isFreshSearch) {
       return
     }
-    if (!center || !center.lat || !center.lng) {
-      return this.setState({
-        center : {lat: 53.99736721765253, lng: -2.2980105271564923},
-        zoom : 5,
-      })
-    }
-    if (center.lat !== prevState.center.lat || center.lng !== prevState.center.lng || zoom !== prevState.zoom) {
-      this.setState({ center, zoom })
+    if (geoBoundsString !== this.state.geoBoundsString) {
+      this.setState({ geoBoundsString })
     }
   }
   onBoundsFilter = boundsString => this.props.onQueryUpdate('addressWithin', boundsString)
+  onMapChange = ({ bounds, zoom, center }) => {
+    const geoBoundsString = gmapsBoundsToString(bounds)
+    const precision = zoomToPrecision(zoom)
+    this.props.onBoundsChange(geoBoundsString, precision)
+    this.setState({ geoBoundsString })
+  }
+  onMarkerClick = hash => {
+    const geoBoundsString = geoHashToBoundingBox(hash)
+    this.setState({ geoBoundsString })
+  }
   render() {
-    const { data, onBoundsChange, isGeoFilterApplied, width, height, loading } = this.props
-    const minCount = Math.min(...data.map(x => x.doc_count))
-    const maxCount = Math.max(...data.map(x => x.doc_count))
+    const { buckets, isGeoFilterApplied, loading } = this.props
+    const minCount = Math.min(...buckets.map(x => x.doc_count))
+    const maxCount = Math.max(...buckets.map(x => x.doc_count))
+    const height = 500
     return (
-      <div style={{ width, height, position: 'relative', opacity: loading || this.state.zooming ? 0.5 : 1 }}>
-        <GoogleMapReact
-          bootstrapURLKeys={{
-            key: googleApiKey,
-          }}
-          zoom={this.state.zoom}
-          center={this.state.center}
-          options={{}}
-          onChange={({ bounds, zoom, center }) => {
-            const geoBoundsString = gmapsBoundsToString(bounds)
-            const precision = zoomToPrecision(zoom)
-            onBoundsChange(geoBoundsString, precision)
-            this.setState({ zoom, center, geoBoundsString })
-          }}
-          onZoomAnimationStart={() => this.setState({ zooming: true })}
-          onZoomAnimationEnd={() => this.setState({ zooming: false })}
-        >
-          {!this.state.zooming && data.sort((a,b) => a.doc_count - b.doc_count).map(x => {
-            const size = maxCount > minCount ? (x.doc_count - minCount)/(maxCount - minCount) : 1
-            const { latitude, longitude } = geoHashToLatLon(x.key)
-            return <CharityMarker
-              key={x.key}
-              count={x.doc_count}
-              lat={latitude}
-              lng={longitude}
-              size={size}
-              onClick={() => this.setState(s => ({
-                zoom: s.zoom + 1,
-                center: { lat: latitude, lng: longitude }
-              }))}
-            />
-          })}
-        </GoogleMapReact>
-        <Button
-          onClick={() => this.onBoundsFilter(this.state.geoBoundsString)}
-          disabled={this.state.zooming}
-          style={{ position: 'absolute', top: '10px', right: 5 + width/2 }}
-        >
-          Filter this area
-        </Button>
-        <Button
-          onClick={() => this.onBoundsFilter(undefined)}
-          disabled={this.state.zooming || !isGeoFilterApplied}
-          style={{ position: 'absolute', top: '10px', left: 5 + width/2 }}
-        >
-          Reset map filter
-        </Button>
-      </div>
+      <Row type='flex' justify='center' align='middle' style={{ minHeight: height }}>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={8}>
+          <Alerts
+            alertsObjects={[
+              {
+                message: 'This map shows the registered address locations of grant-receiving charities.  Click on a bubble to zoom into that region, and click "Filter this area" to apply a geographical filter across all charts.',
+              },
+              {
+                message: `Remember it's interactive and will updated based on your search and date range above, as well as any other filters added in the left hand sidebar.`,
+              },
+            ]}
+          />
+        </Col>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={16}>
+          <ContainerWidthConsumer>
+            {containerWidth => {
+              const width = containerWidth
+              const { center, zoom } = getCenterZoom(this.state.geoBoundsString, width, height)
+              return width && (
+                <div style={{ width, height, position: 'relative', opacity: loading || this.state.zooming ? 0.5 : 1 }}>
+                  <GoogleMapReact
+                    bootstrapURLKeys={{
+                      key: googleApiKey,
+                    }}
+                    zoom={zoom}
+                    center={center}
+                    options={{}}
+                    onChange={this.onMapChange}
+                    onZoomAnimationStart={() => this.setState({ zooming: true })}
+                    onZoomAnimationEnd={() => this.setState({ zooming: false })}
+                  >
+                    {!this.state.zooming && buckets.sort((a,b) => a.doc_count - b.doc_count).map(x => {
+                      const size = maxCount > minCount ? (x.doc_count - minCount)/(maxCount - minCount) : 1
+                      const { latitude, longitude } = geoHashToLatLon(x.key)
+                      return <CharityMarker
+                        key={x.key}
+                        count={x.doc_count}
+                        lat={latitude}
+                        lng={longitude}
+                        size={size}
+                        onClick={() => this.onMarkerClick(x.key)}
+                      />
+                    })}
+                  </GoogleMapReact>
+                  <Button
+                    onClick={() => this.onBoundsFilter(this.state.geoBoundsString)}
+                    disabled={this.state.zooming}
+                    style={{ position: 'absolute', top: '10px', right: 5 + width/2 }}
+                  >
+                    Filter this area
+                  </Button>
+                  <Button
+                    onClick={() => this.onBoundsFilter(undefined)}
+                    disabled={this.state.zooming || !isGeoFilterApplied}
+                    style={{ position: 'absolute', top: '10px', left: 5 + width/2 }}
+                  >
+                    Reset map filter
+                  </Button>
+                </div>
+              )
+            }}
+          </ContainerWidthConsumer>
+        </Col>
+      </Row>
     )
   }
 }
 CharitiesMap.propTypes = {
-  data: PropTypes.array,
+  buckets: PropTypes.array,
   onBoundsChange: PropTypes.func,
   onQueryUpdate: PropTypes.func,
   isGeoFilterApplied: PropTypes.bool,
-  center: PropTypes.object,
-  zoom: PropTypes.number,
-  width: PropTypes.number,
-  height: PropTypes.number,
+  geoBoundsString: PropTypes.string,
   isFreshSearch: PropTypes.bool,
   loading: PropTypes.bool,
 }

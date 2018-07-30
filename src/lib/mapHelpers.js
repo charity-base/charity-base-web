@@ -78,4 +78,9 @@ const geoHashToLatLon = hash => {
   return { latitude, longitude }
 }
 
-export { zoomToPrecision, esBoundsToString, gmapsBoundsToString, getCenterZoom, geoHashToLatLon }
+const geoHashToBoundingBox = hash => {
+  const [minLat, minLon, maxLat, maxLon] = geohash.decode_bbox(hash)
+  return [maxLat, minLon, minLat, maxLon].join(',')
+}
+
+export { zoomToPrecision, esBoundsToString, gmapsBoundsToString, getCenterZoom, geoHashToLatLon, geoHashToBoundingBox }

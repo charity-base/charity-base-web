@@ -4,6 +4,9 @@ import { lighten } from 'polished'
 import { Menu, Button, Dropdown, Icon, Row, Col } from 'antd'
 import { Tooltip, Treemap } from 'recharts'
 import { formatMoney, formatCount } from '../../../lib/formatHelpers'
+import { ContainerWidthConsumer } from '../../general/ContainerWidthConsumer'
+import { Alerts } from '../../general/Alerts'
+import { funders } from '../../../lib/filterValues'
 
 
 class SimpleTreemapContent extends Component {
@@ -67,14 +70,14 @@ class FundersTreemap extends Component {
     selected: {},
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.data.length !== this.props.data.length) {
+    if (prevProps.buckets.length !== this.props.buckets.length) {
       this.setState({ selected: {} })
     }
   }
   keyOptions = () => ({
+    totalAwarded: 'Total Amount Granted',
     count: 'Number of Grants',
-    totalAwarded: 'Total Granted',
-    averageValue: 'Average Grant',
+    averageValue: 'Average Grant Size',
   })
   menu = () => (
     <Menu onClick={({ key }) => this.setState({ dataKey: key })}>
@@ -84,8 +87,9 @@ class FundersTreemap extends Component {
     </Menu>
   )
   getSelectedFunderIds = selected => {
-    const { data } = this.props
-    return Object.keys(selected).reduce((agg, i) => (selected[i] ? [...agg, data[i].id] : agg), [])
+    const { buckets } = this.props
+    const data = this.getDataFromBuckets(buckets)
+    return Object.keys(selected).reduce((agg, i) => (selected[i] && data[i] ? [...agg, data[i].id] : agg), [])
   }
   onFundersFilter = selected => {
     this.setState({ selected: {} })
@@ -101,53 +105,80 @@ class FundersTreemap extends Component {
       }
     }))
   }
+  getDataFromBuckets = buckets => buckets.map(x => ({
+    id: x.key,
+    name: `${(funders.find(f => f.id === x.key) || { name: 'Unknown' }).name}`,
+    count: x.doc_count,
+    totalAwarded: x.total_awarded.value,
+    averageValue: x.total_awarded.value/x.doc_count,
+  }))
   render() {
-    const { data, width, height } = this.props
+    const { buckets } = this.props
+    const data = this.getDataFromBuckets(buckets)
     return (
-      <div>
-        <Row>
-          <Col>Area represents:</Col>
-          <Col>
-            <Dropdown overlay={this.menu()} trigger={['click']} disabled={data.length < 2}>
-              <a className="ant-dropdown-link" style={{ fontSize: '16px', margin: '24px' }}>{this.keyOptions()[this.state.dataKey]} <Icon type="down" /></a>
-            </Dropdown>
-          </Col>
-        </Row>
-        <Button
-          onClick={() => this.onFundersFilter(this.state.selected)}
-          disabled={this.getSelectedFunderIds(this.state.selected).length === 0}
-          style={{ position: 'relative' }}
-        >
-          Filter selected funders
-        </Button>
-        <Button
-          onClick={() => this.onFundersFilter({})}
-          disabled={false}
-          style={{ position: 'relative' }}
-        >
-          Clear funders filter
-        </Button>
-        <Treemap
-          width={width}
-          height={height}
-          data={data}
-          dataKey={this.state.dataKey}
-          ratio={4/3}
-          stroke='#fff'
-          fill='#EC407A'
-          isAnimationActive={false}
-          content={<SimpleTreemapContent selected={this.state.selected} onSelect={this.onFunderSelect} />}
-        >
-          <Tooltip formatter={(value, name, props) => <SimpleTreemapTooltip {...props.payload} /> } separator='' />
-        </Treemap>
-      </div>
+      <Row type='flex' justify='center' align='middle' style={{ minHeight: 400 }}>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={8}>
+          <Alerts
+            alertsObjects={[
+              {
+                message: 'This chart shows the number of grants awarded by each funder as well as their average grant size and total amount granted.',
+              },
+              {
+                message: `Remember it's interactive and will updated based on your search and date range above, as well as any other filters added in the left hand sidebar.`,
+              },
+            ]}
+          />
+          <Row type='flex' justify='start' align='middle'>
+            <Col xs={10} sm={10} md={8} lg={8} xl={4} xxl={12}>
+              <span style={{ fontWeight: 500, fontSize: '16px' }} >Area represents:</span>
+            </Col>
+            <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+              <Dropdown overlay={this.menu()} trigger={['click']} disabled={data.length < 2}>
+                <a className="ant-dropdown-link" style={{ fontSize: '16px', margin: '24px' }}>{this.keyOptions()[this.state.dataKey]} <Icon type="down" /></a>
+              </Dropdown>
+            </Col>
+          </Row>
+          <Button
+            onClick={() => this.onFundersFilter(this.state.selected)}
+            disabled={this.getSelectedFunderIds(this.state.selected).length === 0}
+            style={{ position: 'relative' }}
+          >
+            Filter selected funders
+          </Button>
+          <Button
+            onClick={() => this.onFundersFilter({})}
+            disabled={false}
+            style={{ position: 'relative' }}
+          >
+            Clear funders filter
+          </Button>
+        </Col>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={16}>
+          <ContainerWidthConsumer>
+            {width => (
+              <Treemap
+                width={width}
+                height={400}
+                data={data}
+                dataKey={this.state.dataKey}
+                ratio={4/3}
+                stroke='#fff'
+                fill='#EC407A'
+                isAnimationActive={false}
+                content={<SimpleTreemapContent selected={this.state.selected} onSelect={this.onFunderSelect} />}
+              >
+                <Tooltip formatter={(value, name, props) => <SimpleTreemapTooltip {...props.payload} /> } separator='' />
+              </Treemap>
+            )}
+          </ContainerWidthConsumer>
+        </Col>
+      </Row>
     )
   }
 }
 FundersTreemap.propTypes = {
-  data: PropTypes.array,
-  width: PropTypes.number,
-  height: PropTypes.number,
+  buckets: PropTypes.array,
+  onQueryUpdate: PropTypes.func,
 }
 
 export { FundersTreemap }

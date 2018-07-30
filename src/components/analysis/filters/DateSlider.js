@@ -60,11 +60,11 @@ class DateSlider extends Component {
   })
   render() {
     return (
-      <Row type='flex' align='middle' justify='center'>
-        <Col span={12}>
+      <Row type='flex' align='middle' justify='start' style={{ padding: '10px' }}>
+        <Col xs={24} sm={24} md={24} lg={8} xl={6} xxl={3}>
           <span style={{ fontWeight: 500, fontSize: '14px' }}>Filter Grant Date:</span>
         </Col>
-        <Col span={12} style={{padding: '20px'}}>
+        <Col xs={24} sm={24} md={24} lg={16} xl={18} xxl={21}>
           <Slider
             range
             min={0}

@@ -24,7 +24,7 @@ const AnalysisMenu = ({ view, onQueryUpdate }) => (
       <div style={{ padding: '20px' }}>
         <SideBarTitle>
           <Icon type='area-chart' style={{ marginRight: '10px' }}/>
-          CHARTS VIEW
+          CHARTS
         </SideBarTitle>
       </div>
     )}

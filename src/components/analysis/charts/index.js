@@ -1,4 +1,4 @@
 export { CharitiesMap } from './CharitiesMap'
 export { FundersTreemap } from './FundersTreemap'
-export { CountMoneyHistogram } from './Histogram'
-export { RadialChart } from './Radial'
+export { CharitySizeHistogram, GrantSizeHistogram, GrantDateHistogram } from './Histogram'
+export { RadialChart, CharityCategoriesRadial } from './Radial'

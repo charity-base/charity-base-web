@@ -134,7 +134,7 @@ class ResponsiveSider extends React.Component {
       isMobile && (
         <SiderToggle
           key={'2'}
-          type={(isRight && collapsed || !isRight && !collapsed) ? 'menu-fold' : 'menu-unfold'}
+          type={(isRight && collapsed) || (!isRight && !collapsed) ? 'menu-fold' : 'menu-unfold'}
           onClick={() => this.setState(s => ({ collapsed: !s.collapsed }))}
           isRight={isRight}
         />

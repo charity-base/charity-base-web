@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts'
+import { Row, Col } from 'antd'
+import { ContainerWidthConsumer } from '../../general/ContainerWidthConsumer'
+import { Alerts } from '../../general/Alerts'
+import { causes, operations, beneficiaries } from '../../../lib/filterValues'
 
 const RadialChart = ({ data, width, height }) => (
   <RadarChart cx={width/2} cy={height/2} outerRadius={Math.min(width/2 - 50, 150)} width={width} height={height} data={data}>
@@ -16,4 +20,73 @@ RadialChart.propTypes = {
   height: PropTypes.number,
 }
 
-export { RadialChart }
+class CharityCategoriesRadial extends Component {
+  getCategories = categoryType => {
+    switch (categoryType) {
+      case 'causes':
+        return causes.filter(x => x.id !== 101 && x.id !== 117).sort((a,b) => a.id - b.id)
+      case 'beneficiaries':
+        return beneficiaries.filter(x => x.id !== 206).sort((a,b) => a.key - b.key)
+      case 'operations':
+        return operations.filter(x => x.id !== 310).sort((a,b) => a.key - b.key)
+      default:
+        return []
+    }
+  }
+  getAlertObject = categoryType => {
+    switch (categoryType) {
+      case 'causes':
+        return {
+          message: 'This chart shows the causes being tackled by grant-receiving charities.  The causes are defined by the Charity Commission and typically charities will select a few from the list.',
+        }
+      case 'beneficiaries':
+        return {
+          message: 'This chart shows the beneficiary groups helped by grant-receiving charities.  The beneficiaries are defined by the Charity Commission and typically charities will select a few from the list.',
+        }
+      case 'operations':
+        return {
+          message: 'This chart shows the operations undertaken by grant-receiving charities.  The operations are defined by the Charity Commission and typically charities will select a few from the list.',
+        }
+      default:
+        return {}
+    }
+  }
+  render() {
+    const { buckets, categoryType } = this.props
+    return (
+      <Row type='flex' justify='center' align='middle' style={{ minHeight: 400 }}>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={8}>
+          <Alerts
+            alertsObjects={[
+              this.getAlertObject(categoryType),
+              {
+                message: `Remember it's interactive and will updated based on your search and date range above, as well as any other filters added in the left hand sidebar.`,
+              },
+            ]}
+          />
+        </Col>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={16}>
+          <ContainerWidthConsumer>
+            {width => (
+              <RadialChart
+                data={this.getCategories(categoryType).map(x => ({
+                  name: `${x.altName}`,
+                  doc_count: (buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
+                }))}
+                width={width}
+                height={400}
+              />
+            )}
+          </ContainerWidthConsumer>
+        </Col>
+      </Row>
+    )
+  }
+}
+CharityCategoriesRadial.propTypes = {
+  buckets: PropTypes.array,
+  categoryType: PropTypes.string,
+}
+
+
+export { RadialChart, CharityCategoriesRadial }
