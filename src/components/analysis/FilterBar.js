@@ -38,7 +38,7 @@ class ResultsCount extends Component {
     this.setState({ isLoadingGrants: true })
     const url = `${apiEndpoint}/aggregate-charities${queryString}${queryString ? '&' : '?'}hasGrant=true&aggTypes=grantTotal`
     fetchJSON(url)
-    .then(res => this.setState({ isLoadingGrants: false, grantsCount: res.aggregations.grantTotal.doc_count, grantsValue: res.aggregations.grantTotal.filtered_grants.total_awarded.value }))
+    .then(res => this.setState({ isLoadingGrants: false, grantsCount: res.aggregations.grantTotal.filtered_grants.doc_count, grantsValue: res.aggregations.grantTotal.filtered_grants.total_awarded.value }))
     .catch(err => console.log(err))
   }
   render() {
