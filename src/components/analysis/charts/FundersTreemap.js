@@ -124,15 +124,15 @@ class FundersTreemap extends Component {
                 message: 'This chart shows the number of grants awarded by each funder as well as their average grant size and total amount granted.',
               },
               {
-                message: `Remember it's interactive and will updated based on your search and date range above, as well as any other filters added in the left hand sidebar.`,
+                message: `Remember it's interactive and will update based on the search and filters above, as well as any other filters added in the left hand sidebar.`,
               },
             ]}
           />
           <Row type='flex' justify='start' align='middle'>
-            <Col xs={10} sm={10} md={8} lg={8} xl={4} xxl={12}>
+            <Col xs={10} sm={8} md={8} lg={8} xl={6} xxl={9}>
               <span style={{ fontWeight: 500, fontSize: '16px' }} >Area represents:</span>
             </Col>
-            <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            <Col xs={14} sm={14} md={14} lg={12} xl={12} xxl={15}>
               <Dropdown overlay={this.menu()} trigger={['click']} disabled={data.length < 2}>
                 <a className="ant-dropdown-link" style={{ fontSize: '16px', margin: '24px' }}>{this.keyOptions()[this.state.dataKey]} <Icon type="down" /></a>
               </Dropdown>
@@ -142,6 +142,7 @@ class FundersTreemap extends Component {
             onClick={() => this.onFundersFilter(this.state.selected)}
             disabled={this.getSelectedFunderIds(this.state.selected).length === 0}
             style={{ position: 'relative' }}
+            type='primary'
           >
             Filter selected funders
           </Button>

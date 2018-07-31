@@ -74,7 +74,7 @@ class CharityCategoriesRadial extends Component {
             alertsObjects={[
               this.getAlertObject(categoryType),
               {
-                message: `Remember it's interactive and will updated based on the search and filters above, as well as any other filters added in the left hand sidebar.`,
+                message: `Remember it's interactive and will update based on the search and filters above, as well as any other filters added in the left hand sidebar.`,
               },
             ]}
           />

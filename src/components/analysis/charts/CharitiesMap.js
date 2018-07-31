@@ -88,7 +88,7 @@ class CharitiesMap extends Component {
                 message: 'This map shows the registered address locations of grant-receiving charities.  Click on a bubble to zoom into that region, and click "Filter this area" to apply a geographical filter across all charts.',
               },
               {
-                message: `Remember it's interactive and will updated based on your search and date range above, as well as any other filters added in the left hand sidebar.`,
+                message: `Remember it's interactive and will update based on the search and filters above, as well as any other filters added in the left hand sidebar.`,
               },
             ]}
           />
