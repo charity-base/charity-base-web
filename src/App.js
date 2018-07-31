@@ -10,7 +10,7 @@ import { NavBar } from './components/nav'
 class App extends Component {
   render() {
     const innerWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 320
-    const isMobile = innerWidth < 768
+    const isMobile = innerWidth < 992
     return (
       <LocaleProvider locale={enGB}>
         <Layout>
