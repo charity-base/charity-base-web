@@ -7,6 +7,7 @@ import { CharitiesList } from './CharitiesList'
 import { Layout } from 'antd'
 import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
 import { DateSlider } from './filters/DateSlider'
+import { FunderMultiSelect } from './filters/FunderMultiSelect'
 import { AnalysisMenu } from './AnalysisMenu'
 
 class Analysis extends Component {
@@ -16,18 +17,25 @@ class Analysis extends Component {
   }
   render() {
     const { query, queryString, isMobile } = this.props
-    const view = this.props.query.view || 'grant-funders'
+    const view = this.props.query.view || 'grant-topics'
     return (
       <Page isMobile={isMobile}>
         <ResponsiveSider isMobile={isMobile}>
           <FilterBar queryString={queryString} />
         </ResponsiveSider>
         <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF' }}>
-          <FixedHeader isMobile={isMobile} height={200}>
+          <FixedHeader isMobile={isMobile} height={250}>
             <CharitiesSearch query={query} />
-            <DateSlider query={query} />
+            <DateSlider
+              query={query}
+              onQueryUpdate={this.onQueryUpdate}
+            />
+            <FunderMultiSelect
+              query={query}
+              onQueryUpdate={this.onQueryUpdate}
+            />
           </FixedHeader>
-          <ScrollableContent isMobile={isMobile} paddingTop={200}>
+          <ScrollableContent isMobile={isMobile} paddingTop={250}>
             <CharitiesList
               queryString={queryString}
               query={query}

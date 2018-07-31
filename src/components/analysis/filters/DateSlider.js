@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
-import qs from 'query-string'
 import { Row, Col, Slider } from 'antd'
 
 class DateSlider extends Component {
@@ -51,8 +50,8 @@ class DateSlider extends Component {
     this.setState({ value: [startInt, endInt] })
     const startDateString = this.dateFromMonths(startInt, false)
     const endDateString = this.dateFromMonths(endInt, false)
-    const newQuery = { ...this.props.query, grantDateRange: `${startDateString},${endDateString}` || undefined }
-    this.context.router.history.push(`?${qs.stringify(newQuery)}`)
+    const grantDateRange = `${startDateString},${endDateString}` || undefined
+    this.props.onQueryUpdate('grantDateRange', grantDateRange)
   }
   getMarks = ([startInt, endInt]) => ({
     [startInt]: this.dateFromMonths(startInt, true),
@@ -86,14 +85,12 @@ DateSlider.propTypes = {
   query: PropTypes.object,
   sinceYear: PropTypes.number,
   sinceMonth: PropTypes.number,
+  onQueryUpdate: PropTypes.func,
 }
 DateSlider.defaultProps = {
   query: {},
   sinceYear: 1996,
   sinceMonth: 12,
-}
-DateSlider.contextTypes = {
-  router: PropTypes.object,
 }
 
 export { DateSlider }

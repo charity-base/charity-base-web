@@ -66,7 +66,7 @@ class CharityCategoriesRadial extends Component {
     return { name, value: bucket.doc_count }
   }
   render() {
-    const { buckets, categoryType } = this.props
+    const { categoryType } = this.props
     return (
       <Row type='flex' justify='center' align='middle' style={{ minHeight: 400 }}>
         <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={8}>

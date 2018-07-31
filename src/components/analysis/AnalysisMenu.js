@@ -7,8 +7,8 @@ import { SideBarTitle } from '../general/InfoText'
 const AnalysisMenu = ({ view, onQueryUpdate }) => (
   <MenuBar
     menuItems={[
-      { id: 'grant-funders', icon: 'gift', text: 'Grant Funders' },
       { id: 'grant-topics', icon: 'tags-o', text: 'Grant Topics' },
+      { id: 'grant-funders', icon: 'gift', text: 'Grant Funders' },
       { id: 'grant-size', icon: 'bank', text: 'Grant Size' },
       { id: 'grant-date', icon: 'calendar', text: 'Grant Date' },
       { id: 'charity-location', icon: 'environment-o', text: 'Recipient Location' },
