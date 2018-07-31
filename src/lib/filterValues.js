@@ -765,6 +765,7 @@ const areasOfOperation = [
 ]
 
 const funders = [
+  { id: 'GB-CHC-1000147', name: 'A B Charitable Trust' },
   { id: '360G-ArcadiaFund', name: 'ARCADIA' },
   { id: 'GB-CHC-1115476', name: 'Barrow Cadbury Trust' },
   { id: 'GB-CHC-802052', name: 'BBC Children in Need' },
@@ -775,7 +776,7 @@ const funders = [
   { id: 'GB-CHC-1035628', name: 'City Bridge Trust' },
   { id: 'GB-CHC-274100', name: 'The Clothworkers Foundation' },
   { id: 'GB-COH-IP00525R', name: 'Co-operative Group' },
-  { id: 'GB-CHC-326568 ', name: 'Comic Relief ' },
+  { id: 'GB-CHC-326568 ', name: 'Comic Relief' },
   { id: 'GB-CHC-1111600', name: 'Community Foundation for Surrey' },
   { id: 'GB-COH-02273708', name: 'Community Foundation serving Tyne & Wear and Northumberland' },
   { id: 'GB-CHC-1078217', name: 'The David & Elaine Potter Foundation' },
@@ -791,6 +792,7 @@ const funders = [
   { id: 'GB-CHC-1093844', name: 'The Joseph Rank Trust' },
   { id: 'GB-CHC-210037', name: 'Joseph Rowntree Charitable Trust' },
   { id: 'GB-CHC-210169', name: 'Joseph Rowntree Foundation' },
+  { id: 'GB-CHC-1111360', name: 'Kingston Voluntary Action' },
   { id: 'GB-CHC-295157', name: 'LandAid Charitable Trust' },
   { id: 'GB-CHC-1107583', name: 'Lankelly Chase Foundation' },
   { id: 'GB-CHC-327114', name: 'Lloyds Bank Foundation for England and Wales' },
@@ -798,6 +800,7 @@ const funders = [
   { id: 'GB-LAE-SWK', name: 'London Borough of Southwark' },
   { id: 'GB-COH-03037449', name: 'London Councils' },
   { id: 'GB-CHC-1145921', name: 'Macc' },
+  { id: 'GB-CHC-1164703', name: 'Masonic Charitable Foundation' },
   { id: 'GB-CHC-1158914', name: 'Millfield House Foundation' },
   { id: 'GB-CHC-1065552', name: 'Nationwide Foundation' },
   { id: 'GB-CHC-1144091', name: 'Nesta' },
@@ -823,6 +826,7 @@ const funders = [
   { id: 'GB-CHC-1089893', name: 'True Colours Trust' },
   { id: 'GB-CHC-1105580', name: 'The Tudor Trust' },
   { id: 'GB-CHC-1081124', name: 'Tuixen Foundation' },
+  { id: 'GB-CHC-1166471', name: 'Two Ridings Community Foundation' },
   { id: 'GB-CHC-1103731', name: 'United St Saviour\'s Charity' },
   { id: 'GB-CHC-1161290', name: 'Virgin Money Foundation' },
   { id: 'GB-CHC-312800', name: 'Walcot Foundation' },
