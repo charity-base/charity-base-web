@@ -16,7 +16,7 @@ class Analysis extends Component {
   }
   render() {
     const { query, queryString, isMobile } = this.props
-    const view = this.props.query.view || 'charity-size'
+    const view = this.props.query.view || 'grant-funders'
     return (
       <Page isMobile={isMobile}>
         <ResponsiveSider isMobile={isMobile}>

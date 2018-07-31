@@ -93,6 +93,12 @@ class CharitiesList extends Component {
             categoryType='operations'
           />
         )}
+        {view === 'grant-topics' && (
+          <CharityCategoriesRadial
+            buckets={data.grantTopics ? data.grantTopics.filtered_grants.topics.nestedTopics.buckets : []}
+            categoryType='grantTopics'
+          />
+        )}
         {view === 'grant-funders' && (
           <FundersTreemap
             buckets={data.funders ? data.funders.filtered_grants.funders.buckets : []}

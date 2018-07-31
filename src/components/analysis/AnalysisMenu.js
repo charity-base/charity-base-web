@@ -7,16 +7,15 @@ import { SideBarTitle } from '../general/InfoText'
 const AnalysisMenu = ({ view, onQueryUpdate }) => (
   <MenuBar
     menuItems={[
+      { id: 'grant-funders', icon: 'gift', text: 'Grant Funders' },
+      { id: 'grant-topics', icon: 'tags-o', text: 'Grant Topics' },
       { id: 'grant-size', icon: 'bank', text: 'Grant Size' },
       { id: 'grant-date', icon: 'calendar', text: 'Grant Date' },
-      { id: 'grant-funders', icon: 'gift', text: 'Grant Funders' },
       { id: 'charity-location', icon: 'environment-o', text: 'Recipient Location' },
       { id: 'charity-size', icon: 'bank', text: 'Recipient Size' },
-      { id: 'recipient-tags-submenu', icon: 'tags-o', text: 'Recipient Tags', items: [
-        { id: 'charity-causes', icon: 'medicine-box', text: 'Causes' },
-        { id: 'charity-beneficiaries', icon: 'team', text: 'Beneficiaries' },
-        { id: 'charity-operations', icon: 'tool', text: 'Operations' },
-      ] }
+      { id: 'charity-causes', icon: 'medicine-box', text: 'Recipient Causes' },
+      { id: 'charity-beneficiaries', icon: 'team', text: 'Recipient Beneficiaries' },
+      { id: 'charity-operations', icon: 'tool', text: 'Recipient Operations' },
     ]}
     selectedId={view}
     onSelect={view => onQueryUpdate('view', view)}

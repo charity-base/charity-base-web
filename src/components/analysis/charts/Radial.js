@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts'
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip } from 'recharts'
 import { Row, Col } from 'antd'
 import { ContainerWidthConsumer } from '../../general/ContainerWidthConsumer'
 import { Alerts } from '../../general/Alerts'
-import { causes, operations, beneficiaries } from '../../../lib/filterValues'
+import { causes, operations, beneficiaries, grantTopics } from '../../../lib/filterValues'
 
 const RadialChart = ({ data, width, height }) => (
   <RadarChart cx={width/2} cy={height/2} outerRadius={Math.min(width/2 - 50, 150)} width={width} height={height} data={data}>
     <PolarGrid />
     <PolarAngleAxis dataKey='name' />
     <PolarRadiusAxis/>
-    <Radar dataKey='doc_count' stroke='#EC407A' fill='#EC407A' fillOpacity={0.6}/>
+    <Tooltip />
+    <Radar dataKey='value' stroke='#EC407A' fill='#EC407A' fillOpacity={0.6}/>
   </RadarChart>
 )
 RadialChart.propTypes = {
@@ -24,11 +25,13 @@ class CharityCategoriesRadial extends Component {
   getCategories = categoryType => {
     switch (categoryType) {
       case 'causes':
-        return causes.filter(x => x.id !== 101 && x.id !== 117).sort((a,b) => a.id - b.id)
+        return causes.filter(x => x.id !== 101 && x.id !== 117).sort((a,b) => a.order - b.order)
       case 'beneficiaries':
-        return beneficiaries.filter(x => x.id !== 206).sort((a,b) => a.key - b.key)
+        return beneficiaries.filter(x => x.id !== 206).sort((a,b) => a.order - b.order)
       case 'operations':
-        return operations.filter(x => x.id !== 310).sort((a,b) => a.key - b.key)
+        return operations.filter(x => x.id !== 310).sort((a,b) => a.order - b.order)
+      case 'grantTopics':
+        return grantTopics.sort((a,b) => a.order - b.order)
       default:
         return []
     }
@@ -47,9 +50,20 @@ class CharityCategoriesRadial extends Component {
         return {
           message: 'This chart shows the operations undertaken by grant-receiving charities.  The operations are defined by the Charity Commission and typically charities will select a few from the list.',
         }
+      case 'grantTopics':
+        return {
+          message: 'These 20 themes were generated automatically from 80,000 grant descriptions using a method of unsupervised machine learning called Topic Modelling.',
+        }
       default:
         return {}
     }
+  }
+  getValues = filterValue => {
+    const name = filterValue.altName
+    const bucket = this.props.buckets.find(b => b.key === filterValue.id)
+    if (!bucket) return { name, value: 0 }
+    if (bucket.score) return { name, value: Math.round(bucket.score.value*100)/100 }
+    return { name, value: bucket.doc_count }
   }
   render() {
     const { buckets, categoryType } = this.props
@@ -60,7 +74,7 @@ class CharityCategoriesRadial extends Component {
             alertsObjects={[
               this.getAlertObject(categoryType),
               {
-                message: `Remember it's interactive and will updated based on your search and date range above, as well as any other filters added in the left hand sidebar.`,
+                message: `Remember it's interactive and will updated based on the search and filters above, as well as any other filters added in the left hand sidebar.`,
               },
             ]}
           />
@@ -69,10 +83,7 @@ class CharityCategoriesRadial extends Component {
           <ContainerWidthConsumer>
             {width => (
               <RadialChart
-                data={this.getCategories(categoryType).map(x => ({
-                  name: `${x.altName}`,
-                  doc_count: (buckets.find(c => c.key === x.id) || { doc_count: 0 }).doc_count,
-                }))}
+                data={this.getCategories(categoryType).map(this.getValues)}
                 width={width}
                 height={400}
               />

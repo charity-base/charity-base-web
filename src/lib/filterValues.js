@@ -2,86 +2,103 @@
 const causes = [
   {
     "id" : 102,
+    "order" : 102,
     "name" : "Education/training",
     "altName" : "Education",
   },
   {
     "id" : 105,
+    "order" : 105,
     "name" : "The prevention or relief of poverty",
     "altName" : "Poverty",
   },
   {
     "id" : 101,
+    "order" : 101,
     "name" : "General charitable purposes",
     "altName" : "General",
   },
   {
     "id" : 103,
+    "order" : 103,
     "name" : "The advancement of health or saving of lives",
     "altName" : "Health",
   },
   {
     "id" : 104,
+    "order" : 104,
     "name" : "Disability",
     "altName" : "Disability",
   },
   {
     "id" : 108,
+    "order" : 108,
     "name" : "Religious activities",
     "altName" : "Religion",
   },
   {
     "id" : 110,
+    "order" : 110,
     "name" : "Amateur sport",
     "altName" : "Sport",
   },
   {
     "id" : 109,
+    "order" : 109,
     "name" : "Arts/culture/heritage/science",
     "altName" : "Culture",
   },
   {
     "id" : 107,
+    "order" : 107,
     "name" : "Accommodation/housing",
     "altName" : "Housing",
   },
   {
     "id" : 113,
+    "order" : 113,
     "name" : "Economic/community development/employment",
     "altName" : "Community",
   },
   {
     "id" : 112,
+    "order" : 112,
     "name" : "Environment/conservation/heritage",
     "altName" : "Environment",
   },
   {
     "id" : 115,
+    "order" : 115,
     "name" : "Human rights/religious or racial harmony/equality or diversity",
     "altName" : "Human Rights",
   },
   {
     "id" : 116,
+    "order" : 116,
     "name" : "Recreation",
     "altName" : "Recreation",
   },
   {
     "id" : 111,
+    "order" : 111,
     "name" : "Animals",
     "altName" : "Animals",
   },
   {
     "id" : 117,
+    "order" : 117,
     "name" : "Other charitable purposes",
     "altName" : "Other",
   },
   {
     "id" : 106,
+    "order" : 106,
     "name" : "Overseas aid/famine relief",
     "altName" : "Aid",
   },
   {
     "id" : 114,
+    "order" : 114,
     "name" : "Armed forces/emergency service efficiency",
     "altName" : "Armed Forces",
   }
@@ -90,36 +107,43 @@ const causes = [
 const beneficiaries = [
   {
     "id" : 201,
+    "order" : 201,
     "name" : "Children/young people",
     "altName" : "Young",
   },
   {
     "id" : 202,
+    "order" : 202,
     "name" : "Elderly/old people",
     "altName" : "Old",
   },
   {
     "id" : 203,
+    "order" : 203,
     "name" : "People with disabilities",
     "altName" : "Disabled",
   },
   {
     "id" : 205,
+    "order" : 205,
     "name" : "Other charities or voluntary bodies",
     "altName" : "Other Charities",
   },
   {
     "id" : 206,
+    "order" : 206,
     "name" : "Other defined groups",
     "altName" : "Other",
   },
   {
     "id" : 207,
+    "order" : 207,
     "name" : "The general public/mankind",
     "altName" : "General Public",
   },
   {
     "id" : 204,
+    "order" : 204,
     "name" : "People of a particular ethnic or racial origin",
     "altName" : "Particular Ethnicity",
   }
@@ -128,54 +152,187 @@ const beneficiaries = [
 const operations = [
   {
     "id" : 301,
+    "order" : 301,
     "name" : "Makes grants to individuals",
     "altName" : "Grants to Individuals",
   },
   {
     "id" : 302,
+    "order" : 302,
     "name" : "Makes grants to organisations",
     "altName" : "Grants to Organisations",
   },
   {
     "id" : 303,
+    "order" : 303,
     "name" : "Provides other finance",
     "altName" : "Other Financial",
   },
   {
     "id" : 307,
+    "order" : 307,
     "name" : "Provides advocacy/advice/information",
     "altName" : "Advocacy",
   },
   {
     "id" : 308,
+    "order" : 308,
     "name" : "Sponsors or undertakes research",
     "altName" : "Research",
   },
   {
     "id" : 305,
+    "order" : 305,
     "name" : "Provides buildings/facilities/open space",
     "altName" : "Facilities",
   },
   {
     "id" : 306,
+    "order" : 306,
     "name" : "Provides services",
     "altName" : "Services",
   },
   {
     "id" : 304,
+    "order" : 304,
     "name" : "Provides human resources",
     "altName" : "Human Resources",
   },
   {
     "id" : 309,
+    "order" : 309,
     "name" : "Acts as an umbrella or resource body",
     "altName" : "Acts as Umbrella Body",
   },
   {
     "id" : 310,
+    "order" : 310,
     "name" : "Other charitable activities",
     "altName" : "Other",
   }
+]
+
+const grantTopics = [
+  {
+    "id" : 1,
+    "order" : 0,
+    "name" : "Financial advice",
+    "altName" : "Financial advice",
+  },
+  {
+    "id" : 3,
+    "order" : 1,
+    "name" : "Tech equipment",
+    "altName" : "Tech equipment",
+  },
+  {
+    "id" : 16,
+    "order" : 2,
+    "name" : "Building facilities",
+    "altName" : "Building facilities",
+  },
+  {
+    "id" : 9,
+    "order" : 3,
+    "name" : "Village hall facilities",
+    "altName" : "Village hall facilities",
+  },
+  {
+    "id" : 10,
+    "order" : 4,
+    "name" : "Develop capacity",
+    "altName" : "Develop capacity",
+  },
+  {
+    "id" : 8,
+    "order" : 5,
+    "name" : "Salary costs",
+    "altName" : "Salary costs",
+  },
+  {
+    "id" : 18,
+    "order" : 6,
+    "name" : "Running events",
+    "altName" : "Running events",
+  },
+  {
+    "id" : 6,
+    "order" : 7,
+    "name" : "Ethnic minorities",
+    "altName" : "Ethnic minorities",
+  },
+  {
+    "id" : 0,
+    "order" : 8,
+    "name" : "Sexual Abuse",
+    "altName" : "Sexual Abuse",
+  },
+  {
+    "id" : 12,
+    "order" : 9,
+    "name" : "Family Support",
+    "altName" : "Family Support",
+  },
+  {
+    "id" : 2,
+    "order" : 10,
+    "name" : "Arts",
+    "altName" : "Arts",
+  },
+  {
+    "id" : 13,
+    "order" : 11,
+    "name" : "Sports",
+    "altName" : "Sports",
+  },
+  {
+    "id" : 4,
+    "order" : 12,
+    "name" : "Environment",
+    "altName" : "Environment",
+  },
+  {
+    "id" : 11,
+    "order" : 13,
+    "name" : "Holiday playscheme",
+    "altName" : "Holiday playscheme",
+  },
+  {
+    "id" : 15,
+    "order" : 14,
+    "name" : "Youth education",
+    "altName" : "Youth education",
+  },
+  {
+    "id" : 14,
+    "order" : 15,
+    "name" : "Physical health",
+    "altName" : "Physical health",
+  },
+  {
+    "id" : 17,
+    "order" : 16,
+    "name" : "Mental health",
+    "altName" : "Mental health",
+  },
+  {
+    "id" : 5,
+    "order" : 17,
+    "name" : "Elderly / health care",
+    "altName" : "Elderly / health care",
+  },
+  {
+    "id" : 19,
+    "order" : 18,
+    "name" : "Elderly / disabled transport",
+    "altName" : "Elderly / disabled transport",
+  },
+  {
+    "id" : 7,
+    "order" : 19,
+    "name" : "Learning disabilities",
+    "altName" : "Learning disabilities",
+  },
 ]
 
 const areasOfOperation = [
@@ -672,7 +829,7 @@ const funders = [
   { id: 'GB-CHC-1123126', name: 'Wiltshire Community Foundation' },
   { id: 'GB-CHC-1156077', name: 'Wolfson Foundation' },
   { id: 'GB-CHC-299963', name: 'Woodward Charitable Trust' },
-  { id: 'GB-CHC-01133342', name: 'ZING' }
+  { id: 'GB-CHC-1133342', name: 'ZING' }
 ]
 
-export { areasOfOperation, causes, beneficiaries, operations, funders }
+export { areasOfOperation, causes, beneficiaries, operations, funders, grantTopics }

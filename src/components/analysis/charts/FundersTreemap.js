@@ -66,7 +66,7 @@ const SimpleTreemapTooltip = ({ name, count, totalAwarded, averageValue }) => (
 
 class FundersTreemap extends Component {
   state = {
-    dataKey: 'totalAwarded',
+    dataKey: 'count',
     selected: {},
   }
   componentDidUpdate(prevProps) {
@@ -75,9 +75,9 @@ class FundersTreemap extends Component {
     }
   }
   keyOptions = () => ({
-    totalAwarded: 'Total Amount Granted',
     count: 'Number of Grants',
     averageValue: 'Average Grant Size',
+    totalAwarded: 'Total Amount Granted',
   })
   menu = () => (
     <Menu onClick={({ key }) => this.setState({ dataKey: key })}>

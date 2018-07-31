@@ -97,6 +97,7 @@ class CharitiesMap extends Component {
           <ContainerWidthConsumer>
             {containerWidth => {
               const width = containerWidth
+              if (!width || !this.state.geoBoundsString) return
               const { center, zoom } = getCenterZoom(this.state.geoBoundsString, width, height)
               return width && (
                 <div style={{ width, height, position: 'relative', opacity: loading || this.state.zooming ? 0.5 : 1 }}>
