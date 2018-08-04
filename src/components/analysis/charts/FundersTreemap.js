@@ -165,7 +165,7 @@ class FundersTreemap extends Component {
                 ratio={4/3}
                 stroke='#fff'
                 fill='#EC407A'
-                isAnimationActive={false}
+                isAnimationActive={true}
                 content={<SimpleTreemapContent selected={this.state.selected} onSelect={this.onFunderSelect} />}
               >
                 <Tooltip formatter={(value, name, props) => <SimpleTreemapTooltip {...props.payload} /> } separator='' />
