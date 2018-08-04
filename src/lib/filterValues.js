@@ -240,8 +240,8 @@ const grantTopics = [
   {
     "id" : 10,
     "order" : 4,
-    "name" : "Develop capacity",
-    "altName" : "Develop capacity",
+    "name" : "Core costs",
+    "altName" : "Core costs",
   },
   {
     "id" : 8,
