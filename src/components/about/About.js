@@ -106,7 +106,7 @@ class About extends Component {
             </Question>
             <Answer>
               <p>Yes, you can download the entire results from any query to a <a rel='noopener noreferrer' target='_blank' href='http://jsonlines.org/'>JSON Lines</a> file by clicking the button on the left hand side of the results page.</p>
-              <p>You want the entire, unfiltered database (113 MB compressed)? <DownloadResults queryString='' linkText='Here you go' />.</p>
+              <p>You want the entire, unfiltered database (184 MB compressed)? <DownloadResults queryString='' linkText='Here you go' />.</p>
             </Answer>
 
             <Question id="other-countries" hash={hash}>
