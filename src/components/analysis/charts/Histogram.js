@@ -52,7 +52,7 @@ const CharitySizeHistogram = ({ buckets }) => (
             message: 'This chart shows the frequency and combined income of grant-receiving charities in different income brackets.',
           },
           {
-            message: `Remember it's interactive and will updated based on your search and date range above, as well as any other filters added in the left hand sidebar.`,
+            message: `Remember it's interactive and will update based on the search and filters above, as well as any other filters added in the left hand sidebar.`,
           },
         ]}
       />
@@ -91,7 +91,7 @@ const GrantSizeHistogram = ({ buckets }) => (
             message: 'This chart shows the frequency and combined value of grants in different size brackets.',
           },
           {
-            message: `Remember it's interactive and will updated based on your search and date range above, as well as any other filters added in the left hand sidebar.`,
+            message: `Remember it's interactive and will update based on the search and filters above, as well as any other filters added in the left hand sidebar.`,
           },
         ]}
       />
@@ -130,7 +130,7 @@ const GrantDateHistogram = ({ buckets }) => (
             message: 'This chart shows the frequency and combined value of grants over different time intervals.',
           },
           {
-            message: `Remember it's interactive and will updated based on your search and date range above, as well as any other filters added in the left hand sidebar.`,
+            message: `Remember it's interactive and will update based on the search and filters above, as well as any other filters added in the left hand sidebar.`,
           },
         ]}
       />
