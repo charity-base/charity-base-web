@@ -24,6 +24,18 @@ class CharitiesList extends Component {
       this.refreshSearch(this.props.queryString, geoBounds, geoPrecision, true)
     }
   }
+  getDateInterval = () => {
+    const { grantDateRange } = this.props.query
+    if (!grantDateRange || (grantDateRange.split(',').length !== 2)) {
+      return 'year'
+    }
+    const [start, end] = grantDateRange.split(',').map(dateString => {
+      const d = new Date(dateString)
+      return 12*d.getFullYear() + d.getMonth()
+    })
+    const months = end - start
+    return months > 24 ? 'year' : 'month'
+  }
   setView = view => {
     this.props.onQueryUpdate('view', view)
   }
@@ -44,8 +56,9 @@ class CharitiesList extends Component {
     })
   }
   getData = (queryString, geoBounds, geoPrecision, callback) => {
+    const dateInterval = this.getDateInterval()
     const qs = queryString ? queryString.split('?')[1] + '&' : ''
-    const url = `${apiEndpoint}/aggregate-charities?${qs}hasGrant=true&aggGeoBounds=${geoBounds || ''}&aggGeoPrecision=${geoPrecision || ''}&aggGrantDateInterval=year`
+    const url = `${apiEndpoint}/aggregate-charities?${qs}hasGrant=true&aggGeoBounds=${geoBounds || ''}&aggGeoPrecision=${geoPrecision || ''}&aggGrantDateInterval=${dateInterval}`
     fetchJSON(url)
     .then(res => callback(res))
     .catch(err => console.log(err))
