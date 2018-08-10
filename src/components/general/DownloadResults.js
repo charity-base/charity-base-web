@@ -84,12 +84,12 @@ class DownloadResults extends Component {
           <a onClick={x => this.downloadResults(this.props.fileType || 'JSON')}>{this.props.linkText}</a>
         ) : (
           <span>
-            <Button icon='download' style={{ width: '100%' }} onClick={x => this.downloadResults('JSON')}>
+            {this.props.fileType !== 'CSV' && <Button icon='download' style={{ width: '100%' }} onClick={x => this.downloadResults('JSON')}>
               Download JSON
-            </Button>
-            <Button icon='download' style={{ width: '100%', marginTop: '5px' }} onClick={x => this.downloadResults('CSV')}>
+            </Button>}
+            {this.props.fileType !== 'JSON' && <Button icon='download' style={{ width: '100%', marginTop: '5px' }} onClick={x => this.downloadResults('CSV')}>
               Download CSV
-            </Button>
+            </Button>}
           </span>
         )}
       </span>

@@ -67,7 +67,7 @@ const FilterBar = ({ queryString }) => (
         queryString={queryString}
       />
       <div style={{ marginTop: '5px' }}><CopyUrl /></div>
-      <div style={{ marginTop: '5px' }}><DownloadResults queryString={queryString}/></div>
+      <div style={{ marginTop: '5px' }}><DownloadResults queryString={queryString} fileType='JSON' /></div>
     </MenuBarHeader>
   </div>
 )
