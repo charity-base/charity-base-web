@@ -15,7 +15,7 @@ class DownloadResults extends Component {
     isLoading: false,
     isUploaded: false,
     fileName: null,
-    fileType: 'CSV',
+    fileType: this.props.fileType || 'CSV',
     blob: null,
     checkedKeys: defaultFieldsList,
   }
