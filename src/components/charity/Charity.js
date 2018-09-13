@@ -6,7 +6,7 @@ import { fetchJSON } from '../../lib/fetchHelpers'
 import { MenuBar, MenuBarHeader } from '../general/MenuBar'
 import { CharityInfo } from './CharityInfo'
 import { CopyUrl } from '../general/CopyUrl'
-import { DownloadResults } from '../general/DownloadResults'
+import { DownloadResults } from '../general/download'
 import { apiEndpoint } from '../../lib/constants'
 import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
 

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Layout, Anchor, Row, Col } from 'antd'
 import { Page, ScrollableContent, ResponsiveSider } from '../general/Layout'
-import { DownloadResults } from '../general/DownloadResults'
+import { DownloadResults } from '../general/download'
 
 const Question = styled.div`
   ${({ id, hash }) => id === hash && 'color: #EC407A;'}

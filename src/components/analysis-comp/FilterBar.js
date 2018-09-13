@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Divider } from 'antd'
-import { DownloadResults } from '../general/DownloadResults'
+import { DownloadResults } from '../general/download'
 import { CopyUrl } from '../general/CopyUrl'
 import { MenuBarHeader } from '../general/MenuBar'
 import { Filters } from './filters'
