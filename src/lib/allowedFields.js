@@ -1,5 +1,4 @@
 const defaultFieldsList = [
-  'ids',
   'ids.GB-CHC',
   'name',
 ]
@@ -11,6 +10,10 @@ const allowedFields = [{
     title: 'CC Number',
     key: 'ids.GB-CHC',
     disabled: true,
+  }, {
+    title: 'General ID',
+    key: 'ids.charityId',
+    disabled: false,
   }],
   disabled: true,
 }, {

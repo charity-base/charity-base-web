@@ -8,11 +8,19 @@ const handleFetchErrors = res => {
       throw Error(message || res.statusText)
     });
   }
-  return res;
+  return res
 }
 
-export const fetchJSON = (url, options) => {
+const fetchJSON = (url, options) => {
   return fetch(url, options)
   .then(handleFetchErrors)
   .then(res => res.json())
 }
+
+const fetchBlob = (url, options) => {
+  return fetch(url, options)
+  .then(handleFetchErrors)
+  .then(res => res.blob())
+}
+
+export { fetchJSON, fetchBlob }

@@ -1,13 +1,43 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import auth0 from 'auth0-js'
 import qs from 'query-string'
 import numeral from 'numeral'
 import { Modal, Button, Row, Col } from 'antd'
-import { apiEndpoint } from '../../../lib/constants'
+import { apiEndpoint, auth0ClientId } from '../../../lib/constants'
+import { fetchBlob } from '../../../lib/fetchHelpers'
 import { defaultFieldsList } from '../../../lib/allowedFields'
 import Selector from '../Selector'
 import { FieldTree } from './FieldTree'
 
+const webAuth = new auth0.WebAuth({
+  audience: 'https://charitybase.uk/api',
+  domain: 'charity-base.eu.auth0.com',
+  clientID: auth0ClientId,
+  redirectUri: 'http://localhost:3000',
+  responseType: 'token',
+  scope: '',
+})
+
+let ACCESS_TOKEN
+
+const parseHash = () => {
+  webAuth.parseHash((err, authResult) => {
+    if (err) {
+      console.log("Failed to authenticate")
+      console.log(err)
+      return
+    }
+    if (authResult && authResult.accessToken) {
+      window.location.hash = ''
+      ACCESS_TOKEN = authResult.accessToken
+      console.log("Successfully authenticated")
+      console.log(ACCESS_TOKEN)
+      return
+    }
+    console.log("No authResult found")
+  })
+}
 
 class DownloadResults extends Component {
   state = {
@@ -18,6 +48,9 @@ class DownloadResults extends Component {
     fileType: this.props.fileType || 'CSV',
     blob: null,
     checkedKeys: defaultFieldsList,
+  }
+  componentDidMount() {
+    parseHash()
   }
   onCheck = checkedKeys => {
     this.setState({ checkedKeys })
@@ -31,6 +64,7 @@ class DownloadResults extends Component {
       isUploaded: false,
       fileName: null,
       blob: null,
+      errorMessage: null,
     })
 
     const { fileType, checkedKeys: fieldPaths } = this.state
@@ -43,19 +77,24 @@ class DownloadResults extends Component {
 
     const headers = {
       "Content-Type": "application/json; charset=utf-8",
+      "Authorization": `Bearer ${ACCESS_TOKEN}`,
     }
 
     const body = JSON.stringify({ fileType })
 
-    fetch(url, { method: 'POST', headers, body })
-    .then(x => x.blob())
+    fetchBlob(url, { method: 'POST', headers, body })
     .then(blob => {
       if (!this.state.isLoading) return
       const fileExtension = fileType === 'JSON' ? 'jsonl' : 'csv'
       const fileName = `charity-base-${Math.round(new Date().getTime()/1000)}.${fileExtension}.gz`
       this.setState({ isLoading: false, isUploaded: true, fileName, blob })
     })
-    .catch(x => console.log(x))
+    .catch(x => {
+      this.setState({
+        isLoading: false,
+        errorMessage: x.message || 'Oops, something went wrong',
+      })
+    })
   }
   reset = (closeModal, fileType) => {
     this.setState({
@@ -77,6 +116,7 @@ class DownloadResults extends Component {
           footer={null}
           maskClosable={true}
         >
+          {this.state.errorMessage && <p style={{color: 'red'}}>{this.state.errorMessage}</p>}
           <Selector
             value={this.state.fileType}
             options={['CSV', 'JSON']}
@@ -89,6 +129,12 @@ class DownloadResults extends Component {
             loading={this.state.isLoading}
           >
             Download
+          </Button>
+          <Button
+            id='loginBtn'
+            onClick={e => webAuth.authorize()}
+          >
+            Log In
           </Button>
           {this.state.isUploaded && (
             <Row>
