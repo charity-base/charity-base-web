@@ -104,7 +104,7 @@ class AddFilter extends Component {
     this.props.updateFilters(filters)
   }
   removeNonFilters = obj => {
-    const { sort, view, ...rest } = obj
+    const { sort, view, download, ...rest } = obj
     return rest
   }
   render() {

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import qs from 'query-string'
 import numeral from 'numeral'
-import { Modal, Button, Row, Col } from 'antd'
+import { Modal, Button, Row, Col, Alert } from 'antd'
 import Auth from '../../../lib/Auth'
 import { apiEndpoint } from '../../../lib/constants'
 import { fetchBlob } from '../../../lib/fetchHelpers'
@@ -14,7 +14,7 @@ const auth = new Auth()
 
 class DownloadResults extends Component {
   state = {
-    isModalOpen: false,
+    openedManually: false,
     isLoading: false,
     isUploaded: false,
     fileName: null,
@@ -28,8 +28,19 @@ class DownloadResults extends Component {
   onCheck = checkedKeys => {
     this.setState({ checkedKeys })
   }
-  openModal = () => {
-    this.setState({ isModalOpen: true })
+  toggleModal = open => {
+    const { history } = this.context.router
+    const newSearch = qs.stringify({
+      ...qs.parse(history.location.search),
+      download: open ? true : undefined,
+    })
+    if (open) {
+      this.setState({ openedManually: true })
+    }
+    if (open || !this.state.openedManually) {
+      return history.push({ search: newSearch })
+    }
+    history.goBack()
   }
   downloadResults = () => {
     this.setState({
@@ -71,25 +82,39 @@ class DownloadResults extends Component {
   }
   reset = (closeModal, fileType) => {
     this.setState({
-      isModalOpen: !closeModal,
       isLoading: false,
       isUploaded: false,
       fileName: null,
       fileType: fileType || 'CSV',
       blob: null,
     })
+    if (closeModal) {
+      this.toggleModal(false)
+    }
   }
   render() {
+    const isModalOpen = qs.parse(this.context.router.history.location.search).download === 'true'
     return (
       <span>
         <Modal
           title={`Data Download`}
-          visible={this.state.isModalOpen}
+          visible={isModalOpen}
           onCancel={() => this.reset(true)}
           footer={null}
           maskClosable={true}
         >
-          {this.state.errorMessage && <p style={{color: 'red'}}>{this.state.errorMessage}</p>}
+          {!auth.isAuthenticated() && <Alert
+            message='Not Logged In'
+            description='You will be prompted to log in before downloading.'
+            type='info'
+            style={{ marginBottom: '10px' }}
+          />}
+          {this.state.errorMessage && <Alert
+            message='Oops, something went wrong'
+            description='Please wait a minute before trying again.'
+            type='error'
+            style={{ marginBottom: '10px' }}
+          />}
           <Selector
             value={this.state.fileType}
             options={['CSV', 'JSON']}
@@ -102,18 +127,6 @@ class DownloadResults extends Component {
             loading={this.state.isLoading}
           >
             Download
-          </Button>
-          <Button
-            id='loginBtn'
-            onClick={() => auth.login(this.context.router.history)}
-          >
-            Log In
-          </Button>
-          <Button
-            id='logoutBtn'
-            onClick={() => auth.logout(this.context.router.history)}
-          >
-            Log Out
           </Button>
           {this.state.isUploaded && (
             <Row>
@@ -148,11 +161,11 @@ class DownloadResults extends Component {
           />
         </Modal>
         {this.props.linkText ? (
-          <a onClick={this.openModal}>
+          <a onClick={() => this.toggleModal(true)}>
             {this.props.linkText}
           </a>
         ) : (
-          <Button icon='download' style={{ width: '100%' }} onClick={this.openModal}>
+          <Button icon='download' style={{ width: '100%' }} onClick={() => this.toggleModal(true)}>
             CSV / JSON
           </Button>
         )}
