@@ -1,4 +1,5 @@
 import auth0 from 'auth0-js'
+import jwtDecode from 'jwt-decode'
 import { auth0ClientId, auth0RedirectUri } from './constants'
 
 class Auth {
@@ -7,6 +8,7 @@ class Auth {
     this.logout = this.logout.bind(this)
     this.handleAuthentication = this.handleAuthentication.bind(this)
     this.isAuthenticated = this.isAuthenticated.bind(this)
+    this.getUser = this.getUser.bind(this)
     this.ensureAuthenticated = this.ensureAuthenticated.bind(this)
   }
 
@@ -15,8 +17,8 @@ class Auth {
     domain: 'charity-base.eu.auth0.com',
     clientID: auth0ClientId,
     redirectUri: auth0RedirectUri,
-    responseType: 'token',
-    scope: '',
+    responseType: 'token id_token',
+    scope: 'openid profile email',
   })
 
   login(history) {
@@ -61,6 +63,10 @@ class Auth {
   isAuthenticated() {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'))
     return new Date().getTime() < expiresAt
+  }
+
+  getUser() {
+    return this.isAuthenticated() && jwtDecode(localStorage.getItem('id_token'))
   }
 
   ensureAuthenticated = history => func => () => {

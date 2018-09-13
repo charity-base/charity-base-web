@@ -7,6 +7,7 @@
     "antd": "~3.2.3",
     "auth0-js": "^9.7.3",
     "google-map-react": "^1.0.5",
+    "jwt-decode": "^2.2.0",
     "ngeohash": "^0.6.0",
     "numeral": "^2.0.6",
     "polished": "^1.9.3",
