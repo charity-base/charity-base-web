@@ -4,6 +4,9 @@ import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { Layout } from 'antd'
 import { NavMenu } from './NavMenu'
+import Auth from '../../lib/Auth'
+
+const auth = new Auth()
 
 const { Header } = Layout
 
@@ -37,13 +40,22 @@ class NavBar extends Component {
     return(
       <AppHeader isMobile={isMobile}>
         {!isMobile && <HeaderTitle isMobile={isMobile} to="/">CharityBase</HeaderTitle>}
-        <NavMenu mode='horizontal' isMobile={isMobile} />
+        <NavMenu
+          mode='horizontal'
+          isMobile={isMobile}
+          user={auth.getUser()}
+          onLogin={() => auth.login(this.context.router.history)}
+          onLogout={() => auth.logout(this.context.router.history)}
+        />
       </AppHeader>
     )
   }
 }
 NavBar.propTypes = {
   isMobile: PropTypes.bool,
+}
+NavBar.contextTypes = {
+  router: PropTypes.object,
 }
 
 export { NavBar }

@@ -2,7 +2,28 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import { Menu, Divider, Icon } from 'antd'
+import { Menu, Divider, Dropdown, Icon } from 'antd'
+
+const UserDropdown = ({ name, onLogout }) => (
+  <Dropdown
+    overlay={
+      <Menu>
+        <Menu.Item key="0">
+          <a onClick={onLogout}>Log Out</a>
+        </Menu.Item>
+      </Menu>
+    }
+    trigger={['click']}
+  >
+    <a className="ant-dropdown-link" href="#">
+      {name} <Icon type="down" />
+    </a>
+  </Dropdown>
+)
+UserDropdown.propTypes = {
+  name: PropTypes.string.isRequired,
+  onLogout: PropTypes.func.isRequired,
+}
 
 const internalNavs = [
   { to: '/', label: 'Search Charities', icon: 'search', exact: true },
@@ -20,7 +41,7 @@ const StyledMenu = styled(Menu)`
   line-height: ${({ isMobile }) => isMobile ? '46px' : '64px'};
 `
 
-const NavMenu = ({ mode, isMobile }) => (
+const NavMenu = ({ mode, isMobile, user, onLogin, onLogout }) => (
   <StyledMenu
     theme="dark"
     mode={mode}
@@ -54,11 +75,26 @@ const NavMenu = ({ mode, isMobile }) => (
         </a>
       </Menu.Item>
     ))}
+    <Menu.Item key='auth'>
+      {user ? (
+        <UserDropdown
+          name={user.given_name || 'User'}
+          onLogout={onLogout}
+        />
+      ) : (
+        <a onClick={onLogin}>
+          Log In
+        </a>
+      )}
+    </Menu.Item>
   </StyledMenu>
 )
 NavMenu.propTypes = {
   mode: PropTypes.string,
   isMobile: PropTypes.bool,
+  user: PropTypes.object.isRequired,
+  onLogin: PropTypes.func.isRequired,
+  onLogout: PropTypes.func.isRequired,
 }
 
 export { NavMenu }

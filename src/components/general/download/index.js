@@ -22,9 +22,6 @@ class DownloadResults extends Component {
     blob: null,
     checkedKeys: defaultFieldsList,
   }
-  componentDidMount() {
-    auth.handleAuthentication(this.context.router.history)
-  }
   onCheck = checkedKeys => {
     this.setState({ checkedKeys })
   }
