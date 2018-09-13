@@ -1,43 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import auth0 from 'auth0-js'
 import qs from 'query-string'
 import numeral from 'numeral'
 import { Modal, Button, Row, Col } from 'antd'
-import { apiEndpoint, auth0ClientId } from '../../../lib/constants'
+import Auth from '../../../lib/Auth'
+import { apiEndpoint } from '../../../lib/constants'
 import { fetchBlob } from '../../../lib/fetchHelpers'
 import { defaultFieldsList } from '../../../lib/allowedFields'
 import Selector from '../Selector'
 import { FieldTree } from './FieldTree'
 
-const webAuth = new auth0.WebAuth({
-  audience: 'https://charitybase.uk/api',
-  domain: 'charity-base.eu.auth0.com',
-  clientID: auth0ClientId,
-  redirectUri: 'http://localhost:3000',
-  responseType: 'token',
-  scope: '',
-})
-
-let ACCESS_TOKEN
-
-const parseHash = () => {
-  webAuth.parseHash((err, authResult) => {
-    if (err) {
-      console.log("Failed to authenticate")
-      console.log(err)
-      return
-    }
-    if (authResult && authResult.accessToken) {
-      window.location.hash = ''
-      ACCESS_TOKEN = authResult.accessToken
-      console.log("Successfully authenticated")
-      console.log(ACCESS_TOKEN)
-      return
-    }
-    console.log("No authResult found")
-  })
-}
+const auth = new Auth()
 
 class DownloadResults extends Component {
   state = {
@@ -50,7 +23,7 @@ class DownloadResults extends Component {
     checkedKeys: defaultFieldsList,
   }
   componentDidMount() {
-    parseHash()
+    auth.handleAuthentication(this.context.router.history)
   }
   onCheck = checkedKeys => {
     this.setState({ checkedKeys })
@@ -77,7 +50,7 @@ class DownloadResults extends Component {
 
     const headers = {
       "Content-Type": "application/json; charset=utf-8",
-      "Authorization": `Bearer ${ACCESS_TOKEN}`,
+      "Authorization": `Bearer ${localStorage.getItem('access_token')}`,
     }
 
     const body = JSON.stringify({ fileType })
@@ -125,16 +98,22 @@ class DownloadResults extends Component {
           <Button
             icon='download'
             style={{ width: 120 }}
-            onClick={this.downloadResults}
+            onClick={auth.ensureAuthenticated(this.context.router.history)(this.downloadResults)}
             loading={this.state.isLoading}
           >
             Download
           </Button>
           <Button
             id='loginBtn'
-            onClick={e => webAuth.authorize()}
+            onClick={() => auth.login(this.context.router.history)}
           >
             Log In
+          </Button>
+          <Button
+            id='logoutBtn'
+            onClick={() => auth.logout(this.context.router.history)}
+          >
+            Log Out
           </Button>
           {this.state.isUploaded && (
             <Row>
@@ -185,6 +164,9 @@ DownloadResults.propTypes = {
   queryString: PropTypes.string,
   linkText: PropTypes.string,
   fileType: PropTypes.string,
+}
+DownloadResults.contextTypes = {
+  router: PropTypes.object,
 }
 
 export { DownloadResults }

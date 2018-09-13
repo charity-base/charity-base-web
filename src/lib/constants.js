@@ -4,4 +4,6 @@ const googleApiKey = 'my-google-api-key'
 
 const auth0ClientId = 'my-auth0-client-id'
 
-export { apiEndpoint, googleApiKey, auth0ClientId }
+const auth0RedirectUri = 'http://localhost:3000'
+
+export { apiEndpoint, googleApiKey, auth0ClientId, auth0RedirectUri }
