@@ -171,7 +171,7 @@ class DownloadResults extends Component {
               type='info'
               message={
                 <div>
-                  <b>Note:</b> this CSV only offers 3% of the available fields for each charity.
+                  <b>Note:</b> this CSV only offers a subset of the available fields for each charity.
                   For the full database please use JSON instead.
                   If there are any fields you'd particularly like in CSV format, email <b>dan@charitybase.uk</b>
                 </div>
@@ -185,11 +185,13 @@ class DownloadResults extends Component {
               message="Choose fields below before downloading."
             />
           )}
-          <FieldTree
-            checkedKeys={this.state.checkedKeys}
-            onCheck={this.onCheck}
-            disabled={!isAuthenticated || isLoading}
-          />
+          <div style={{ maxHeight: '300px', overflowY: 'scroll', border: '1px solid #DDD', borderRadius: '3px' }}>
+            <FieldTree
+              checkedKeys={this.state.checkedKeys}
+              onCheck={this.onCheck}
+              disabled={!isAuthenticated || isLoading}
+            />
+          </div>
         </Modal>
         {this.props.linkText ? (
           <a onClick={() => this.toggleModal(true)}>

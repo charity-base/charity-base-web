@@ -6,7 +6,7 @@ import { allowedFields } from '../../../lib/allowedFields'
 
 class FieldTree extends Component {
   state = {
-    expandedKeys: ['contact'],
+    expandedKeys: [],
     autoExpandParent: true,
   }
 
