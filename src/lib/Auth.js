@@ -31,6 +31,7 @@ class Auth {
   internalRedirect(history) {
     const origin_uri = localStorage.getItem('origin_uri')
     history.push(origin_uri || '/')
+    localStorage.removeItem('origin_uri')
   }
 
   handleAuthentication(history) {
@@ -66,7 +67,7 @@ class Auth {
   }
 
   getUser() {
-    return this.isAuthenticated() && jwtDecode(localStorage.getItem('id_token'))
+    return this.isAuthenticated() ? jwtDecode(localStorage.getItem('id_token')) : null
   }
 
   ensureAuthenticated = history => func => () => {
