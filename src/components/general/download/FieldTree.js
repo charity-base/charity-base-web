@@ -21,6 +21,7 @@ class FieldTree extends Component {
 
   renderTreeNodes = (data) => {
     return data.map((item) => {
+      const disabled = item.disabled || this.props.disabled
       if (item.children) {
         return (
           <Tree.TreeNode
@@ -28,13 +29,13 @@ class FieldTree extends Component {
             key={item.key}
             dataRef={item}
             selectable={false}
-            disabled={item.disabled}
+            disabled={disabled}
           >
             {this.renderTreeNodes(item.children)}
           </Tree.TreeNode>
         )
       }
-      return <Tree.TreeNode {...item} selectable={false} />
+      return <Tree.TreeNode {...item} disabled={disabled} selectable={false} />
     })
   }
   render() {
@@ -56,6 +57,7 @@ class FieldTree extends Component {
 FieldTree.propTypes = {
   checkedKeys: PropTypes.array.isRequired,
   onCheck: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
 }
 
 export { FieldTree }
