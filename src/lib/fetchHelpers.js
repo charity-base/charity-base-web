@@ -11,14 +11,26 @@ const handleFetchErrors = res => {
   return res
 }
 
-const fetchJSON = (url, options) => {
-  return fetch(url, options)
+const authOptions = (options, token) => ({
+  ...options,
+  headers: {
+    ...options.headers,
+    Authorization: `Bearer ${token}`,
+  },
+})
+
+const fetchJSON = (url, options={}, sendToken=true) => {
+  const token = sendToken && localStorage.getItem('access_token')
+  const opts = token ? authOptions(options, token) : options
+  return fetch(url, opts)
   .then(handleFetchErrors)
   .then(res => res.json())
 }
 
-const fetchBlob = (url, options) => {
-  return fetch(url, options)
+const fetchBlob = (url, options={}, sendToken=true) => {
+  const token = sendToken && localStorage.getItem('access_token')
+  const opts = token ? authOptions(options, token) : options
+  return fetch(url, opts)
   .then(handleFetchErrors)
   .then(res => res.blob())
 }

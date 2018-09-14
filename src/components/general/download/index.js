@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import qs from 'query-string'
 import numeral from 'numeral'
-import { Modal, Button, Row, Col, Alert } from 'antd'
+import { Modal, Button, Alert } from 'antd'
 import Auth from '../../../lib/Auth'
 import { apiEndpoint } from '../../../lib/constants'
 import { fetchBlob } from '../../../lib/fetchHelpers'
@@ -58,7 +58,6 @@ class DownloadResults extends Component {
 
     const headers = {
       "Content-Type": "application/json; charset=utf-8",
-      "Authorization": `Bearer ${localStorage.getItem('access_token')}`,
     }
 
     const body = JSON.stringify({ fileType })

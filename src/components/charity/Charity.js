@@ -41,7 +41,8 @@ class Charity extends Component {
     isLoading: true,
   }
   componentDidMount() {
-    fetchJSON(`${apiEndpoint}/charities?ids.GB-CHC=${this.props.charityId}&fields=*`)
+    const url = `${apiEndpoint}/charities?ids.GB-CHC=${this.props.charityId}&fields=*`
+    fetchJSON(url)
     .then(res => this.setState({
       isLoading: false,
       charity: res.charities.length === 1 ? res.charities[0] : null
