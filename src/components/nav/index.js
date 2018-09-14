@@ -45,7 +45,7 @@ class NavBar extends Component {
           isMobile={isMobile}
           user={auth.getUser()}
           onLogin={() => auth.login(this.context.router.history)}
-          onLogout={() => auth.logout(this.context.router.history)}
+          onLogout={() => auth.logout()}
         />
       </AppHeader>
     )

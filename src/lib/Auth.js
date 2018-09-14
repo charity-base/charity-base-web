@@ -53,12 +53,15 @@ class Auth {
     localStorage.setItem('expires_at', expiresAt)
   }
 
-  logout(history) {
+  logout() {
     localStorage.removeItem('access_token')
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
     localStorage.removeItem('origin_uri')
-    this.internalRedirect(history)
+    this.auth0.logout({
+      clientID: auth0ClientId,
+      returnTo: auth0RedirectUri,
+    })
   }
 
   isAuthenticated() {
