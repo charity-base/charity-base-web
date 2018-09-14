@@ -91,6 +91,8 @@ class DownloadResults extends Component {
   }
   render() {
     const isModalOpen = qs.parse(this.context.router.history.location.search).download === 'true'
+    const isAuthenticated = auth.isAuthenticated()
+    const { isLoading, fileType } = this.state
     return (
       <span>
         <Modal
@@ -100,12 +102,23 @@ class DownloadResults extends Component {
           footer={null}
           maskClosable={true}
         >
-          {!auth.isAuthenticated() && <Alert
-            message='Not Logged In'
-            description='You will be prompted to log in before downloading.'
-            type='info'
-            style={{ marginBottom: '10px' }}
-          />}
+          {!isAuthenticated && (
+            <Alert
+              description={
+                <div>
+                  Please log in before continuing.
+                  <Button
+                    style={{ margin: '0 10px 0 10px' }}
+                    onClick={() => auth.login(this.context.router.history)}
+                  >
+                    Log In
+                  </Button>
+                </div>
+              }
+              type='info'
+              style={{ marginBottom: '10px' }}
+            />
+          )}
           {this.state.errorMessage && <Alert
             message='Oops, something went wrong'
             description='Please wait a minute before trying again.'
@@ -113,48 +126,70 @@ class DownloadResults extends Component {
             style={{ marginBottom: '10px' }}
           />}
           <Selector
-            value={this.state.fileType}
+            value={fileType}
             options={['CSV', 'JSON']}
-            onChange={fileType => this.reset(false, fileType)}
+            onChange={fType => this.reset(false, fType)}
           />
           <Button
             icon='download'
             style={{ width: 120 }}
             onClick={auth.ensureAuthenticated(this.context.router.history)(this.downloadResults)}
-            loading={this.state.isLoading}
+            loading={isLoading}
+            disabled={!isAuthenticated}
           >
             Download
           </Button>
           {this.state.isUploaded && (
-            <Row>
-              <Col span={12}>
-                <a
-                  href={window.URL.createObjectURL(this.state.blob)}
-                  target="_blank"
-                  download={this.state.fileName}
-                  onClick={() => this.reset(true)}
-                >
-                  {this.state.fileName}
-                </a>
-              </Col>
-              <Col span={12}>
-                ({numeral(this.state.blob.size).format('0b')})
-              </Col>
-            </Row>
+            <Alert
+              style={{ margin: '10px 0 10px 0' }}
+              type='success'
+              message={
+                <span>
+                  <a
+                    href={window.URL.createObjectURL(this.state.blob)}
+                    target="_blank"
+                    download={this.state.fileName}
+                    onClick={() => this.reset(true)}
+                    style={{ marginRight: '10px' }}
+                  >
+                    {this.state.fileName}
+                  </a>
+                  [{numeral(this.state.blob.size).format('0b')}]
+                </span>
+              }
+            />
           )}
-          {this.state.isLoading && (
-            <p>Creating file.  This could take a couple of minutes...</p>
+          {isLoading && (
+            <Alert
+              style={{ margin: '10px 0 10px 0' }}
+              type='info'
+              message='Creating file.  This could take a couple of minutes...'
+            />
           )}
-          {this.state.fileType === 'CSV' && (
-            <p style={{ marginTop: '10px' }}>
-              <b>Note:</b> this CSV only offers 3% of the available fields for each charity.
-              For the full database please use JSON instead.
-              If there are any fields you'd particularly like in CSV format, email dan@charitybase.uk
-            </p>
+          {isAuthenticated && fileType === 'CSV' && (
+            <Alert
+              style={{ margin: '10px 0 10px 0' }}
+              type='info'
+              message={
+                <div>
+                  <b>Note:</b> this CSV only offers 3% of the available fields for each charity.
+                  For the full database please use JSON instead.
+                  If there are any fields you'd particularly like in CSV format, email <b>dan@charitybase.uk</b>
+                </div>
+              }
+            />
+          )}
+          {isAuthenticated && (
+            <Alert
+              style={{ margin: '10px 0 10px 0' }}
+              type='info'
+              message="Choose fields below before downloading."
+            />
           )}
           <FieldTree
             checkedKeys={this.state.checkedKeys}
             onCheck={this.onCheck}
+            disabled={!isAuthenticated || isLoading}
           />
         </Modal>
         {this.props.linkText ? (
