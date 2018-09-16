@@ -7,6 +7,7 @@ const auth = new Auth()
 class AuthHandler extends Component {
   componentDidMount() {
     auth.handleAuthentication(this.context.router.history)
+    auth.scheduleRenewal()
   }
   render() {
     return null

@@ -2,12 +2,17 @@ import auth0 from 'auth0-js'
 import jwtDecode from 'jwt-decode'
 import { auth0ClientId, auth0RedirectUri } from './constants'
 
+var tokenRenewalTimeout
+
 class Auth {
   constructor() {
     this.login = this.login.bind(this)
     this.logout = this.logout.bind(this)
     this.handleAuthentication = this.handleAuthentication.bind(this)
+    this.renewToken = this.renewToken.bind(this)
+    this.scheduleRenewal = this.scheduleRenewal.bind(this)
     this.isAuthenticated = this.isAuthenticated.bind(this)
+    this.setSession = this.setSession.bind(this)
     this.getUser = this.getUser.bind(this)
     this.ensureAuthenticated = this.ensureAuthenticated.bind(this)
   }
@@ -46,11 +51,34 @@ class Auth {
     })
   }
 
+  renewToken() {
+    this.auth0.checkSession({}, (err, result) => {
+      if (err) {
+        console.log(err)
+        this.logout()
+      } else {
+        this.setSession(result)
+      }
+    })
+  }
+
+  scheduleRenewal() {
+    var expiresAt = JSON.parse(localStorage.getItem('expires_at'))
+    var delay = expiresAt - Date.now()
+    if (delay > 0) {
+      tokenRenewalTimeout = setTimeout(this.renewToken, delay)
+    }
+    if (expiresAt && delay < 0) {
+      this.renewToken()
+    }
+  }
+
   setSession(authResult) {
-    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime())
+    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + Date.now())
     localStorage.setItem('access_token', authResult.accessToken)
     localStorage.setItem('id_token', authResult.idToken)
     localStorage.setItem('expires_at', expiresAt)
+    this.scheduleRenewal()
   }
 
   logout() {
@@ -58,6 +86,7 @@ class Auth {
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
     localStorage.removeItem('origin_uri')
+    clearTimeout(tokenRenewalTimeout)
     this.auth0.logout({
       clientID: auth0ClientId,
       returnTo: auth0RedirectUri,
@@ -66,7 +95,7 @@ class Auth {
 
   isAuthenticated() {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'))
-    return new Date().getTime() < expiresAt
+    return Date.now() < expiresAt
   }
 
   getUser() {
