@@ -41,7 +41,6 @@ class NavBar extends Component {
       <AppHeader isMobile={isMobile}>
         {!isMobile && <HeaderTitle isMobile={isMobile} to="/">CharityBase</HeaderTitle>}
         <NavMenu
-          mode='horizontal'
           isMobile={isMobile}
           user={auth.getUser()}
           onLogin={() => auth.login(this.context.router.history)}
