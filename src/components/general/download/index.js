@@ -104,15 +104,9 @@ class DownloadResults extends Component {
           {!isAuthenticated && (
             <Alert
               description={
-                <div>
-                  Please log in before continuing.
-                  <Button
-                    style={{ margin: '0 10px 0 10px' }}
-                    onClick={() => auth.login(this.context.router.history)}
-                  >
-                    Log In
-                  </Button>
-                </div>
+                <span>
+                  Please <a onClick={() => auth.login(this.context.router.history)}>Log In</a> before continuing.
+                </span>
               }
               type='info'
               style={{ marginBottom: '10px' }}
