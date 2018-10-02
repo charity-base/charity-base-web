@@ -83,6 +83,9 @@ const allowedFields = [
   }, {
     title: 'Objectives',
     key: 'objectives',
+  }, {
+    title: 'Registration Date',
+    key: 'registration',
   },
 ]
 
