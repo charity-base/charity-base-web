@@ -63,8 +63,8 @@ const allowedFields = [
     title: 'Website',
     key: 'website',
   }, {
-    title: 'Latest Income',
-    key: 'income.latest.total',
+    title: 'Annual Income/Expenditure 2008-2018',
+    key: 'income.annual',
   }, {
     title: 'Area of Benefit',
     key: 'areaOfBenefit',
