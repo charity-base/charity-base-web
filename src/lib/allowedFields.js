@@ -25,23 +25,26 @@ const allowedFields = [
     title: 'Contact',
     key: 'contact',
     children: [{
+      title: 'Address',
+      key: 'contact.address',
+    }, {
       title: 'Email',
       key: 'contact.email',
     }, {
-      title: 'Person',
-      key: 'contact.person',
-    }, {
-      title: 'Postcode',
-      key: 'contact.postcode',
-    }, {
-      title: 'Address',
-      key: 'contact.address',
+      title: 'Latitude',
+      key: 'contact.geo.latitude',
     }, {
       title: 'Longitude',
       key: 'contact.geo.longitude',
     }, {
-      title: 'Latitude',
-      key: 'contact.geo.latitude',
+      title: 'Person',
+      key: 'contact.person',
+    }, {
+      title: 'Phone',
+      key: 'contact.phone',
+    }, {
+      title: 'Postcode',
+      key: 'contact.postcode',
     }],
   }, {
     title: 'People',
@@ -77,6 +80,9 @@ const allowedFields = [
   }, {
     title: 'Operations',
     key: 'operations',
+  }, {
+    title: 'Objectives',
+    key: 'objectives',
   },
 ]
 
