@@ -9,7 +9,6 @@ import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../genera
 import { DateSlider } from './filters/DateSlider'
 import { FunderMultiSelect } from './filters/FunderMultiSelect'
 import { AnalysisMenu } from './AnalysisMenu'
-import { RedirectModal } from './RedirectModal'
 
 class Analysis extends Component {
   onQueryUpdate = (key, value) => {
@@ -44,7 +43,6 @@ class Analysis extends Component {
               onQueryUpdate={this.onQueryUpdate}
             />
           </ScrollableContent>
-          <RedirectModal onQueryUpdate={this.onQueryUpdate} />
         </Layout.Content>
         <ResponsiveSider isMobile={isMobile} isRight={true} >
           <AnalysisMenu
