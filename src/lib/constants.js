@@ -1,4 +1,4 @@
-const apiEndpoint = '/api/v3.0.0'
+const apiEndpoint = '/api/v3.1.0'
 
 const googleApiKey = 'my-google-api-key'
 
