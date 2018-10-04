@@ -4,8 +4,13 @@ import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { Menu, Divider, Icon } from 'antd'
 
+const shortName = name => {
+  const maxLength = 16
+  const suffix = name.length > maxLength ? '...' : ''
+  return name.substr(0, maxLength) + suffix
+}
 
-const renderUserDropDown = ({ name, onLogout, isMobile }) => (
+const renderUserDropDown = ({ name, onLogout, onChangePassword, isMobile }) => (
   isMobile ? (
     <Menu.Item key='user-dropdown-menuitem'>
       <a onClick={onLogout}><Icon type='logout'/></a>
@@ -14,10 +19,15 @@ const renderUserDropDown = ({ name, onLogout, isMobile }) => (
     <Menu.SubMenu
       key='user-dropdown-submenu'
       title={
-        <span>{name} <Icon type='down' /></span>
+        <span>{shortName(name)} <Icon type='down' /></span>
       }
     >
-      <Menu.Item key='user-dropdown-menuitem'>
+      {onChangePassword && (
+        <Menu.Item key='user-dropdown-change-password'>
+          <a onClick={onChangePassword}>Change Password</a>
+        </Menu.Item>
+      )}
+      <Menu.Item key='user-dropdown-logout'>
         <a onClick={onLogout}>Log Out</a>
       </Menu.Item>
     </Menu.SubMenu>
@@ -40,7 +50,7 @@ const StyledMenu = styled(Menu)`
   line-height: ${({ isMobile }) => isMobile ? '46px' : '64px'};
 `
 
-const NavMenu = ({ isMobile, user, onLogin, onLogout }) => (
+const NavMenu = ({ isMobile, user, onLogin, onLogout, onChangePassword }) => (
   <StyledMenu
     theme='dark'
     mode='horizontal'
@@ -85,8 +95,9 @@ const NavMenu = ({ isMobile, user, onLogin, onLogout }) => (
     </Menu.Item>}
     {user ? (
       renderUserDropDown({
-        name: user.given_name || 'User',
-        onLogout: onLogout,
+        name: user.given_name || user.nickname || 'User',
+        onLogout,
+        onChangePassword,
         isMobile,
       })
     ) : (
@@ -103,6 +114,7 @@ NavMenu.propTypes = {
   user: PropTypes.object,
   onLogin: PropTypes.func.isRequired,
   onLogout: PropTypes.func.isRequired,
+  onChangePassword: PropTypes.func,
 }
 
 export { NavMenu }

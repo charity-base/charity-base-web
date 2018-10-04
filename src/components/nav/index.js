@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import { Layout } from 'antd'
+import { Layout, message } from 'antd'
 import { NavMenu } from './NavMenu'
 import Auth from '../../lib/Auth'
 
@@ -35,16 +35,41 @@ const HeaderTitle = styled(NavLink)`
 `
 
 class NavBar extends Component {
+  onChangePassword = user => {
+    if (!user) {
+      return null
+    }
+    const isPasswordAuthenticated = user.sub.substr(0,6) === 'auth0|'
+    if (!isPasswordAuthenticated) {
+      return null
+    }
+    const { email } = user
+    const connection = 'Username-Password-Authentication'
+    const requestChange = () => {
+      auth.sendPasswordResetEmail(
+        { email, connection },
+        (err, res) => {
+          if (err) {
+            return message.error('Oops, something went wrong. Please email dan@charitybase.uk for help.')
+          }
+          return message.success(res)
+        },
+      )
+    }
+    return requestChange
+  }
   render() {
     const { isMobile } = this.props
+    const user = auth.getUser()
     return(
       <AppHeader isMobile={isMobile}>
         {!isMobile && <HeaderTitle isMobile={isMobile} to="/">CharityBase</HeaderTitle>}
         <NavMenu
           isMobile={isMobile}
-          user={auth.getUser()}
+          user={user}
           onLogin={() => auth.login(this.context.router.history)}
           onLogout={() => auth.logout()}
+          onChangePassword={this.onChangePassword(user)}
         />
       </AppHeader>
     )

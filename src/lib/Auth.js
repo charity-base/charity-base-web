@@ -14,6 +14,7 @@ class Auth {
     this.isAuthenticated = this.isAuthenticated.bind(this)
     this.setSession = this.setSession.bind(this)
     this.getUser = this.getUser.bind(this)
+    this.sendPasswordResetEmail = this.sendPasswordResetEmail.bind(this)
     this.ensureAuthenticated = this.ensureAuthenticated.bind(this)
   }
 
@@ -100,6 +101,10 @@ class Auth {
 
   getUser() {
     return this.isAuthenticated() ? jwtDecode(localStorage.getItem('id_token')) : null
+  }
+
+  sendPasswordResetEmail({ email, connection }, cb) {
+    return this.auth0.changePassword({ email, connection }, cb)
   }
 
   ensureAuthenticated = history => func => () => {
