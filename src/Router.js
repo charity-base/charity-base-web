@@ -5,6 +5,7 @@ import qs from 'query-string'
 import { Charities } from './components/charities'
 import { Charity } from './components/charity'
 import { About } from './components/about'
+import { ApiPortal } from './components/api-portal'
 import { Analysis } from './components/analysis'
 
 const Router = ({ isMobile }) => (
@@ -17,6 +18,9 @@ const Router = ({ isMobile }) => (
     )} />
     <Route exact path="/about" render={() => (
       <About isMobile={isMobile} />
+    )} />
+    <Route exact path="/api-portal" render={() => (
+      <ApiPortal isMobile={isMobile} />
     )} />
     <Route exact path="/analysis" render={({ location }) => (
       <Analysis isMobile={isMobile} queryString={location.search} query={qs.parse(location.search)} />
