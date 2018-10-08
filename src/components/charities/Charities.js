@@ -13,7 +13,7 @@ class Charities extends Component {
     return (
       <Page isMobile={isMobile}>
         <ResponsiveSider isMobile={isMobile}>
-          <FilterBar queryString={queryString} />
+          <FilterBar queryString={queryString} query={query} />
         </ResponsiveSider>
         <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF' }}>
           <FixedHeader isMobile={isMobile}>
@@ -21,7 +21,7 @@ class Charities extends Component {
             <CharitiesSort query={query} />
           </FixedHeader>
           <ScrollableContent isMobile={isMobile}>
-            <CharitiesList queryString={queryString} />
+            <CharitiesList queryString={queryString} query={query} />
           </ScrollableContent>
         </Layout.Content>
       </Page>

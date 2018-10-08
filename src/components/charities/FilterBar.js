@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
-import { Divider } from 'antd'
+import { Divider, message } from 'antd'
 import { DownloadResults } from '../general/download'
 import { CopyUrl } from '../general/CopyUrl'
 import { MenuBarHeader } from '../general/MenuBar'
 import { Filters } from './filters'
-import { fetchJSON } from '../../lib/fetchHelpers'
-import { apiEndpoint } from '../../lib/constants'
-
+import charityBase from '../../lib/charityBaseClient'
 
 class ResultsCount extends Component {
   state = {
@@ -16,19 +14,21 @@ class ResultsCount extends Component {
     isLoading: false,
   }
   componentDidMount() {
-    this.countResults(this.props.queryString)
+    this.countResults(this.props.query)
   }
   componentDidUpdate(prevProps, prevState) {
     if (this.props.queryString !== prevProps.queryString) {
-      this.countResults(this.props.queryString)
+      this.countResults(this.props.query)
     }
   }
-  countResults = queryString => {
+  countResults = query => {
     this.setState({ isLoading: true })
-    const url = `${apiEndpoint}/count-charities${queryString}`
-    fetchJSON(url)
+    charityBase.charity.count({
+      ...query,
+      accessToken: localStorage.getItem('access_token'),
+    })
     .then(res => this.setState({ isLoading: false, count: res.count }))
-    .catch(err => console.log(err))
+    .catch(e => message.error('Oops, something went wrong'))
   }
   formatCount = x => numeral(x).format('0,0')
   render() {
@@ -42,15 +42,17 @@ class ResultsCount extends Component {
 }
 ResultsCount.propTypes = {
   queryString: PropTypes.string,
+  query: PropTypes.object,
 }
 
-const FilterBar = ({ queryString }) => (
+const FilterBar = ({ queryString, query }) => (
   <div>
     <MenuBarHeader>
       <Filters queryString={queryString} />
       <Divider />
       <ResultsCount
         queryString={queryString}
+        query={query}
       />
       <div style={{ marginTop: '5px' }}><CopyUrl /></div>
       <div style={{ marginTop: '5px' }}><DownloadResults queryString={queryString}/></div>
@@ -59,6 +61,7 @@ const FilterBar = ({ queryString }) => (
 )
 FilterBar.propTypes = {
   queryString: PropTypes.string,
+  query: PropTypes.object,
 }
 
 export { FilterBar }

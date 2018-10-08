@@ -3,10 +3,9 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import { List, Button, Spin, } from 'antd'
-import { fetchJSON } from '../../lib/fetchHelpers'
+import { List, Button, Spin, message } from 'antd'
 import { NoneText } from '../general/NoneText'
-import { apiEndpoint } from '../../lib/constants'
+import charityBase from '../../lib/charityBaseClient'
 
 const IncomeIcon = ({ income }) => (
   <svg style={{ width: '50px', height: '50px', }}>
@@ -59,14 +58,14 @@ class CharitiesList extends Component {
     skip: 0,
   }
   componentDidMount() {
-    this.refreshSearch(this.props.queryString)
+    this.refreshSearch(this.props.query)
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.queryString !== nextProps.queryString) {
-      this.refreshSearch(nextProps.queryString)
+      this.refreshSearch(nextProps.query)
     }
   }
-  refreshSearch = queryString => {
+  refreshSearch = query => {
     this.setState({
       loading: true,
       loadingMore: false,
@@ -75,7 +74,7 @@ class CharitiesList extends Component {
       limit: 10,
       skip: 0,
     })
-    this.getData(queryString, 0, res => {
+    this.getData(query, 0, res => {
       this.setState({
         data: res.charities,
         loading: false,
@@ -84,18 +83,22 @@ class CharitiesList extends Component {
       })
     })
   }
-  getData = (queryString, skip, callback) => {
-    const qs = queryString ? queryString.split('?')[1] + '&' : ''
-    const url = `${apiEndpoint}/charities?${qs}fields=ids,name,alternativeNames,activities,income.latest.total&limit=${this.state.limit}&skip=${skip}`
-    fetchJSON(url)
-    .then(res => callback(res))
-    .catch(err => console.log(err))
+  getData = (query, skip, callback) => {
+    charityBase.charity.list({
+      ...query,
+      accessToken: localStorage.getItem('access_token'),
+      fields: ['ids', 'name', 'alternativeNames', 'activities', 'income.latest.total'],
+      limit: this.state.limit,
+      skip: skip,
+    })
+    .then(callback)
+    .catch(e => message.error('Oops, something went wrong'))
   }
   onLoadMore = () => {
     this.setState({
       loadingMore: true,
     });
-    this.getData(this.props.queryString, this.state.skip, res => {
+    this.getData(this.props.query, this.state.skip, res => {
       const data = this.state.data.concat(res.charities)
       this.setState({
         data,
@@ -151,6 +154,7 @@ class CharitiesList extends Component {
 }
 CharitiesList.propTypes = {
   queryString: PropTypes.string,
+  query: PropTypes.object,
 }
 
 export { CharitiesList }

@@ -21,7 +21,7 @@ class Analysis extends Component {
     return (
       <Page isMobile={isMobile}>
         <ResponsiveSider isMobile={isMobile}>
-          <FilterBar queryString={queryString} />
+          <FilterBar queryString={queryString} query={query} />
         </ResponsiveSider>
         <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF' }}>
           <FixedHeader isMobile={isMobile} height={250}>

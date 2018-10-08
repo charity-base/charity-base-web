@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { Layout, Card, Icon, Row, Col, Divider } from 'antd'
-import { fetchJSON } from '../../lib/fetchHelpers'
+import { Layout, Card, Icon, Row, Col, Divider, message } from 'antd'
 import { MenuBar, MenuBarHeader } from '../general/MenuBar'
 import { CharityInfo } from './CharityInfo'
 import { CopyUrl } from '../general/CopyUrl'
 import { DownloadResults } from '../general/download'
-import { apiEndpoint } from '../../lib/constants'
 import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
+import charityBase from '../../lib/charityBaseClient'
 
 const CharityHeader = styled.div`
   font-size: 28px;
@@ -40,16 +39,27 @@ class Charity extends Component {
     charity: null,
     isLoading: true,
   }
-  componentDidMount() {
-    const url = `${apiEndpoint}/charities?ids.GB-CHC=${this.props.charityId}&fields=*`
-    fetchJSON(url)
-    .then(res => this.setState({
-      isLoading: false,
-      charity: res.charities.length === 1 ? res.charities[0] : null
-    }))
+  componentDidMount = () => {
+    charityBase.charity.list({
+      accessToken: localStorage.getItem('access_token'),
+      'ids.GB-CHC': this.props.charityId,
+      fields: ['*'],
+    })
+    .then(res => {
+      if (res.charities.length === 0) {
+        throw Error()
+      }
+      this.setState({
+        isLoading: false,
+        charity: res.charities[0],
+      })
+    })
     .catch(err => {
-      this.setState({ isLoading: false })
-      console.log(err)
+      this.setState({
+        isLoading: false,
+        charity: null,
+      })
+      message.error('Oops, something went wrong')
     })
   }
   onViewSelect = view => {
