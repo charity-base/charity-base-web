@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import { List, Avatar, Button, Spin, } from 'antd'
+import { List, Button, Spin, } from 'antd'
 import { fetchJSON } from '../../lib/fetchHelpers'
 import { NoneText } from '../general/NoneText'
 import { apiEndpoint } from '../../lib/constants'
@@ -139,7 +139,6 @@ class CharitiesList extends Component {
             }
           >
             <List.Item.Meta
-              avatar={<Avatar src={`https://ui-avatars.com/api/?name=${name}`} />}
               title={<Link to={`/charities/${ids['GB-CHC']}`}>{name}</Link>}
               description={alternativeNames.filter(x => x !== name).join(', ')}
             />
