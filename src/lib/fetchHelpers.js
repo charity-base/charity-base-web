@@ -19,14 +19,6 @@ const authOptions = (options, token) => ({
   },
 })
 
-const fetchJSON = (url, options={}, sendToken=true) => {
-  const token = sendToken && localStorage.getItem('access_token')
-  const opts = token ? authOptions(options, token) : options
-  return fetch(url, opts)
-  .then(handleFetchErrors)
-  .then(res => res.json())
-}
-
 const fetchBlob = (url, options={}, sendToken=true) => {
   const token = sendToken && localStorage.getItem('access_token')
   const opts = token ? authOptions(options, token) : options
@@ -35,4 +27,4 @@ const fetchBlob = (url, options={}, sendToken=true) => {
   .then(res => res.blob())
 }
 
-export { fetchJSON, fetchBlob }
+export { fetchBlob }

@@ -5,8 +5,6 @@ import { DownloadResults } from '../general/download'
 import { CopyUrl } from '../general/CopyUrl'
 import { MenuBarHeader } from '../general/MenuBar'
 import { Filters } from './filters'
-import { fetchJSON } from '../../lib/fetchHelpers'
-import { apiEndpoint } from '../../lib/constants'
 import { formatCount, formatMoney } from '../../lib/formatHelpers'
 import charityBase from '../../lib/charityBaseClient'
 
@@ -20,12 +18,12 @@ class ResultsCount extends Component {
   }
   componentDidMount() {
     this.countResults(this.props.query)
-    this.countGrantsResults(this.props.queryString)
+    this.countGrantsResults(this.props.query)
   }
   componentDidUpdate(prevProps, prevState) {
     if (this.props.queryString !== prevProps.queryString) {
       this.countResults(this.props.query)
-      this.countGrantsResults(this.props.queryString)
+      this.countGrantsResults(this.props.query)
     }
   }
   countResults = query => {
@@ -36,14 +34,28 @@ class ResultsCount extends Component {
       accessToken: localStorage.getItem('access_token'),
     })
     .then(res => this.setState({ isLoading: false, count: res.count }))
-    .catch(e => message.error('Oops, something went wrong'))
+    .catch(e => {
+      this.setState({ isLoading: false, count: null })
+      message.error('Oops, something went wrong')
+    })
   }
-  countGrantsResults = queryString => {
+  countGrantsResults = query => {
     this.setState({ isLoadingGrants: true })
-    const url = `${apiEndpoint}/aggregate-charities${queryString}${queryString ? '&' : '?'}hasGrant=true&aggTypes=grantTotal`
-    fetchJSON(url)
-    .then(res => this.setState({ isLoadingGrants: false, grantsCount: res.aggregations.grantTotal.filtered_grants.doc_count, grantsValue: res.aggregations.grantTotal.filtered_grants.total_awarded.value }))
-    .catch(err => console.log(err))
+    charityBase.charity.aggregate({
+      ...query,
+      accessToken: localStorage.getItem('access_token'),
+      hasGrant: true,
+      aggTypes: 'grantTotal',
+    })
+    .then(res => this.setState({
+      isLoadingGrants: false,
+      grantsCount: res.aggregations.grantTotal.filtered_grants.doc_count,
+      grantsValue: res.aggregations.grantTotal.filtered_grants.total_awarded.value
+    }))
+    .catch(e => {
+      this.setState({ isLoadingGrants: false, grantsCount: null, grantsValue: null })
+      message.error('Oops, something went wrong')
+    })
   }
   render() {
     const isValidCount = this.state.count !== null && !this.state.isLoading

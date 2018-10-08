@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { fetchJSON } from '../../lib/fetchHelpers'
-import { apiEndpoint } from '../../lib/constants'
+import { message } from 'antd'
 import { esBoundsToString } from '../../lib/mapHelpers'
 import { CharitiesMap, FundersTreemap, CharityCategoriesRadial, CharitySizeHistogram, GrantSizeHistogram, GrantDateHistogram } from './charts'
+import charityBase from '../../lib/charityBaseClient'
 
 class CharitiesList extends Component {
   state = {
@@ -14,14 +14,14 @@ class CharitiesList extends Component {
     geoPrecision: null,
   }
   componentDidMount() {
-    this.refreshSearch(this.props.queryString, null, null, true)
+    this.refreshSearch(this.props.query, null, null, true)
   }
   componentDidUpdate(prevProps) {
     if (prevProps.queryString !== this.props.queryString) {
       const allGeo = prevProps.query.addressWithin !== this.props.query.addressWithin
       const geoBounds = allGeo ? null : this.state.geoBounds
       const geoPrecision = allGeo ? null : this.state.geoPrecision
-      this.refreshSearch(this.props.queryString, geoBounds, geoPrecision, true)
+      this.refreshSearch(this.props.query, geoBounds, geoPrecision, true)
     }
   }
   getDateInterval = () => {
@@ -39,12 +39,12 @@ class CharitiesList extends Component {
   setView = view => {
     this.props.onQueryUpdate('view', view)
   }
-  refreshSearch = (queryString, geoBounds, geoPrecision, isFreshSearch) => {
+  refreshSearch = (query, geoBounds, geoPrecision, isFreshSearch) => {
     this.setState({
       loading: true,
       data: [],
     })
-    this.getData(queryString, geoBounds, geoPrecision, res => {
+    this.getData(query, geoBounds, geoPrecision, res => {
       const isBoundsInvalid = res.aggregations.addressLocation.map_zoom.bounds && res.aggregations.addressLocation.map_zoom.bounds.top_left.lat === res.aggregations.addressLocation.map_zoom.bounds.bottom_right.lat
       this.setState({
         data: res.aggregations,
@@ -55,17 +55,21 @@ class CharitiesList extends Component {
       })
     })
   }
-  getData = (queryString, geoBounds, geoPrecision, callback) => {
-    const dateInterval = this.getDateInterval()
-    const qs = queryString ? queryString.split('?')[1] + '&' : ''
-    const url = `${apiEndpoint}/aggregate-charities?${qs}hasGrant=true&aggGeoBounds=${geoBounds || ''}&aggGeoPrecision=${geoPrecision || ''}&aggGrantDateInterval=${dateInterval}`
-    fetchJSON(url)
-    .then(res => callback(res))
-    .catch(err => console.log(err))
+  getData = (query, geoBounds, geoPrecision, callback) => {
+    charityBase.charity.aggregate({
+      ...query,
+      accessToken: localStorage.getItem('access_token'),
+      hasGrant: true,
+      aggGeoBounds: geoBounds || '',
+      aggGeoPrecision: geoPrecision || '',
+      aggGrantDateInterval: this.getDateInterval(),
+    })
+    .then(callback)
+    .catch(e => message.error('Oops, something went wrong'))
   }
   onBoundsChange = (geoBoundsString, geoPrecision) => {
     if (geoBoundsString !== this.state.geoBounds) {
-      this.refreshSearch(this.props.queryString, geoBoundsString, geoPrecision, false)
+      this.refreshSearch(this.props.query, geoBoundsString, geoPrecision, false)
     }
   }
   render() {
