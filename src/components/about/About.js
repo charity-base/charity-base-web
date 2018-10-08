@@ -157,7 +157,6 @@ class About extends Component {
   }
 }
 About.propTypes = {
-  queryString: PropTypes.string,
   isMobile: PropTypes.bool,
 }
 
