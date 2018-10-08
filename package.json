@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "https://charitybase.uk",
   "dependencies": {
-    "antd": "~3.2.3",
+    "antd": "^3.10.0",
     "auth0-js": "^9.7.3",
     "charity-base": "^1.0.3",
     "google-map-react": "^1.0.5",
