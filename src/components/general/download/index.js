@@ -126,7 +126,7 @@ class DownloadResults extends Component {
           <Button
             icon='download'
             style={{ width: 120 }}
-            onClick={auth.ensureAuthenticated(this.context.router.history)(this.downloadResults)}
+            onClick={auth.wrapAuthentication(this.context.router.history)(this.downloadResults)}
             loading={isLoading}
             disabled={!isAuthenticated}
           >

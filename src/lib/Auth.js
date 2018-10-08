@@ -15,7 +15,7 @@ class Auth {
     this.setSession = this.setSession.bind(this)
     this.getUser = this.getUser.bind(this)
     this.sendPasswordResetEmail = this.sendPasswordResetEmail.bind(this)
-    this.ensureAuthenticated = this.ensureAuthenticated.bind(this)
+    this.wrapAuthentication = this.wrapAuthentication.bind(this)
   }
 
   auth0 = new auth0.WebAuth({
@@ -107,7 +107,7 @@ class Auth {
     return this.auth0.changePassword({ email, connection }, cb)
   }
 
-  ensureAuthenticated = history => func => () => {
+  wrapAuthentication = history => func => () => {
     if (this.isAuthenticated()) {
       return func()
     }
