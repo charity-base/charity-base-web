@@ -4,9 +4,8 @@ import qs from 'query-string'
 import numeral from 'numeral'
 import { Modal, Button, Alert } from 'antd'
 import Auth from '../../../lib/Auth'
-import { apiEndpoint } from '../../../lib/constants'
-import { fetchBlob } from '../../../lib/fetchHelpers'
 import { defaultFieldsList } from '../../../lib/allowedFields'
+import charityBase from '../../../lib/charityBaseClient'
 import Selector from '../Selector'
 import { FieldTree } from './FieldTree'
 
@@ -51,18 +50,13 @@ class DownloadResults extends Component {
     const { fileType, checkedKeys: fieldPaths } = this.state
 
     const query = qs.parse(this.props.queryString)
-    query.fields = fieldPaths.join(',')
-    const queryString = qs.stringify(query)
 
-    const url = `${apiEndpoint}/download-charities?${queryString}`
-
-    const headers = {
-      "Content-Type": "application/json; charset=utf-8",
-    }
-
-    const body = JSON.stringify({ fileType })
-
-    fetchBlob(url, { method: 'POST', headers, body })
+    charityBase.charity.download({
+      ...query,
+      accessToken: localStorage.getItem('access_token'),
+      fields: fieldPaths,
+      fileType,
+    })
     .then(blob => {
       if (!this.state.isLoading) return
       const fileExtension = fileType === 'JSON' ? 'jsonl' : 'csv'
