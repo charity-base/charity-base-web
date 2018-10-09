@@ -8,11 +8,10 @@ import CharityMarker from './CharityMarker'
 
 class CharitiesMapView extends Component {
   state = {
-    geoBoundsString: '57.6266733,-8.4016438,50.9843918,1.8224393',
     zooming: false,
   }
   render() {
-    const { data, loading } = this.props
+    const { data, loading, geoBoundsString } = this.props
     const { zooming } = this.state
     const minCount = Math.min(...data.map(x => x.doc_count))
     const maxCount = Math.max(...data.map(x => x.doc_count))
@@ -22,7 +21,7 @@ class CharitiesMapView extends Component {
         {containerWidth => {
           const width = containerWidth
           if (!width) return
-          const { center, zoom } = getCenterZoom(this.state.geoBoundsString, width, height)
+          const { center, zoom } = getCenterZoom(geoBoundsString, width, height)
           return (
             <div style={{ width, height, position: 'relative', opacity: loading || zooming ? 0.5 : 1 }}>
               <GoogleMapReact
@@ -59,6 +58,7 @@ class CharitiesMapView extends Component {
 CharitiesMapView.propTypes = {
   data: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
+  geoBoundsString: PropTypes.string.isRequired,
 }
 
 export default CharitiesMapView

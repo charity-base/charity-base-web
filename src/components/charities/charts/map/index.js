@@ -3,10 +3,14 @@ import PropTypes from 'prop-types'
 import { message } from 'antd'
 import charityBase from '../../../../lib/charityBaseClient'
 import CharitiesMapView from './CharitiesMapView'
+import { esBoundsToString } from '../../../../lib/mapHelpers'
+
+const defaultGeoBoundsString = '57.6266733,-8.4016438,50.9843918,1.8224393'
 
 class CharitiesMap extends Component {
   state = {
     buckets: [],
+    geoBoundsString: defaultGeoBoundsString,
     isLoading: false,
   }
   componentDidMount() {
@@ -30,25 +34,28 @@ class CharitiesMap extends Component {
     })
     .then(({ aggregations }) => {
       const buckets = (aggregations && aggregations.addressLocation) ? aggregations.addressLocation.grid.buckets : []
-      console.log(aggregations)
+      const geoBoundsString = (aggregations && aggregations.addressLocation) ? esBoundsToString(aggregations.addressLocation.map_zoom.bounds) : defaultGeoBoundsString
       this.setState({
-        isLoading: false,
         buckets,
+        geoBoundsString,
+        isLoading: false,
       })
     })
     .catch(e => {
       this.setState({
-        isLoading: false,
         buckets: [],
+        geoBoundsString: defaultGeoBoundsString,
+        isLoading: false,
       })
       message.error('Oops, something went wrong')
     })
   }
   render() {
-    const { buckets, isLoading } = this.state
+    const { buckets, isLoading, geoBoundsString } = this.state
     return (
       <CharitiesMapView
         data={buckets}
+        geoBoundsString={geoBoundsString}
         loading={isLoading}
       />
     )
