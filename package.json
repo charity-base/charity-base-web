@@ -6,7 +6,7 @@
   "dependencies": {
     "antd": "^3.10.0",
     "auth0-js": "^9.7.3",
-    "charity-base": "^1.2.0",
+    "charity-base": "^1.2.1",
     "google-map-react": "^1.0.5",
     "jwt-decode": "^2.2.0",
     "ngeohash": "^0.6.0",
