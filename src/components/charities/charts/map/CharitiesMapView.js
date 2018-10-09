@@ -10,6 +10,9 @@ class CharitiesMapView extends Component {
   state = {
     zooming: false,
   }
+  setZoomState = zooming => () => {
+    this.setState({ zooming })
+  }
   render() {
     const { data, loading, geoBoundsString } = this.props
     const { zooming } = this.state
@@ -32,8 +35,8 @@ class CharitiesMapView extends Component {
                 center={center}
                 options={{}}
                 onChange={() => {}}
-                onZoomAnimationStart={() => {}}
-                onZoomAnimationEnd={() => {}}
+                onZoomAnimationStart={this.setZoomState(true)}
+                onZoomAnimationEnd={this.setZoomState(false)}
               >
                 {data.sort((a,b) => a.doc_count - b.doc_count).map(x => {
                   const size = maxCount > minCount ? (x.doc_count - minCount)/(maxCount - minCount) : 1
