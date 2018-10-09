@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { message } from 'antd'
 import charityBase from '../../../../lib/charityBaseClient'
+import { ContainerWidthConsumer } from '../../../general/ContainerWidthConsumer'
 import CharitiesMapView from './CharitiesMapView'
 import { esBoundsToString } from '../../../../lib/mapHelpers'
 
@@ -53,11 +54,17 @@ class CharitiesMap extends Component {
   render() {
     const { buckets, isLoading, geoBoundsString } = this.state
     return (
-      <CharitiesMapView
-        data={buckets}
-        geoBoundsString={geoBoundsString}
-        loading={isLoading}
-      />
+      <ContainerWidthConsumer>
+        {width => width && (
+          <CharitiesMapView
+            data={buckets}
+            geoBoundsString={geoBoundsString}
+            loading={isLoading}
+            width={width}
+            height={500}
+          />
+        )}
+      </ContainerWidthConsumer>
     )
   }
 }
