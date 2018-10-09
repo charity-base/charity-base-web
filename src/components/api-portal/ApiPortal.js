@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import charityBase from '../../lib/charityBaseClient'
 import { Layout, Icon, Button, List, Skeleton, Tooltip, message } from 'antd'
+import TextButton from '../general/TextButton'
 import { Page, ScrollableContent, ResponsiveSider } from '../general/Layout'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
@@ -67,8 +68,8 @@ class ApiPortal extends Component {
       <Page isMobile={isMobile}>
         <ResponsiveSider isMobile={isMobile}>
           <a
-            target='_blank'
             href='https://charity-base.github.io/charity-base-docs'
+            target='_blank'
             rel='noopener noreferrer'
           >
             <Icon type='link' /> API Docs
@@ -80,12 +81,12 @@ class ApiPortal extends Component {
             <h2>
               <Icon type='key' />
               <span style={{ paddingLeft: 5, paddingRight: 5 }}>API Keys</span>
-              <a
+              <TextButton
                 style={{ fontSize: 12 }}
                 onClick={() => this.toggleState(!this.state.showKeys)}
               >
                 {this.state.showKeys ? 'hide' : 'show'}
-              </a>
+              </TextButton>
             </h2>
             <List
               bordered

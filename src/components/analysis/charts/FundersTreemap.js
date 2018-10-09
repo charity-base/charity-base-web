@@ -5,9 +5,9 @@ import { Menu, Button, Dropdown, Icon, Row, Col } from 'antd'
 import { Tooltip, Treemap } from 'recharts'
 import { formatMoney, formatCount } from '../../../lib/formatHelpers'
 import { ContainerWidthConsumer } from '../../general/ContainerWidthConsumer'
+import TextButton from '../../general/TextButton'
 import { Alerts } from '../../general/Alerts'
 import { funders } from '../../../lib/filterValues'
-
 
 class SimpleTreemapContent extends Component {
   render() {
@@ -134,7 +134,12 @@ class FundersTreemap extends Component {
             </Col>
             <Col xs={14} sm={14} md={14} lg={12} xl={12} xxl={15}>
               <Dropdown overlay={this.menu()} trigger={['click']} disabled={data.length < 2}>
-                <a className="ant-dropdown-link" style={{ fontSize: '16px', margin: '24px' }}>{this.keyOptions()[this.state.dataKey]} <Icon type="down" /></a>
+                <TextButton
+                  className="ant-dropdown-link"
+                  style={{ fontSize: '16px', margin: '24px' }}
+                >
+                  {this.keyOptions()[this.state.dataKey]} <Icon type="down" />
+                </TextButton>
               </Dropdown>
             </Col>
           </Row>

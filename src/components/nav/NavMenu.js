@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { Menu, Divider, Icon } from 'antd'
+import TextButton from '../general/TextButton'
 
 const shortName = name => {
   const maxLength = 16
@@ -13,7 +14,7 @@ const shortName = name => {
 const renderUserDropDown = ({ name, onLogout, onChangePassword, isMobile }) => (
   isMobile ? (
     <Menu.Item key='user-dropdown-menuitem'>
-      <a onClick={onLogout}><Icon type='logout'/></a>
+      <TextButton onClick={onLogout}><Icon type='logout'/></TextButton>
     </Menu.Item>
   ) : (
     <Menu.SubMenu
@@ -24,11 +25,11 @@ const renderUserDropDown = ({ name, onLogout, onChangePassword, isMobile }) => (
     >
       {onChangePassword && (
         <Menu.Item key='user-dropdown-change-password'>
-          <a onClick={onChangePassword}>Change Password</a>
+          <TextButton onClick={onChangePassword}>Change Password</TextButton>
         </Menu.Item>
       )}
       <Menu.Item key='user-dropdown-logout'>
-        <a onClick={onLogout}>Log Out</a>
+        <TextButton onClick={onLogout}>Log Out</TextButton>
       </Menu.Item>
     </Menu.SubMenu>
   )
@@ -76,7 +77,11 @@ const NavMenu = ({ isMobile, user, onLogin, onLogout, onChangePassword }) => (
     </Menu.Item>}
     {!isMobile && externalNavs.map(({ href, label }, i) => (
       <Menu.Item key={`${i}-external`}>
-        <a target='_blank' href={href}>
+        <a
+          href={href}
+          target='_blank'
+          rel='noopener noreferrer'
+        >
           <Icon type='link' theme='outlined' />
           {label}
         </a>
@@ -94,9 +99,10 @@ const NavMenu = ({ isMobile, user, onLogin, onLogout, onChangePassword }) => (
       })
     ) : (
       <Menu.Item key='auth'>
-        <a onClick={onLogin}>
-          {isMobile ? <Icon type='login' /> : 'Log In'}
-        </a>
+        <TextButton onClick={onLogin} underline={false}>
+          <Icon type='login' />
+          {isMobile ? '' : 'Log In'}
+        </TextButton>
       </Menu.Item>
     )}
   </StyledMenu>

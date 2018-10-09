@@ -8,6 +8,7 @@ import { defaultFieldsList } from '../../../lib/allowedFields'
 import charityBase from '../../../lib/charityBaseClient'
 import Selector from '../Selector'
 import { FieldTree } from './FieldTree'
+import TextButton from '../TextButton'
 
 const auth = new Auth()
 
@@ -99,7 +100,7 @@ class DownloadResults extends Component {
             <Alert
               description={
                 <span>
-                  Please <a onClick={() => auth.login(this.context.router.history)}>Log In</a> before continuing.
+                  Please <TextButton onClick={() => auth.login(this.context.router.history)}>Log In</TextButton> before continuing.
                 </span>
               }
               type='info'
@@ -134,7 +135,8 @@ class DownloadResults extends Component {
                 <span>
                   <a
                     href={window.URL.createObjectURL(this.state.blob)}
-                    target="_blank"
+                    target='_blank'
+                    rel='noopener noreferrer'
                     download={this.state.fileName}
                     onClick={() => this.reset(true)}
                     style={{ marginRight: '10px' }}
@@ -182,9 +184,9 @@ class DownloadResults extends Component {
           </div>
         </Modal>
         {this.props.linkText ? (
-          <a onClick={() => this.toggleModal(true)}>
+          <TextButton onClick={() => this.toggleModal(true)}>
             {this.props.linkText}
-          </a>
+          </TextButton>
         ) : (
           <Button icon='download' style={{ width: '100%' }} onClick={() => this.toggleModal(true)}>
             CSV / JSON

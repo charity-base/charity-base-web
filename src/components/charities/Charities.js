@@ -4,7 +4,7 @@ import { FilterBar } from './FilterBar'
 import { CharitiesSearch } from './CharitiesSearch'
 import { CharitiesSort } from './CharitiesSort'
 import { CharitiesList } from './CharitiesList'
-import { Layout } from 'antd'
+import { Layout, Row, Col } from 'antd'
 import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
 
 class Charities extends Component {
@@ -20,9 +20,16 @@ class Charities extends Component {
             <CharitiesSearch query={query} />
             <CharitiesSort query={query} />
           </FixedHeader>
-          <ScrollableContent isMobile={isMobile}>
-            <CharitiesList queryString={queryString} query={query} />
-          </ScrollableContent>
+          <Row type='flex' style={{ height: '100%'  }}>
+            <Col xl={12} style={{ height: '100%' }}>
+              <ScrollableContent isMobile={isMobile}>
+                <CharitiesList queryString={queryString} query={query} />
+              </ScrollableContent>
+            </Col>
+            <Col xl={12} style={{ paddingTop: 300 }}>
+              <div>map goes here</div>
+            </Col>
+          </Row>
         </Layout.Content>
       </Page>
     )

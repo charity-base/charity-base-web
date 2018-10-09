@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { Layout, Card, Icon, Row, Col, Divider, message } from 'antd'
+import { Layout, Card, Icon, Divider, message } from 'antd'
 import { MenuBar, MenuBarHeader } from '../general/MenuBar'
 import { CharityInfo } from './CharityInfo'
 import { CopyUrl } from '../general/CopyUrl'
 import { DownloadResults } from '../general/download'
+import TextButton from '../general/TextButton'
 import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
 import charityBase from '../../lib/charityBaseClient'
 
@@ -83,12 +84,10 @@ class Charity extends Component {
             renderHeader={() => (
               <MenuBarHeader>
                 <div style={{ fontSize: '12px' }}>
-                  <a onClick={this.goBack}>
-                    <Row justify='space-around' type='flex'>
-                      <Col span={4}><Icon type="arrow-left"/></Col>
-                      <Col span={20}>Back to Search</Col>
-                    </Row>
-                  </a>
+                  <TextButton onClick={this.goBack} underline={false}>
+                    <Icon type='arrow-left' style={{ marginRight: '5px' }}/>
+                    Back to Search
+                  </TextButton>
                 </div>
                 <Divider />
                 <div style={{ marginTop: '5px' }}><CopyUrl /></div>
