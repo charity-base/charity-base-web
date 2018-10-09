@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import { Menu, Divider, Icon } from 'antd'
+import { Menu, Icon } from 'antd'
 import TextButton from '../general/TextButton'
 
 const shortName = name => {
@@ -14,22 +14,33 @@ const shortName = name => {
 const renderUserDropDown = ({ name, onLogout, onChangePassword, isMobile }) => (
   isMobile ? (
     <Menu.Item key='user-dropdown-menuitem'>
-      <TextButton onClick={onLogout}><Icon type='logout'/></TextButton>
+      <TextButton onClick={onLogout}>
+        <Icon type='logout'/>
+      </TextButton>
     </Menu.Item>
   ) : (
     <Menu.SubMenu
       key='user-dropdown-submenu'
       title={
-        <span>{shortName(name)} <Icon type='down' /></span>
+        <span>
+          <Icon type='user' />
+          {shortName(name)}
+        </span>
       }
     >
       {onChangePassword && (
         <Menu.Item key='user-dropdown-change-password'>
-          <TextButton onClick={onChangePassword}>Change Password</TextButton>
+          <TextButton onClick={onChangePassword}>
+            <Icon type='idcard' />
+            Change Password
+          </TextButton>
         </Menu.Item>
       )}
       <Menu.Item key='user-dropdown-logout'>
-        <TextButton onClick={onLogout}>Log Out</TextButton>
+        <TextButton onClick={onLogout}>
+          <Icon type='logout' />
+          Log Out
+        </TextButton>
       </Menu.Item>
     </Menu.SubMenu>
   )
@@ -40,10 +51,6 @@ const internalNavs = [
   { to: '/analysis', label: 'Grants Analysis', icon: 'area-chart', exact: false },
   { to: '/api-portal', label: 'API', icon: 'api', theme: 'filled', exact: false },
   { to: '/about', label: 'About', icon: 'question-circle', theme: 'filled', exact: false },
-]
-
-const externalNavs = [
-  { href: 'https://github.com/charity-base', label: 'GitHub' },
 ]
 
 const StyledMenu = styled(Menu)`
@@ -72,24 +79,6 @@ const NavMenu = ({ isMobile, user, onLogin, onLogout, onChangePassword }) => (
         </NavLink>
       </Menu.Item>
     ))}
-    {!isMobile && <Menu.Item style={{ cursor: 'default' }}>
-      {<Divider type='vertical' style={{ marginLeft: '20px', marginRight: '20px', backgroundColor: 'rgba(255,255,255,0.5)' }} />}
-    </Menu.Item>}
-    {!isMobile && externalNavs.map(({ href, label }, i) => (
-      <Menu.Item key={`${i}-external`}>
-        <a
-          href={href}
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          <Icon type='link' theme='outlined' />
-          {label}
-        </a>
-      </Menu.Item>
-    ))}
-    {!isMobile && <Menu.Item style={{ cursor: 'default' }}>
-      {<Divider type='vertical' style={{ marginLeft: '20px', marginRight: '20px', backgroundColor: 'rgba(255,255,255,0.5)' }} />}
-    </Menu.Item>}
     {user ? (
       renderUserDropDown({
         name: user.given_name || user.nickname || 'User',
