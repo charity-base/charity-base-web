@@ -1,18 +1,27 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { ContainerWidthConsumer } from '../../general/ContainerWidthConsumer'
 import CharitiesMap from './map'
 
 class CharitiesChart extends Component {
   render() {
-    const { query, queryString } = this.props
     return (
-      <CharitiesMap query={query} queryString={queryString} />
+      <ContainerWidthConsumer>
+        {width => width && (
+          <CharitiesMap
+            {...this.props}
+            width={width}
+            height={500}
+          />
+        )}
+      </ContainerWidthConsumer>
     )
   }
 }
 CharitiesChart.propTypes = {
   query: PropTypes.object.isRequired,
   queryString: PropTypes.string.isRequired,
+  onQueryUpdate: PropTypes.func.isRequired,
 }
 
 export default CharitiesChart

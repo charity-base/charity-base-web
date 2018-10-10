@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import qs from 'query-string'
 import { FilterBar } from './FilterBar'
 import { CharitiesSearch } from './CharitiesSearch'
 import { CharitiesSort } from './CharitiesSort'
@@ -9,6 +10,9 @@ import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../genera
 import CharitiesChart from './charts'
 
 class Charities extends Component {
+  onQueryUpdate = query => {
+    this.context.router.history.push(`/?${qs.stringify(query)}`)
+  }
   render() {
     const { query, queryString, isMobile } = this.props
     return (
@@ -27,8 +31,12 @@ class Charities extends Component {
                 <CharitiesList queryString={queryString} query={query} />
               </ScrollableContent>
             </Col>
-            <Col xxl={12} xl={10} lg={8} md={4} style={{ paddingTop: 300 }}>
-              <CharitiesChart queryString={queryString} query={query} />
+            <Col xxl={12} xl={10} lg={8} md={4} style={{ paddingTop: 200 }}>
+              <CharitiesChart
+                queryString={queryString}
+                query={query}
+                onQueryUpdate={this.onQueryUpdate}
+              />
             </Col>
           </Row>
         </Layout.Content>
@@ -40,6 +48,9 @@ Charities.propTypes = {
   query: PropTypes.object,
   queryString: PropTypes.string,
   isMobile: PropTypes.bool,
+}
+Charities.contextTypes = {
+  router: PropTypes.object,
 }
 
 export { Charities }

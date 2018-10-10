@@ -38,15 +38,15 @@ const roundValues = (arr, decimals) => arr.map(x => round(x, decimals))
 
 const roundValuesString = (str, decimals) => roundValues(str.split(','), decimals).join(',')
 
-const esBoundsToString = bounds => (
-  bounds ? (
-    roundValuesString(`${bounds.top_left.lat},${bounds.top_left.lon},${bounds.bottom_right.lat},${bounds.bottom_right.lon}`, 12)
+const esBoundsToString = (bounds, decimals=20) => (
+  bounds && (bounds.top_left.lat !== bounds.bottom_right.lat) && (bounds.top_left.lon !== bounds.bottom_right.lon) ? (
+    roundValuesString(`${bounds.top_left.lat},${bounds.top_left.lon},${bounds.bottom_right.lat},${bounds.bottom_right.lon}`, decimals)
   ) : ''
 )
 
-const gmapsBoundsToString = bounds => (
+const gmapsBoundsToString = (bounds, decimals=20) => (
   bounds ? (
-    roundValuesString(`${bounds.nw.lat},${bounds.nw.lng},${bounds.se.lat},${bounds.se.lng}`, 12)
+    roundValuesString(`${bounds.nw.lat},${bounds.nw.lng},${bounds.se.lat},${bounds.se.lng}`, decimals)
   ) : ''
 )
 
@@ -66,9 +66,17 @@ const boundsStringToGmaps = boundsString => {
   return gmapsBounds
 }
 
+const defaultCenterZoom = {
+  center: {
+    lat: 53.021625,
+    lng: -1.470896,
+  },
+  zoom: 4,
+}
+
 const getCenterZoom = (boundsString, width, height) => {
   const bounds = boundsStringToGmaps(boundsString)
-  if (!bounds) return { center: {}, zoom: 5, }
+  if (!bounds) return defaultCenterZoom
   const { center, zoom } = fitBounds(bounds, { width, height })
   return { center, zoom }
 }
@@ -83,4 +91,25 @@ const geoHashToBoundingBox = hash => {
   return [maxLat, minLon, minLat, maxLon].join(',')
 }
 
-export { zoomToPrecision, esBoundsToString, gmapsBoundsToString, getCenterZoom, geoHashToLatLon, geoHashToBoundingBox }
+const isCenterZoomEqual = (x, y, decimals=20) => {
+  if (x.zoom !== y.zoom) {
+    return false
+  }
+  if (round(x.center.lat, decimals) !== round(y.center.lat, decimals)) {
+    return false
+  }
+  if (round(x.center.lng, decimals) !== round(y.center.lng, decimals)) {
+    return false
+  }
+  return true
+}
+
+export {
+  zoomToPrecision,
+  esBoundsToString,
+  gmapsBoundsToString,
+  getCenterZoom,
+  geoHashToLatLon,
+  geoHashToBoundingBox,
+  isCenterZoomEqual,
+}
