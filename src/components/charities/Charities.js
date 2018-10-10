@@ -10,6 +10,9 @@ import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../genera
 import CharitiesChart from './charts'
 
 class Charities extends Component {
+  state = {
+    hoveredItem: {},
+  }
   onQueryUpdate = query => {
     this.context.router.history.push(`/?${qs.stringify(query)}`)
   }
@@ -28,7 +31,11 @@ class Charities extends Component {
           <Row type='flex' style={{ height: '100%' }}>
             <Col xxl={12} xl={14} lg={16} md={20}>
               <ScrollableContent isMobile={isMobile}>
-                <CharitiesList queryString={queryString} query={query} />
+                <CharitiesList
+                  queryString={queryString}
+                  query={query}
+                  onHover={hoveredItem => this.setState({ hoveredItem })}
+                />
               </ScrollableContent>
             </Col>
             <Col xxl={12} xl={10} lg={8} md={4} style={{ paddingTop: 200 }}>
@@ -36,6 +43,7 @@ class Charities extends Component {
                 queryString={queryString}
                 query={query}
                 onQueryUpdate={this.onQueryUpdate}
+                hoveredItem={this.state.hoveredItem}
               />
             </Col>
           </Row>

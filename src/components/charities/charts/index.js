@@ -22,6 +22,7 @@ CharitiesChart.propTypes = {
   query: PropTypes.object.isRequired,
   queryString: PropTypes.string.isRequired,
   onQueryUpdate: PropTypes.func.isRequired,
+  hoveredItem: PropTypes.object.isRequired,
 }
 
 export default CharitiesChart

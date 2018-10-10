@@ -67,12 +67,24 @@ class CharitiesMap extends Component {
       'addressWithin': geoBoundsString || undefined
     })
   }
+  getLatLng = geoCoordsString => {
+    if (!geoCoordsString) return
+    const geoCoordsArray = geoCoordsString.split(',')
+    if (geoCoordsArray.length !== 2) return
+    return {
+      lat: geoCoordsArray[0],
+      lng: geoCoordsArray[1],
+    }
+  }
   render() {
-    const { width, height } = this.props
+    const { width, height, hoveredItem } = this.props
     const { buckets, isLoading, geoBoundsString } = this.state
+    const hoveredItemLatLng = hoveredItem && hoveredItem.contact && this.getLatLng(hoveredItem.contact.geoCoords)
+    const charityPoints = hoveredItemLatLng ? [hoveredItemLatLng] : []
     return (
       <CharitiesMapView
-        data={buckets}
+        buckets={buckets}
+        points={charityPoints}
         geoBoundsString={geoBoundsString}
         resetOnSearch={this.state.resetOnSearch}
         onBoundsChange={this.onBoundsChange}
@@ -90,6 +102,7 @@ CharitiesMap.propTypes = {
   onQueryUpdate: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  hoveredItem: PropTypes.object.isRequired,
 }
 
 export default CharitiesMap

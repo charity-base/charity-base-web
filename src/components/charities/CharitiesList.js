@@ -87,7 +87,7 @@ class CharitiesList extends Component {
     charityBase.charity.list({
       ...query,
       accessToken: localStorage.getItem('access_token'),
-      fields: ['ids', 'name', 'alternativeNames', 'activities', 'income.latest.total'],
+      fields: ['ids', 'name', 'alternativeNames', 'activities', 'income.latest.total', 'contact.geoCoords'],
       limit: this.state.limit,
       skip: skip,
     })
@@ -114,6 +114,7 @@ class CharitiesList extends Component {
     });
   }
   render() {
+    const { onHover } = this.props
     const { loading, loadingMore, showLoadingMore, data, limit } = this.state;
     const isMore = data.length/limit === Math.round(data.length/limit)
     const loadMore = showLoadingMore ? (
@@ -130,7 +131,7 @@ class CharitiesList extends Component {
         loading={loading}
         loadMore={loadMore}
         dataSource={data}
-        renderItem={({ ids, name, activities, income, alternativeNames }) => (
+        renderItem={({ ids, name, activities, income, alternativeNames, contact }) => (
           <List.Item
             actions={[
               // <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
@@ -140,6 +141,8 @@ class CharitiesList extends Component {
             extra={
               <Income income={income && income.latest.total} />
             }
+            onMouseEnter={() => onHover({ ids, name, activities, income, alternativeNames, contact })}
+            onMouseLeave={() => onHover({})}
           >
             <List.Item.Meta
               title={<Link to={`/charities/${ids['GB-CHC']}`}>{name}</Link>}
@@ -155,6 +158,7 @@ class CharitiesList extends Component {
 CharitiesList.propTypes = {
   queryString: PropTypes.string,
   query: PropTypes.object,
+  onHover: PropTypes.object.isRequired,
 }
 
 export { CharitiesList }

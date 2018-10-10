@@ -4,9 +4,9 @@ import GoogleMapReact from 'google-map-react'
 import { Button, Switch, Tooltip } from 'antd'
 import { googleApiKey } from '../../../../lib/constants'
 import { gmapsBoundsToString, geoHashToLatLon, getCenterZoom, isCenterZoomEqual } from '../../../../lib/mapHelpers'
-import CharityMarker from './CharityMarker'
+import { BubbleMarker, PointMarker } from './Marker'
 
-const PureMap = ({ zoom, center, onChange, onZoomAnimation, data }) => (
+const PureMap = ({ zoom, center, onChange, onZoomAnimation, buckets, points }) => (
   <GoogleMapReact
     bootstrapURLKeys={{
       key: googleApiKey,
@@ -18,9 +18,9 @@ const PureMap = ({ zoom, center, onChange, onZoomAnimation, data }) => (
     onZoomAnimationStart={onZoomAnimation(true)}
     onZoomAnimationEnd={onZoomAnimation(false)}
   >
-    {data.sort((a,b) => a.doc_count - b.doc_count).map(x => {
+    {buckets.sort((a,b) => a.doc_count - b.doc_count).map(x => {
       const { latitude, longitude } = geoHashToLatLon(x.key)
-      return <CharityMarker
+      return <BubbleMarker
         key={x.key}
         count={x.doc_count}
         lat={latitude}
@@ -29,6 +29,13 @@ const PureMap = ({ zoom, center, onChange, onZoomAnimation, data }) => (
         onClick={() => {}}
       />
     })}
+    {points.map(({ lat, lng }, i) => (
+      <PointMarker
+        key={i}
+        lat={lat}
+        lng={lng}
+      />
+    ))}
   </GoogleMapReact>
 )
 PureMap.propTypes = {
@@ -36,7 +43,8 @@ PureMap.propTypes = {
   center: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   onZoomAnimation: PropTypes.func.isRequired,
-  data: PropTypes.array.isRequired,
+  buckets: PropTypes.array.isRequired,
+  points: PropTypes.array.isRequired,
 }
 
 class CharitiesMapView extends Component {
@@ -66,10 +74,10 @@ class CharitiesMapView extends Component {
     this.setState({ isZooming })
   }
   render() {
-    const { data, loading, geoBoundsString, resetOnSearch, onOptionsChange, width, height } = this.props
+    const { buckets, points, loading, geoBoundsString, resetOnSearch, onOptionsChange, width, height } = this.props
     const { center, zoom, isZooming } = this.state
-    const minCount = Math.min(...data.map(x => x.doc_count))
-    const maxCount = Math.max(...data.map(x => x.doc_count))
+    const minCount = Math.min(...buckets.map(x => x.doc_count))
+    const maxCount = Math.max(...buckets.map(x => x.doc_count))
     return zoom && (
       <div style={{ width, height, position: 'relative', opacity: loading || isZooming ? 0.5 : 1 }}>
         <Button
@@ -91,17 +99,19 @@ class CharitiesMapView extends Component {
           center={center}
           onChange={this.onChange}
           onZoomAnimation={this.setZoomState}
-          data={data.map(x => ({
+          buckets={buckets.map(x => ({
             ...x,
             normalizedCount: maxCount > minCount ? (x.doc_count - minCount)/(maxCount - minCount) : 1
           }))}
+          points={points}
         />
       </div>
     )
   }
 }
 CharitiesMapView.propTypes = {
-  data: PropTypes.array.isRequired,
+  buckets: PropTypes.array.isRequired,
+  points: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   geoBoundsString: PropTypes.string,
   resetOnSearch: PropTypes.bool.isRequired,
