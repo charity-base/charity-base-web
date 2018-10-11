@@ -6,7 +6,7 @@ import GoogleMapReact from 'google-map-react'
 import { Button, Row, Col } from 'antd'
 import { googleApiKey } from '../../../lib/constants'
 import { zoomToPrecision, gmapsBoundsToString, geoHashToLatLon, geoHashToBoundingBox, getCenterZoom } from '../../../lib/mapHelpers'
-import { ContainerWidthConsumer } from '../../general/ContainerWidthConsumer'
+import ContainerSizeConsumer from '../../general/ContainerSizeConsumer'
 import { Alerts } from '../../general/Alerts'
 
 const MarkerContainer = styled.div`
@@ -94,8 +94,8 @@ class CharitiesMap extends Component {
           />
         </Col>
         <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={16}>
-          <ContainerWidthConsumer>
-            {containerWidth => {
+          <ContainerSizeConsumer>
+            {({ width: containerWidth }) => {
               const width = containerWidth
               if (!width || !this.state.geoBoundsString) return
               const { center, zoom } = getCenterZoom(this.state.geoBoundsString, width, height)
@@ -142,7 +142,7 @@ class CharitiesMap extends Component {
                 </div>
               )
             }}
-          </ContainerWidthConsumer>
+          </ContainerSizeConsumer>
         </Col>
       </Row>
     )

@@ -23,7 +23,7 @@ class Charities extends Component {
         <ResponsiveSider isMobile={isMobile}>
           <FilterBar queryString={queryString} query={query} />
         </ResponsiveSider>
-        <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF' }}>
+        <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF', height: '100%' }}>
           <FixedHeader isMobile={isMobile}>
             <CharitiesSearch query={query} />
             <CharitiesSort query={query} />
@@ -38,7 +38,7 @@ class Charities extends Component {
                 />
               </ScrollableContent>
             </Col>
-            <Col xxl={12} xl={10} lg={8} md={4} style={{ paddingTop: 200 }}>
+            <Col xxl={12} xl={10} lg={8} md={4} style={{ paddingTop: 150, height: '100%' }}>
               <CharitiesChart
                 queryString={queryString}
                 query={query}

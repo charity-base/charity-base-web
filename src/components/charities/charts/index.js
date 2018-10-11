@@ -1,20 +1,22 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { ContainerWidthConsumer } from '../../general/ContainerWidthConsumer'
+import ContainerSizeConsumer from '../../general/ContainerSizeConsumer'
 import CharitiesMap from './map'
 
 class CharitiesChart extends Component {
   render() {
     return (
-      <ContainerWidthConsumer>
-        {width => width && (
-          <CharitiesMap
-            {...this.props}
-            width={width}
-            height={500}
-          />
-        )}
-      </ContainerWidthConsumer>
+      <div style={{ height: '100%' }}>
+        <ContainerSizeConsumer>
+          {({ width, height }) => width && height && (
+            <CharitiesMap
+              {...this.props}
+              width={width}
+              height={height}
+            />
+          )}
+        </ContainerSizeConsumer>
+      </div>
     )
   }
 }

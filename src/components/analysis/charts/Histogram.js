@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Row, Col } from 'antd'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts'
 import { formatCount, formatMoney } from '../../../lib/formatHelpers'
-import { ContainerWidthConsumer } from '../../general/ContainerWidthConsumer'
+import ContainerSizeConsumer from '../../general/ContainerSizeConsumer'
 import { Alerts } from '../../general/Alerts'
 
 const CountMoneyHistogram = ({ data, width, height, rangeKey, countKey, moneyKey, xAxisLabel }) => (
@@ -58,8 +58,8 @@ const CharitySizeHistogram = ({ buckets }) => (
       />
     </Col>
     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={16}>
-      <ContainerWidthConsumer>
-        {width => (
+      <ContainerSizeConsumer>
+        {({ width }) => (
           <CountMoneyHistogram
             data={buckets.map(x => ({
               'name': `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
@@ -74,7 +74,7 @@ const CharitySizeHistogram = ({ buckets }) => (
             xAxisLabel='Charity Income'
           />
         )}
-      </ContainerWidthConsumer>
+      </ContainerSizeConsumer>
     </Col>
   </Row>
 )
@@ -97,8 +97,8 @@ const GrantSizeHistogram = ({ buckets }) => (
       />
     </Col>
     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={16}>
-      <ContainerWidthConsumer>
-        {width => (
+      <ContainerSizeConsumer>
+        {({ width }) => (
           <CountMoneyHistogram
             data={buckets.map(x => ({
               'name': `${formatMoney(Math.pow(10, x.key))} - ${formatMoney(Math.pow(10, x.key+0.5))}`,
@@ -113,7 +113,7 @@ const GrantSizeHistogram = ({ buckets }) => (
             xAxisLabel='Grant Size'
           />
         )}
-      </ContainerWidthConsumer>
+      </ContainerSizeConsumer>
     </Col>
   </Row>
 )
@@ -136,8 +136,8 @@ const GrantDateHistogram = ({ buckets }) => (
       />
     </Col>
     <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={16}>
-      <ContainerWidthConsumer>
-        {width => (
+      <ContainerSizeConsumer>
+        {({ width }) => (
           <CountMoneyHistogram
             data={buckets.map(x => ({
               'name': `${x.key_as_string}`,
@@ -152,7 +152,7 @@ const GrantDateHistogram = ({ buckets }) => (
             xAxisLabel='Grant Date'
           />
         )}
-      </ContainerWidthConsumer>
+      </ContainerSizeConsumer>
     </Col>
   </Row>
 )

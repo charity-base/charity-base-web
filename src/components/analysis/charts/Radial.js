@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Tooltip } from 'recharts'
 import { Row, Col } from 'antd'
-import { ContainerWidthConsumer } from '../../general/ContainerWidthConsumer'
+import ContainerSizeConsumer from '../../general/ContainerSizeConsumer'
 import { Alerts } from '../../general/Alerts'
 import { causes, operations, beneficiaries, grantTopics } from '../../../lib/filterValues'
 
@@ -85,15 +85,15 @@ class CharityCategoriesRadial extends Component {
           />
         </Col>
         <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={16}>
-          <ContainerWidthConsumer>
-            {width => (
+          <ContainerSizeConsumer>
+            {({ width }) => (
               <RadialChart
                 data={this.getCategories(categoryType).map(this.getValues)}
                 width={width}
                 height={400}
               />
             )}
-          </ContainerWidthConsumer>
+          </ContainerSizeConsumer>
         </Col>
       </Row>
     )

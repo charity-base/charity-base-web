@@ -4,7 +4,7 @@ import { lighten } from 'polished'
 import { Menu, Button, Dropdown, Icon, Row, Col } from 'antd'
 import { Tooltip, Treemap } from 'recharts'
 import { formatMoney, formatCount } from '../../../lib/formatHelpers'
-import { ContainerWidthConsumer } from '../../general/ContainerWidthConsumer'
+import ContainerSizeConsumer from '../../general/ContainerSizeConsumer'
 import TextButton from '../../general/TextButton'
 import { Alerts } from '../../general/Alerts'
 import { funders } from '../../../lib/filterValues'
@@ -160,8 +160,8 @@ class FundersTreemap extends Component {
           </Button>
         </Col>
         <Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={16}>
-          <ContainerWidthConsumer>
-            {width => (
+          <ContainerSizeConsumer>
+            {({ width }) => (
               <Treemap
                 width={width}
                 height={400}
@@ -176,7 +176,7 @@ class FundersTreemap extends Component {
                 <Tooltip formatter={(value, name, props) => <SimpleTreemapTooltip {...props.payload} /> } separator='' />
               </Treemap>
             )}
-          </ContainerWidthConsumer>
+          </ContainerSizeConsumer>
         </Col>
       </Row>
     )

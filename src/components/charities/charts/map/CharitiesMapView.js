@@ -13,7 +13,7 @@ const PureMap = ({ zoom, center, onChange, onBubbleClick, onZoomAnimation, bucke
     }}
     zoom={zoom}
     center={center}
-    options={{}}
+    options={{ fullscreenControl: false }}
     onChange={onChange}
     onZoomAnimationStart={onZoomAnimation(true)}
     onZoomAnimationEnd={onZoomAnimation(false)}
@@ -89,9 +89,10 @@ class CharitiesMapView extends Component {
       <div style={{ width, height, position: 'relative', opacity: loading || isZooming ? 0.5 : 1 }}>
         <Button
           icon='close'
-          type='primary'
+          type='danger'
           onClick={() => this.props.onBoundsChange()}
           disabled={!geoBoundsString}
+          style={{ position: 'absolute', top: 5, right: 5, zIndex: 999 }}
         >
           Clear Map Filter
         </Button>
@@ -99,6 +100,7 @@ class CharitiesMapView extends Component {
           <Switch
             checked={resetOnSearch}
             onChange={resetOnSearch => onOptionsChange({ resetOnSearch })}
+            style={{ position: 'absolute', top: 5, left: 5, zIndex: 999 }}
           />
         </Tooltip>
         <PureMap
