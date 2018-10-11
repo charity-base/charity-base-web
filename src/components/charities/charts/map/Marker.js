@@ -21,6 +21,7 @@ const PointMarkerContainer = styled.div`
 `
 
 const HoverableG = styled.g`
+  cursor: pointer;
   fill: ${({ percentage }) => transparentize(0.3, desaturate(1-2*(percentage || 0), '#EC407A'))};
   :hover {
     fill: ${({ percentage }) => transparentize(0, desaturate(1-2*(percentage || 0), '#EC407A'))};
