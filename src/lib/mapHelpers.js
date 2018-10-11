@@ -91,7 +91,7 @@ const geoHashToBoundingBox = hash => {
   return [maxLat, minLon, minLat, maxLon].join(',')
 }
 
-const isCenterZoomEqual = (x, y, decimals=20) => {
+const isCenterZoomEqual = (x, y, decimals=8) => {
   if (x.zoom !== y.zoom) {
     return false
   }

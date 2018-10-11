@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react'
 import { Button, Switch, Tooltip } from 'antd'
 import { googleApiKey } from '../../../../lib/constants'
-import { gmapsBoundsToString, geoHashToLatLon, getCenterZoom, isCenterZoomEqual } from '../../../../lib/mapHelpers'
+import { gmapsBoundsToString, geoHashToLatLon, geoHashToBoundingBox, getCenterZoom, isCenterZoomEqual } from '../../../../lib/mapHelpers'
 import { BubbleMarker, PointMarker } from './Marker'
 
-const PureMap = ({ zoom, center, onChange, onZoomAnimation, buckets, points }) => (
+const PureMap = ({ zoom, center, onChange, onBubbleClick, onZoomAnimation, buckets, points }) => (
   <GoogleMapReact
     bootstrapURLKeys={{
       key: googleApiKey,
@@ -26,7 +26,7 @@ const PureMap = ({ zoom, center, onChange, onZoomAnimation, buckets, points }) =
         lat={latitude}
         lng={longitude}
         size={x.normalizedCount}
-        onClick={() => {}}
+        onClick={() => onBubbleClick(x.key)}
       />
     })}
     {points.map(({ lat, lng }, i) => (
@@ -41,6 +41,7 @@ const PureMap = ({ zoom, center, onChange, onZoomAnimation, buckets, points }) =
 PureMap.propTypes = {
   zoom: PropTypes.number.isRequired,
   center: PropTypes.object.isRequired,
+  onBubbleClick: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   onZoomAnimation: PropTypes.func.isRequired,
   buckets: PropTypes.array.isRequired,
@@ -62,6 +63,12 @@ class CharitiesMapView extends Component {
   }
   onChange = ({ bounds, center, marginBounds, size, zoom }) => {
     this.updateBounds({ center, zoom }, gmapsBoundsToString(bounds))
+  }
+  onBubbleClick = geoHash => {
+    const geoBoundsString = geoHashToBoundingBox(geoHash)
+    const { width, height } = this.props
+    const centerZoom = getCenterZoom(geoBoundsString, width, height)
+    this.updateBounds(centerZoom, geoBoundsString)
   }
   updateBounds = ({ center, zoom }, geoBoundsString) => {
     if (isCenterZoomEqual({ center, zoom }, this.state)) {
@@ -98,6 +105,7 @@ class CharitiesMapView extends Component {
           zoom={zoom}
           center={center}
           onChange={this.onChange}
+          onBubbleClick={this.onBubbleClick}
           onZoomAnimation={this.setZoomState}
           buckets={buckets.map(x => ({
             ...x,

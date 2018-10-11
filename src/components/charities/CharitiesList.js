@@ -158,7 +158,7 @@ class CharitiesList extends Component {
 CharitiesList.propTypes = {
   queryString: PropTypes.string,
   query: PropTypes.object,
-  onHover: PropTypes.object.isRequired,
+  onHover: PropTypes.func.isRequired,
 }
 
 export { CharitiesList }
