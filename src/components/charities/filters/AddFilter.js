@@ -4,7 +4,6 @@ import { Tag, Icon, Dropdown, Menu, Button } from 'antd'
 import { areasOfOperation, causes, beneficiaries, operations, funders } from '../../../lib/filterValues'
 import { CheckboxModal } from './CheckboxModal'
 import { NumberRangeModal } from './NumberRangeModal'
-import { LocationModal } from './LocationModal'
 import { MultiSelectModal } from './MultiSelectModal'
 import { NoneText } from '../../general/NoneText'
 
@@ -47,7 +46,6 @@ class AddFilter extends Component {
     },
   }
   menuItems = () => ([
-    { key: '1', icon: 'environment-o', label: 'Location', modalConfig: { type: 'location', name: 'Location Filter', fieldName: 'addressWithin' }},
     { key: '6', icon: 'bank', label: 'Income', modalConfig: { type: 'numberRange', name: 'Income Filter', fieldName: 'incomeRange' }},
     { key: '7', icon: 'gift', label: 'Funder', modalConfig: { type: 'multi-select', name: 'Funders Filter', fieldName: 'funders', options: funders.map(x => ({ ...x, isChecked: false })) }},
     { key: '2', icon: 'global', label: 'Regions', modalConfig: { type: 'multi-select', name: 'Regions of Operation Filter', fieldName: 'areasOfOperation.id', options: areasOfOperation.map(x => ({ ...x, isChecked: false })) }},
@@ -83,12 +81,6 @@ class AddFilter extends Component {
   onNumberRangeOk = valueRange => {
     const { fieldName } = this.state.modalConfig
     const value = valueRange.join(',')
-    this.setState({ modalConfig: {} })
-    this.props.updateFilters(this.appendFilter(fieldName, value))
-  }
-  onLocationOk = (km, lat, lon) => {
-    const { fieldName } = this.state.modalConfig
-    const value = `${km}km,${lat},${lon}`
     this.setState({ modalConfig: {} })
     this.props.updateFilters(this.appendFilter(fieldName, value))
   }
@@ -137,12 +129,6 @@ class AddFilter extends Component {
           isOpen={this.state.modalConfig.type === 'numberRange'}
           onCancel={() => this.setState({ modalConfig: {} })}
           onOk={this.onNumberRangeOk}
-          name={this.state.modalConfig.name}
-        />
-        <LocationModal
-          isOpen={this.state.modalConfig.type === 'location'}
-          onCancel={() => this.setState({ modalConfig: {} })}
-          onOk={this.onLocationOk}
           name={this.state.modalConfig.name}
         />
       </div>
