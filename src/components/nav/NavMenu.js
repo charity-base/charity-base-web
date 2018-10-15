@@ -14,7 +14,7 @@ const shortName = name => {
 const renderUserDropDown = ({ name, onLogout, onChangePassword, isMobile }) => (
   isMobile ? (
     <Menu.Item key='user-dropdown-menuitem'>
-      <TextButton onClick={onLogout}>
+      <TextButton onClick={onLogout} underline={false} light>
         <Icon type='logout'/>
       </TextButton>
     </Menu.Item>
@@ -30,14 +30,14 @@ const renderUserDropDown = ({ name, onLogout, onChangePassword, isMobile }) => (
     >
       {onChangePassword && (
         <Menu.Item key='user-dropdown-change-password'>
-          <TextButton onClick={onChangePassword}>
+          <TextButton onClick={onChangePassword} underline={false} light>
             <Icon type='idcard' />
             Change Password
           </TextButton>
         </Menu.Item>
       )}
       <Menu.Item key='user-dropdown-logout'>
-        <TextButton onClick={onLogout}>
+        <TextButton onClick={onLogout} underline={false} light>
           <Icon type='logout' />
           Log Out
         </TextButton>
@@ -88,7 +88,7 @@ const NavMenu = ({ isMobile, user, onLogin, onLogout, onChangePassword }) => (
       })
     ) : (
       <Menu.Item key='auth'>
-        <TextButton onClick={onLogin} underline={false}>
+        <TextButton onClick={onLogin} underline={false} light>
           <Icon type='login' />
           {isMobile ? '' : 'Log In'}
         </TextButton>
