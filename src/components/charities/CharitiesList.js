@@ -138,14 +138,15 @@ class CharitiesList extends Component {
               // <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
               // <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
             ]}
-            extra={
-              <Income income={income && income.latest.total} />
-            }
             onMouseEnter={() => onHover({ ids, name, activities, income, alternativeNames, contact })}
             onMouseLeave={() => onHover({})}
           >
             <List.Item.Meta
-              title={<Link to={`/charities/${ids['GB-CHC']}`}>{name}</Link>}
+              title={
+                <Link to={`/charities/${ids['GB-CHC']}`}>
+                  {name} <Income income={income && income.latest.total} />
+                </Link>
+              }
               description={alternativeNames.filter(x => x !== name).join(', ')}
             />
             {activities && `${activities.slice(0,120)}...`}
