@@ -29,7 +29,7 @@ class CharitiesMap extends Component {
   getData = (query, aggGeoBounds) => {
     const { width, height } = this.props
     const geoFilter = getGeoFilterString(query)
-    const zoomEstimate = getCenterZoom(geoFilter, width, height).zoom //doesn't work if of the form addressWithin=3km%2C51.786793%2C-1.272327
+    const zoomEstimate = getCenterZoom(geoFilter, width, height).zoom
     const aggGeoPrecision = zoomToPrecision(zoomEstimate)
     this.setState({
       isLoading: true,

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Icon } from 'antd'
-import { transparentize, desaturate } from 'polished'
+import { transparentize } from 'polished'
 
 const BubbleMarkerContainer = styled.div`
   position: absolute;
@@ -20,25 +20,33 @@ const PointMarkerContainer = styled.div`
   top: -30px;
 `
 
-const HoverableG = styled.g`
+const HoverableG = styled.g.attrs({
+  style: ({ weight }) => ({
+    fill: transparentize(0.5*(1 - weight), '#EC407A')
+  }),
+})`
   cursor: pointer;
-  fill: ${({ percentage }) => transparentize(0.3, desaturate(1-2*(percentage || 0), '#EC407A'))};
+  opacity: 0.9;
   :hover {
-    fill: ${({ percentage }) => transparentize(0, desaturate(1-2*(percentage || 0), '#EC407A'))};
+    opacity: 1;
   }
 `
 
-const BubbleMarker = ({ count, size, onClick, minWidth, maxWidth }) => (
+const getRadius = normCount => {
+  return 10 + 15*normCount
+}
+
+const BubbleMarker = ({ count, normCount, onClick }) => (
   <BubbleMarkerContainer>
     <svg style={{ width: '50px', height: '50px', }}>
       <HoverableG
         onClick={onClick}
-        percentage={size}
+        weight={normCount}
       >
         <circle
           cx='25px'
           cy='25px'
-          r={Math.max(minWidth, Math.min(maxWidth, 30*Math.pow(size, 0.5)))}
+          r={getRadius(normCount)}
         />
         <text x='25px' y='25px' textAnchor='middle' fill='#000' strokeWidth='0px' dy='.3em'>
           {count > 9999 ? '9999+' : count}
@@ -49,14 +57,8 @@ const BubbleMarker = ({ count, size, onClick, minWidth, maxWidth }) => (
 )
 BubbleMarker.propTypes = {
   count: PropTypes.number.isRequired,
-  size: PropTypes.number.isRequired,
-  minWidth: PropTypes.number.isRequired,
-  maxWidth: PropTypes.number.isRequired,
+  normCount: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
-}
-BubbleMarker.defaultProps = {
-  minWidth: 10,
-  maxWidth: 25,
 }
 
 const PointMarker = () => (

@@ -6,7 +6,7 @@ import CharitiesMap from './map'
 class CharitiesChart extends Component {
   render() {
     return (
-      <div style={{ height: '100%' }}>
+      <div style={{ height: '100%', boxShadow: '0 0 0.8em' }}>
         <ContainerSizeConsumer>
           {({ width, height }) => width && height && (
             <CharitiesMap
