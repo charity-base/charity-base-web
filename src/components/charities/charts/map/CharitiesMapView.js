@@ -10,8 +10,10 @@ const MAX_ZOOM = 22
 const MapActionsContainer = styled.div`
 position: absolute;
 top: 5px;
-right: 5px;
+left: 5px;
 z-index: 999;
+color: rgba(0,0,0,0.7);
+font-size: 14px;
 `
 
 class CharitiesMapView extends Component {
@@ -62,12 +64,12 @@ class CharitiesMapView extends Component {
             onClick={() => this.props.onBoundsChange()}
             disabled={!geoBoundsString}
           >
-            Reset Filter
+            RESET
           </Button>
           <div
             style={{ backgroundColor: '#FFF', marginTop: '3px', padding: '5px 10px', border: '1px solid #d9d9d9', borderRadius: '4px' }}
           >
-            <span style={{ color: 'rgba(0,0,0,0.5)', fontSize: '12px', marginRight: '5px', }}>
+            <span style={{ marginRight: '5px', }}>
               AUTORESET
             </span>
             <Switch
