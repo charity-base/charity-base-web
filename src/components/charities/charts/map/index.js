@@ -4,8 +4,28 @@ import { message } from 'antd'
 import charityBase from '../../../../lib/charityBaseClient'
 import CharitiesMapView from './CharitiesMapView'
 import { zoomToPrecision, getCenterZoom } from '../../../../lib/mapHelpers'
+import { stringifyQuery } from '../../../../lib/formatHelpers'
 
 const getGeoFilterString = query => String(query.addressWithin || '')
+
+const aggFields = [
+  'apiKey',
+  'ids.GB-CHC',
+  'search',
+  'incomeRange',
+  'addressWithin',
+  'areasOfOperation.id',
+  'causes.id',
+  'beneficiaries.id',
+  'operations.id',
+  'funders',
+  'hasGrant',
+  'grantDateRange',
+  'aggGeoBounds',
+  'aggGeoPrecision',
+  'aggGrantDateInterval',
+  'aggTypes',
+]
 
 class CharitiesMap extends Component {
   state = {
@@ -18,7 +38,7 @@ class CharitiesMap extends Component {
     this.getData(this.props.query, undefined)
   }
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.queryString !== this.props.queryString) {
+    if (stringifyQuery(prevProps.query, aggFields) !== stringifyQuery(this.props.query, aggFields)) {
       const geoFilter = getGeoFilterString(this.props.query)
       if (this.state.resetOnSearch && geoFilter && geoFilter === getGeoFilterString(prevProps.query)) {
         return this.onBoundsChange()
@@ -98,7 +118,6 @@ class CharitiesMap extends Component {
 }
 CharitiesMap.propTypes = {
   query: PropTypes.object.isRequired,
-  queryString: PropTypes.string.isRequired,
   onQueryUpdate: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,

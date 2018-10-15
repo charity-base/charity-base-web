@@ -40,7 +40,6 @@ class Charities extends Component {
             </Col>
             <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={{ paddingTop: 150, height: '100%' }}>
               <CharitiesChart
-                queryString={queryString}
                 query={query}
                 onQueryUpdate={this.onQueryUpdate}
                 hoveredItem={this.state.hoveredItem}
