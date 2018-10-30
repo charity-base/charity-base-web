@@ -11,7 +11,7 @@ const MapActionsContainer = styled.div`
 position: absolute;
 top: 5px;
 left: 5px;
-z-index: 999;
+z-index: 1;
 color: rgba(0,0,0,0.7);
 font-size: 14px;
 `
