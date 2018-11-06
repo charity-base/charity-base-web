@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import charityBase from '../../lib/charityBaseClient'
 import Auth from '../../lib/Auth'
 import { Layout, Icon, Button, List, Skeleton, Tooltip, Menu, message } from 'antd'
@@ -8,6 +9,13 @@ import { Page, ScrollableContent, ResponsiveSider } from '../general/Layout'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
 const auth = new Auth()
+
+const P = styled.p`
+  padding-left: 20px;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  font-weight: 300;
+`
 
 class ApiPortal extends Component {
   state = {
@@ -89,11 +97,20 @@ class ApiPortal extends Component {
                 API Documentation
               </a>
             </Menu.Item>
+            <Menu.Item key="charity-base-client-js-link">
+              <a href="https://www.npmjs.com/package/charity-base" target="_blank" rel="noopener noreferrer">
+                <Icon type='link' />
+                JavaScript Client Library
+              </a>
+            </Menu.Item>
           </Menu>
         </ResponsiveSider>
         <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF' }}>
           <ScrollableContent paddingTop={0}>
             <h1><Icon type='api' theme='filled' /> API</h1>
+            <P>
+              The CharityBase REST API provides access to the database e.g. for use in your own website or app.  Developers can find out more from the <a href="https://charity-base.github.io/charity-base-docs" target="_blank" rel="noopener noreferrer">API Documentation</a>
+            </P>
             <h2>
               <Icon type='key' />
               <span style={{ paddingLeft: 5, paddingRight: 5 }}>API Keys</span>
