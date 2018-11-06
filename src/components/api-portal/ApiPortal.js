@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import charityBase from '../../lib/charityBaseClient'
+import Auth from '../../lib/Auth'
 import { Layout, Icon, Button, List, Skeleton, Tooltip, Menu, message } from 'antd'
 import TextButton from '../general/TextButton'
 import { Page, ScrollableContent, ResponsiveSider } from '../general/Layout'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 
+const auth = new Auth()
 
 class ApiPortal extends Component {
   state = {
@@ -14,7 +16,7 @@ class ApiPortal extends Component {
     isLoading: false,
   }
   componentDidMount() {
-    if (localStorage.getItem('access_token')) {
+    if (auth.isAuthenticated()) {
       this.getApiKey()
     }
   }
@@ -62,6 +64,15 @@ class ApiPortal extends Component {
     this.setState({ showKeys: true })
     this.getApiKey()
   }
+  renderEmpty = () => {
+    return auth.isAuthenticated() ? (
+      'No registered API keys'
+    ) : (
+      <span>
+        Please <TextButton onClick={() => auth.login(this.context.router.history)}>Log In</TextButton> to get started.
+      </span>
+    )
+  }
   render() {
     const { isMobile } = this.props
     return (
@@ -86,12 +97,14 @@ class ApiPortal extends Component {
             <h2>
               <Icon type='key' />
               <span style={{ paddingLeft: 5, paddingRight: 5 }}>API Keys</span>
-              <TextButton
-                style={{ fontSize: 12 }}
-                onClick={() => this.toggleState(!this.state.showKeys)}
-              >
-                {this.state.showKeys ? 'hide' : 'show'}
-              </TextButton>
+              {auth.isAuthenticated() ? (
+                <TextButton
+                  style={{ fontSize: 12 }}
+                  onClick={() => this.toggleState(!this.state.showKeys)}
+                >
+                  {this.state.showKeys ? 'hide' : 'show'}
+                </TextButton>
+              ) : null}
             </h2>
             <List
               bordered
@@ -110,7 +123,7 @@ class ApiPortal extends Component {
                   Create API Key
                 </Button>
               }
-              locale={{ emptyText: 'No registered API keys' }}
+              locale={{ emptyText: this.renderEmpty() }}
               renderItem={x => (
                 <List.Item
                   actions={[
@@ -163,6 +176,9 @@ class ApiPortal extends Component {
 }
 ApiPortal.propTypes = {
   isMobile: PropTypes.bool,
+}
+ApiPortal.contextTypes = {
+  router: PropTypes.object,
 }
 
 export { ApiPortal }
