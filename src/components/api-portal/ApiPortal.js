@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import charityBase from '../../lib/charityBaseClient'
-import { Layout, Icon, Button, List, Skeleton, Tooltip, message } from 'antd'
+import { Layout, Icon, Button, List, Skeleton, Tooltip, Menu, message } from 'antd'
 import TextButton from '../general/TextButton'
 import { Page, ScrollableContent, ResponsiveSider } from '../general/Layout'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -67,13 +67,18 @@ class ApiPortal extends Component {
     return (
       <Page isMobile={isMobile}>
         <ResponsiveSider isMobile={isMobile}>
-          <a
-            href='https://charity-base.github.io/charity-base-docs'
-            target='_blank'
-            rel='noopener noreferrer'
+          <Menu
+            onClick={() => {}}
+            selectedKeys={null}
+            mode="vertical"
           >
-            <Icon type='link' /> API Docs
-          </a>
+            <Menu.Item key="charity-base-docs-link">
+              <a href="https://charity-base.github.io/charity-base-docs" target="_blank" rel="noopener noreferrer">
+                <Icon type='link' />
+                API Documentation
+              </a>
+            </Menu.Item>
+          </Menu>
         </ResponsiveSider>
         <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF' }}>
           <ScrollableContent paddingTop={0}>
