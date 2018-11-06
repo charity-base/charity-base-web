@@ -47,9 +47,9 @@ const renderUserDropDown = ({ name, onLogout, onChangePassword, isMobile }) => (
 )
 
 const internalNavs = [
-  { to: '/', label: 'Search Charities', icon: 'search', exact: true },
+  { to: '/', label: 'Search', icon: 'search', exact: true },
   // { to: '/analysis', label: 'Grants Analysis', icon: 'area-chart', exact: false },
-  // { to: '/api-portal', label: 'API', icon: 'api', theme: 'filled', exact: false },
+  { to: '/api-portal', label: 'API', icon: 'api', theme: 'filled', exact: false },
   { to: '/about', label: 'About', icon: 'question-circle', theme: 'filled', exact: false },
 ]
 
