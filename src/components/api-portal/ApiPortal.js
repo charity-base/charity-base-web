@@ -92,7 +92,7 @@ class ApiPortal extends Component {
             mode="vertical"
           >
             <Menu.Item key="charity-base-docs-link">
-              <a href="https://charity-base.github.io/charity-base-docs" target="_blank" rel="noopener noreferrer">
+              <a href="https://charitybase.uk/docs/v4/" target="_blank" rel="noopener noreferrer">
                 <Icon type='link' />
                 API Documentation
               </a>
@@ -109,7 +109,7 @@ class ApiPortal extends Component {
           <ScrollableContent paddingTop={0}>
             <h1><Icon type='api' theme='filled' /> API</h1>
             <P>
-              The CharityBase REST API provides access to the database e.g. for use in your own website or app.  Developers can find out more from the <a href="https://charity-base.github.io/charity-base-docs" target="_blank" rel="noopener noreferrer">API Documentation</a>
+              The CharityBase REST API provides access to the database e.g. for use in your own website or app.  Developers can find out more from the <a href="https://charitybase.uk/docs/v4/" target="_blank" rel="noopener noreferrer">API Documentation</a>
             </P>
             <h2>
               <Icon type='key' />
