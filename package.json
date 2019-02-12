@@ -28,7 +28,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "now-build": "yarn build && mv build dist",
+    "deploy-staging": "now && now alias https://charity-base-web-staging.now.sh",
+    "deploy-production": "now && now alias https://charity-base-web.now.sh"
   },
   "browserslist": [
     ">0.2%",
