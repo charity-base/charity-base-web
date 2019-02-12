@@ -1,9 +1,9 @@
-import charityBaseClient from 'charity-base'
-import { charityBaseApiKey } from './constants'
+import CharityBaseClient from 'charity-base'
+import { charityBaseApiKey, charityBaseApiUri } from './constants'
 
-const charityBase = charityBaseClient({
+const charityBase = new CharityBaseClient({
   apiKey: charityBaseApiKey,
-  baseUrl: '/api',
+  baseUrl: charityBaseApiUri,
 })
 
 export default charityBase

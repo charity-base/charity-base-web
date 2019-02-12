@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import qs from 'query-string'
 import CharityBaseSearch from 'charity-base-search'
-import { charityBaseApiKey } from '../../lib/constants'
+import { charityBaseApiKey, charityBaseApiUri } from '../../lib/constants'
 
 class CharitiesSearch extends Component {
   onSelect = (item, inputValue) => {
@@ -18,6 +18,7 @@ class CharitiesSearch extends Component {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <CharityBaseSearch
           apiKey={charityBaseApiKey}
+          baseUrl={charityBaseApiUri}
           label={null}
           placeholder="Search charities, places, activities, people..."
           onSelect={this.onSelect}
