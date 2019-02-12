@@ -2,7 +2,7 @@
   "name": "charity-base-web",
   "version": "2.5.0",
   "private": true,
-  "proxy": "https://charitybase.uk",
+  "proxy": "http://localhost:4000",
   "dependencies": {
     "antd": "^3.10.0",
     "auth0-js": "^9.7.3",
