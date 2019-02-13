@@ -121,7 +121,7 @@ class About extends Component {
               Who's behind it?
             </Question>
             <Answer>
-              <Row align='justify' type='flex'>
+              <Row type='flex'>
                 <Col xxl={21} xl={19} lg={18} md={16} sm={12} xs={24} >
                   <p>All the CharityBase code is open source at <a rel='noopener noreferrer' target='_blank' href='https://github.com/charity-base'>github.com/charity-base</a> and continuously improving thanks to a growing community of charity data enthusiasts.</p>
                   <p>It was initiated in 2016 by <a rel='noopener noreferrer' target='_blank' href='https://twitter.com/dan_kwiat'>Dan Kwiatkowski</a> - a freelance data scientist and fellow of <a rel='noopener noreferrer' target='_blank' href='https://nwspk.com'>Newspeak House</a>.</p>
