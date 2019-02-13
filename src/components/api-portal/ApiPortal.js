@@ -2,13 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import charityBase from '../../lib/charityBaseClient'
-import Auth from '../../lib/Auth'
+import auth from '../../lib/auth'
 import { Layout, Icon, Button, List, Skeleton, Tooltip, Menu, message } from 'antd'
 import TextButton from '../general/TextButton'
 import { Page, ScrollableContent, ResponsiveSider } from '../general/Layout'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-
-const auth = new Auth()
 
 const P = styled.p`
   padding-left: 20px;

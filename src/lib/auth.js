@@ -5,7 +5,8 @@ import { auth0ClientId, auth0RedirectUri } from './constants'
 var tokenRenewalTimeout
 
 class Auth {
-  constructor() {
+  constructor({ auth0Config }) {
+    this.auth0 = new auth0.WebAuth(auth0Config)
     this.login = this.login.bind(this)
     this.logout = this.logout.bind(this)
     this.handleAuthentication = this.handleAuthentication.bind(this)
@@ -17,15 +18,6 @@ class Auth {
     this.sendPasswordResetEmail = this.sendPasswordResetEmail.bind(this)
     this.wrapAuthentication = this.wrapAuthentication.bind(this)
   }
-
-  auth0 = new auth0.WebAuth({
-    audience: 'https://charitybase.uk/api',
-    domain: 'charity-base.eu.auth0.com',
-    clientID: auth0ClientId,
-    redirectUri: auth0RedirectUri,
-    responseType: 'token id_token',
-    scope: 'openid profile email',
-  })
 
   login(history) {
     const { pathname, search } = history.location
@@ -115,4 +107,17 @@ class Auth {
   }
 }
 
-export default Auth
+const auth0Config = {
+  audience: 'https://charitybase.uk/api',
+  domain: 'charity-base.eu.auth0.com',
+  clientID: auth0ClientId,
+  redirectUri: auth0RedirectUri,
+  responseType: 'token id_token',
+  scope: 'openid profile email',
+}
+
+const auth = new Auth({
+  auth0Config
+})
+
+export default auth

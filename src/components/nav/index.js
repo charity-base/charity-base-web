@@ -4,9 +4,7 @@ import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { Layout, message } from 'antd'
 import { NavMenu } from './NavMenu'
-import Auth from '../../lib/Auth'
-
-const auth = new Auth()
+import auth from '../../lib/auth'
 
 const { Header } = Layout
 

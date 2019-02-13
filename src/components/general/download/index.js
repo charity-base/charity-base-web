@@ -3,14 +3,12 @@ import PropTypes from 'prop-types'
 import qs from 'query-string'
 import numeral from 'numeral'
 import { Modal, Button, Alert } from 'antd'
-import Auth from '../../../lib/Auth'
+import auth from '../../../lib/auth'
 import { defaultFieldsList } from '../../../lib/allowedFields'
 import charityBase from '../../../lib/charityBaseClient'
 import Selector from '../Selector'
 import { FieldTree } from './FieldTree'
 import TextButton from '../TextButton'
-
-// const auth = new Auth()
 
 // class DownloadResults extends Component {
 //   state = {
