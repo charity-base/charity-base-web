@@ -1,11 +1,12 @@
 import auth0 from 'auth0-js'
 import jwtDecode from 'jwt-decode'
-import { auth0ClientId, auth0RedirectUri } from './constants'
+import { auth0Config } from './constants'
 
 var tokenRenewalTimeout
 
 class Auth {
   constructor({ auth0Config }) {
+    this.auth0Config = auth0Config
     this.auth0 = new auth0.WebAuth(auth0Config)
     this.login = this.login.bind(this)
     this.logout = this.logout.bind(this)
@@ -81,8 +82,8 @@ class Auth {
     localStorage.removeItem('origin_uri')
     clearTimeout(tokenRenewalTimeout)
     this.auth0.logout({
-      clientID: auth0ClientId,
-      returnTo: auth0RedirectUri,
+      clientID: this.auth0Config.clientID,
+      returnTo: this.auth0Config.redirectUri,
     })
   }
 
@@ -105,15 +106,6 @@ class Auth {
     }
     this.login(history)
   }
-}
-
-const auth0Config = {
-  audience: 'https://charitybase.uk/api',
-  domain: 'charity-base.eu.auth0.com',
-  clientID: auth0ClientId,
-  redirectUri: auth0RedirectUri,
-  responseType: 'token id_token',
-  scope: 'openid profile email',
 }
 
 const auth = new Auth({
