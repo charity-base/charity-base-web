@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
-import { Layout, Button } from 'antd'
+import { Layout, message } from 'antd'
 import { NavMenu } from './NavMenu'
+import auth from '../../lib/auth'
 
-const { Header, Sider } = Layout
+const { Header } = Layout
 
 const AppHeader = styled(Header)`
   position: fixed;
@@ -31,51 +32,52 @@ const HeaderTitle = styled(NavLink)`
   }
 `
 
-const NavSider = ({ isOpen }) => (
-  <Sider
-    width='100'
-    breakpoint='md'
-    collapsedWidth={0}
-    trigger={null}
-    collapsed={!isOpen}
-    style={{ position: 'fixed', zIndex: 9, top: '50px', bottom: 0, right: 0 }}
-  >
-    <NavMenu mode='vertical' />
-  </Sider>
-)
-NavSider.propTypes = {
-  isOpen: PropTypes.bool
-}
-
-const ToggleButton = styled(Button)`
-  position: fixed;
-  top: 9px;
-  right: 9px;
-  border-style: none;
-`
-
 class NavBar extends Component {
-  state = {
-    isMenuOpen: false
-  }
-  openMenu = () => {
-    this.setState(s => ({ isMenuOpen: !s.isMenuOpen }))
+  onChangePassword = user => {
+    if (!user) {
+      return null
+    }
+    const isPasswordAuthenticated = user.sub.substr(0,6) === 'auth0|'
+    if (!isPasswordAuthenticated) {
+      return null
+    }
+    const { email } = user
+    const connection = 'Username-Password-Authentication'
+    const requestChange = () => {
+      auth.sendPasswordResetEmail(
+        { email, connection },
+        (err, res) => {
+          if (err) {
+            return message.error('Oops, something went wrong. Please email dan@charitybase.uk for help.')
+          }
+          return message.success(res)
+        },
+      )
+    }
+    return requestChange
   }
   render() {
     const { isMobile } = this.props
-    const { isMenuOpen } = this.state
-    return([
-      <AppHeader key='1' isMobile={isMobile}>
-        <HeaderTitle isMobile={isMobile} to="/">CharityBase</HeaderTitle>
-        {isMobile && <ToggleButton icon='info-circle' ghost onClick={this.openMenu} />}
-        {!isMobile && <NavMenu mode='horizontal' />}
-      </AppHeader>,
-      <NavSider key='2' isOpen={isMenuOpen} />
-    ])
+    const user = auth.getUser()
+    return(
+      <AppHeader isMobile={isMobile}>
+        {!isMobile && <HeaderTitle isMobile={isMobile} to="/">CharityBase</HeaderTitle>}
+        <NavMenu
+          isMobile={isMobile}
+          user={user}
+          onLogin={() => auth.login(this.context.router.history)}
+          onLogout={() => auth.logout()}
+          onChangePassword={this.onChangePassword(user)}
+        />
+      </AppHeader>
+    )
   }
 }
 NavBar.propTypes = {
   isMobile: PropTypes.bool,
+}
+NavBar.contextTypes = {
+  router: PropTypes.object,
 }
 
 export { NavBar }

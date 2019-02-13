@@ -3,10 +3,9 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import { List, Avatar, Button, Spin, } from 'antd'
-import { fetchJSON } from '../../lib/fetchHelpers'
+import { List, Button, Spin, message } from 'antd'
 import { NoneText } from '../general/NoneText'
-import { apiEndpoint } from '../../lib/constants'
+import charityBase from '../../lib/charityBaseClient'
 
 const IncomeIcon = ({ income }) => (
   <svg style={{ width: '50px', height: '50px', }}>
@@ -59,14 +58,14 @@ class CharitiesList extends Component {
     skip: 0,
   }
   componentDidMount() {
-    this.refreshSearch(this.props.queryString)
+    this.refreshSearch(this.props.query)
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.queryString !== nextProps.queryString) {
-      this.refreshSearch(nextProps.queryString)
+      this.refreshSearch(nextProps.query)
     }
   }
-  refreshSearch = queryString => {
+  refreshSearch = query => {
     this.setState({
       loading: true,
       loadingMore: false,
@@ -75,7 +74,7 @@ class CharitiesList extends Component {
       limit: 10,
       skip: 0,
     })
-    this.getData(queryString, 0, res => {
+    this.getData(query, 0, res => {
       this.setState({
         data: res.charities,
         loading: false,
@@ -84,18 +83,22 @@ class CharitiesList extends Component {
       })
     })
   }
-  getData = (queryString, skip, callback) => {
-    const qs = queryString ? queryString.split('?')[1] + '&' : ''
-    const url = `${apiEndpoint}/charities?${qs}fields=ids,name,alternativeNames,activities,income.latest.total&limit=${this.state.limit}&skip=${skip}`
-    fetchJSON(url)
-    .then(res => callback(res))
-    .catch(err => console.log(err))
+  getData = (query, skip, callback) => {
+    charityBase.charity.list({
+      ...query,
+      accessToken: localStorage.getItem('access_token'),
+      fields: ['ids', 'name', 'alternativeNames', 'activities', 'income.latest.total', 'contact.geoCoords'],
+      limit: this.state.limit,
+      skip: skip,
+    })
+    .then(callback)
+    .catch(e => message.error('Oops, something went wrong'))
   }
   onLoadMore = () => {
     this.setState({
       loadingMore: true,
     });
-    this.getData(this.props.queryString, this.state.skip, res => {
+    this.getData(this.props.query, this.state.skip, res => {
       const data = this.state.data.concat(res.charities)
       this.setState({
         data,
@@ -111,6 +114,7 @@ class CharitiesList extends Component {
     });
   }
   render() {
+    const { onHover } = this.props
     const { loading, loadingMore, showLoadingMore, data, limit } = this.state;
     const isMore = data.length/limit === Math.round(data.length/limit)
     const loadMore = showLoadingMore ? (
@@ -127,20 +131,22 @@ class CharitiesList extends Component {
         loading={loading}
         loadMore={loadMore}
         dataSource={data}
-        renderItem={({ ids, name, activities, income, alternativeNames }) => (
+        renderItem={({ ids, name, activities, income, alternativeNames, contact }) => (
           <List.Item
             actions={[
               // <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
               // <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
               // <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
             ]}
-            extra={
-              <Income income={income && income.latest.total} />
-            }
+            onMouseEnter={() => onHover({ ids, name, activities, income, alternativeNames, contact })}
+            onMouseLeave={() => onHover({})}
           >
             <List.Item.Meta
-              avatar={<Avatar src={`https://ui-avatars.com/api/?name=${name}`} />}
-              title={<Link to={`/charities/${ids['GB-CHC']}`}>{name}</Link>}
+              title={
+                <Link to={`/charities/${ids['GB-CHC']}`}>
+                  {name} <Income income={income && income.latest.total} />
+                </Link>
+              }
               description={alternativeNames.filter(x => x !== name).join(', ')}
             />
             {activities && `${activities.slice(0,120)}...`}
@@ -152,6 +158,8 @@ class CharitiesList extends Component {
 }
 CharitiesList.propTypes = {
   queryString: PropTypes.string,
+  query: PropTypes.object,
+  onHover: PropTypes.func.isRequired,
 }
 
 export { CharitiesList }

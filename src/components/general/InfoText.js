@@ -1,5 +1,14 @@
 import styled from 'styled-components'
 
+const SideBarTitle = styled.div`
+  color: rgba(0,0,0,0.6);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-align: center;
+  margin-bottom: 20px;
+`
+
 const InfoText = styled.p`
   margin-top: 20px;
   margin-bottom: 20px;
@@ -9,4 +18,4 @@ const InfoText = styled.p`
   ${({ center }) => center && 'text-align: center;'}
 `
 
-export { InfoText }
+export { InfoText, SideBarTitle }

@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { Layout, Card, Icon, Row, Col, Divider } from 'antd'
-import { fetchJSON } from '../../lib/fetchHelpers'
+import { Layout, Card, Icon, Divider, message } from 'antd'
 import { MenuBar, MenuBarHeader } from '../general/MenuBar'
 import { CharityInfo } from './CharityInfo'
 import { CopyUrl } from '../general/CopyUrl'
-import { DownloadResults } from '../general/DownloadResults'
-import { apiEndpoint } from '../../lib/constants'
+import { DownloadResults } from '../general/download'
+import TextButton from '../general/TextButton'
 import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
+import charityBase from '../../lib/charityBaseClient'
 
 const CharityHeader = styled.div`
   font-size: 28px;
@@ -40,15 +40,27 @@ class Charity extends Component {
     charity: null,
     isLoading: true,
   }
-  componentDidMount() {
-    fetchJSON(`${apiEndpoint}/charities?ids.GB-CHC=${this.props.charityId}&fields=*`)
-    .then(res => this.setState({
-      isLoading: false,
-      charity: res.charities.length === 1 ? res.charities[0] : null
-    }))
+  componentDidMount = () => {
+    charityBase.charity.list({
+      accessToken: localStorage.getItem('access_token'),
+      'ids.GB-CHC': this.props.charityId,
+      fields: ['*'],
+    })
+    .then(res => {
+      if (res.charities.length === 0) {
+        throw Error()
+      }
+      this.setState({
+        isLoading: false,
+        charity: res.charities[0],
+      })
+    })
     .catch(err => {
-      this.setState({ isLoading: false })
-      console.log(err)
+      this.setState({
+        isLoading: false,
+        charity: null,
+      })
+      message.error('Oops, something went wrong')
     })
   }
   onViewSelect = view => {
@@ -72,12 +84,10 @@ class Charity extends Component {
             renderHeader={() => (
               <MenuBarHeader>
                 <div style={{ fontSize: '12px' }}>
-                  <a onClick={this.goBack}>
-                    <Row justify='space-around' type='flex'>
-                      <Col span={4}><Icon type="arrow-left"/></Col>
-                      <Col span={20}>Back to Search</Col>
-                    </Row>
-                  </a>
+                  <TextButton onClick={this.goBack} underline={false}>
+                    <Icon type='arrow-left' style={{ marginRight: '5px' }}/>
+                    Back to Search
+                  </TextButton>
                 </div>
                 <Divider />
                 <div style={{ marginTop: '5px' }}><CopyUrl /></div>

@@ -11,6 +11,7 @@ const CleanLink = ({ url, stopPropagation }) => (
     onClick={e => stopPropagation && e.stopPropagation()}
     href={cleanUrl(url)}
     target='_blank'
+    rel='noopener noreferrer'
   >
     {cleanUrl(url).replace(/http:\/\//g, '')}
   </a>

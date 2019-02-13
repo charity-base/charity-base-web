@@ -1,24 +1,42 @@
 {
   "name": "charity-base-web",
-  "version": "0.2.0",
+  "version": "3.1.0",
   "private": true,
-  "proxy": "https://charitybase.uk",
+  "proxy": "http://localhost:4000",
   "dependencies": {
-    "antd": "~3.2.3",
+    "antd": "^3.10.0",
+    "auth0-js": "^9.7.3",
+    "charity-base": "3.0.1",
+    "charity-base-search": "2.1.1",
+    "google-map-react": "^1.0.5",
+    "jwt-decode": "^2.2.0",
+    "ngeohash": "^0.6.0",
     "numeral": "^2.0.6",
+    "polished": "^1.9.3",
     "query-string": "^5.1.1",
-    "react": "^16.2.0",
+    "react": "^16.4.1",
     "react-copy-to-clipboard": "^5.0.1",
     "react-debounce-input": "^3.2.0",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.4.1",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.1",
-    "styled-components": "^3.2.1"
+    "react-scripts": "^2.0.4",
+    "recharts": "^1.0.1",
+    "styled-components": "^3.2.1",
+    "supercluster": "^4.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+    "eject": "react-scripts eject",
+    "now-build": "yarn build && mv build dist",
+    "deploy:production": "now && now alias https://charity-base-web.now.sh",
+    "deploy:staging": "now && now alias https://charity-base-web-staging.now.sh"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

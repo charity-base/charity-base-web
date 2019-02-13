@@ -1,51 +1,31 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import qs from 'query-string'
-import { DebounceInput } from 'react-debounce-input'
-
-const SearchInputContainer = styled.div`
-  margin-bottom: 10px;
-  background-color: #FAFAFA;
-  border-color: #F8BBD0;
-  border-style: solid;
-  border-width: 1px;
-  padding: 10px;
-  border-radius: 5px;
-`
-
-const SearchInput = styled(DebounceInput)`
-  width: 100%;
-  border-width: 0;
-  outline-width: 0;
-  font-size: 18px;
-  padding: 3px;
-  font-weight: 300;
-  background-color: inherit;
-  color: rgba(0,0,0,.7);
-  ::placeholder {
-    color: rgba(0,0,0,.4);
-  }
-`
+import CharityBaseSearch from 'charity-base-search'
+import { charityBaseApiKey, charityBaseApiUri } from '../../lib/constants'
 
 class CharitiesSearch extends Component {
-  onChange = e => {
-    const searchText = e.target.value
-    const newQuery = { ...this.props.query, search: searchText || undefined }
+  onSelect = (item, inputValue) => {
+    if (item && item.type === 'charity') {
+      this.context.router.history.push(`/charities/${item.ids['GB-CHC']}`)
+      return
+    }
+    const newQuery = { ...this.props.query, search: inputValue || undefined }
     this.context.router.history.push(`?${qs.stringify(newQuery)}`)
   }
   render() {
     return (
-      <SearchInputContainer>
-        <SearchInput
-          minLength={0}
-          debounceTimeout={300}
-          type="search"
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <CharityBaseSearch
+          apiKey={charityBaseApiKey}
+          baseUrl={charityBaseApiUri}
+          label={null}
           placeholder="Search charities, places, activities, people..."
+          onSelect={this.onSelect}
           value={this.props.query.search || ''}
-          onChange={this.onChange}
+          charityBaseQuery={this.props.query}
         />
-      </SearchInputContainer>
+      </div>
     )
   }
 }
