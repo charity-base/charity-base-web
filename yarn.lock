@@ -2030,18 +2030,18 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
 
-charity-base-search@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/charity-base-search/-/charity-base-search-2.1.0.tgz#eadb4266e21d59f91899e8bd5851bb788a603ccc"
+charity-base-search@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/charity-base-search/-/charity-base-search-2.1.1.tgz#abb5157b080d3c44cd177f3e35dd3c0372cba0f0"
   dependencies:
     downshift "^3.1.4"
     lodash.debounce "^4.0.8"
     prop-types "^15.6.2"
     styled-components "^4.0.2"
 
-charity-base@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/charity-base/-/charity-base-3.0.0.tgz#fabff4d02b6682e832d0d8df621f70c1782f7c11"
+charity-base@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/charity-base/-/charity-base-3.0.1.tgz#84215a0c8ae31a07f62d67e76a996b4369bd035d"
   dependencies:
     "@babel/polyfill" "^7.0.0"
     core-js "^2.5.7"
