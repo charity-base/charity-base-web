@@ -1,6 +1,4 @@
-const defaultQuery = `#
-#
-# Welcome to GraphiQL
+const defaultQuery = `# Welcome to GraphiQL
 #
 # GraphiQL is an in-browser tool for writing, validating, and
 # testing GraphQL queries.
@@ -21,8 +19,9 @@ const defaultQuery = `#
 #   Auto Complete:  Ctrl-Space (or just start typing)
 #
 
-# E.g. Search Charity Commission charities for "mind",
-# counting the total number of results and listing the id, name & activities of the top 3 results:
+# E.g. Search charities registered in England & Wales for "mind", returning:
+# - A count of all matching charities
+# - A list of the top 3 matches (with their id, name & activities)
 
 {
   CHC {
@@ -37,6 +36,8 @@ const defaultQuery = `#
   }
 }
 
+# Hint: try changing the search term or limit value in the query above.
+# Press the play button to re-run the query.
 `
 
 export default defaultQuery
