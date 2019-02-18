@@ -19,13 +19,18 @@ const defaultQuery = `# Welcome to GraphiQL
 #   Auto Complete:  Ctrl-Space (or just start typing)
 #
 
-# E.g. Search charities registered in England & Wales for "mind", returning:
+# E.g. Search charities operating in Hounslow for "mind", returning:
 # - A count of all matching charities
 # - A list of the top 3 matches (with their id, name & activities)
 
 {
   CHC {
-    getCharities(filters: {search: "mind"}) {
+    getCharities(filters: {
+      search: "mind"
+      areas: {
+        some: ["B-25"]
+      }
+    }) {
       count
       list(limit: 3) {
         id
