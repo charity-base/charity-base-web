@@ -14,11 +14,19 @@ button:focus {
   outline: none;
 }
 
-.graphiql-container {
+.api-explorer-container {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  border-radius: 4px;
+  overflow: scroll;
   z-index: 100;
+}
+
+.api-explorer-container .topBar,
+.api-explorer-container .doc-explorer-title-bar,
+.api-explorer-container .history-title-bar {
+  box-sizing: content-box;
 }

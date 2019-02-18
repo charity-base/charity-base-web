@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { parse, print } from 'graphql'
 import GraphiQL from 'graphiql'
-import 'graphiql/graphiql.css'
+import { Layout } from 'antd'
 import defaultQuery from './defaultQuery'
 import ApiKeyModal from './ApiKeyModal'
+import { Page, ScrollableContent, ResponsiveSider } from '../general/Layout'
 import { charityBaseApiUri } from '../../lib/constants'
+import 'graphiql/graphiql.css'
 
 const getGraphQLFetcher = apiKey => graphQLParams => {
   return fetch(`${charityBaseApiUri}/graphql`, {
@@ -33,39 +36,46 @@ class ApiExplorer extends Component {
     }))
   }
   render() {
+    const { isMobile } = this.props
     return (
-      <div id='graphiql-container'>
-        <GraphiQL
-          ref={c => { this.graphiqlComp = c }}
-          fetcher={getGraphQLFetcher(this.state.apiKey)}
-          defaultQuery={defaultQuery}
-          >
-          <GraphiQL.Toolbar>
-            <GraphiQL.Button
-              onClick={this.handlePrettifyQuery}
-              title='Prettify Query (Shift-Ctrl-P)'
-              label='Prettify'
-            />
-            <GraphiQL.Button
-              onClick={this.handleToggleHistory}
-              title='Show History'
-              label='History'
-            />
-            <GraphiQL.Button
-              onClick={() => this.setState({ isApiKeyModalOpen: true })}
-              title='Set API Key'
-              label='Set API Key'
-            />
-          </GraphiQL.Toolbar>
-        </GraphiQL>
-        <ApiKeyModal
-          isOpen={this.state.isApiKeyModalOpen}
-          onChange={apiKey => this.setState({ apiKey, isApiKeyModalOpen: false })}
-          onClose={() => this.setState({ isApiKeyModalOpen: false })}
-        />
-      </div>
+
+      <Page isMobile={isMobile}>
+        <div className='api-explorer-container'>
+          <GraphiQL
+            ref={c => { this.graphiqlComp = c }}
+            fetcher={getGraphQLFetcher(this.state.apiKey)}
+            defaultQuery={defaultQuery}
+            >
+            <GraphiQL.Toolbar>
+              <GraphiQL.Button
+                onClick={this.handlePrettifyQuery}
+                title='Prettify Query (Shift-Ctrl-P)'
+                label='Prettify'
+              />
+              <GraphiQL.Button
+                onClick={this.handleToggleHistory}
+                title='Show History'
+                label='History'
+              />
+              <GraphiQL.Button
+                onClick={() => this.setState({ isApiKeyModalOpen: true })}
+                title='Set API Key'
+                label='Set API Key'
+              />
+            </GraphiQL.Toolbar>
+          </GraphiQL>
+          <ApiKeyModal
+            isOpen={this.state.isApiKeyModalOpen}
+            onChange={apiKey => this.setState({ apiKey, isApiKeyModalOpen: false })}
+            onClose={() => this.setState({ isApiKeyModalOpen: false })}
+          />
+        </div>
+      </Page>
     )
   }
+}
+ApiExplorer.propTypes = {
+  isMobile: PropTypes.bool.isRequired,
 }
 
 export {

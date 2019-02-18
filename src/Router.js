@@ -33,7 +33,7 @@ const Router = ({ isMobile }) => (
         <ApiPortal isMobile={isMobile} />
       )} />
       <Route exact path="/api-explorer" render={() => (
-        <ApiExplorer />
+        <ApiExplorer isMobile={isMobile} />
       )} />
       <Route exact path="/a2fv1" render={() => (
         <Redirect to="/?funders=360G-blf&incomeRange=1%2C100000&addressWithin=20km%2C53.404361%2C-2.979554&causes.id=102"/>

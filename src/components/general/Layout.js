@@ -51,7 +51,8 @@ ScrollableContent.propTypes = {
 const PageContent = styled(Layout.Content)`
   ${({ isMobile }) => isMobile ? `
     margin-top: 50px;
-    background-color #FFF;
+    background-color: #FFF;
+    min-height: 80vh;
   ` : `
     position: fixed;
     top: 70px;
@@ -64,7 +65,9 @@ const PageContent = styled(Layout.Content)`
 `
 
 const PageLayout = styled(Layout)`
-  ${({ isMobile }) => !isMobile && `
+  ${({ isMobile }) => isMobile ? `
+    height: 100%;
+  ` : `
     background: #FFF;
     border-radius: 5px;
     padding: 5px;
