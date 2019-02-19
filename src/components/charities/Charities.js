@@ -29,7 +29,7 @@ class Charities extends Component {
             <CharitiesSort query={query} />
           </FixedHeader>
           <Row type='flex' style={{ height: '100%' }}>
-            <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24}>
+            <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} style={{ height: '100%' }}>
               <ScrollableContent isMobile={isMobile}>
                 <CharitiesList
                   queryString={queryString}
