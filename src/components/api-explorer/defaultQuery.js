@@ -21,7 +21,7 @@ const defaultQuery = `# Welcome to GraphiQL
 
 # E.g. Search charities operating in Hounslow for "mind", returning:
 # - A count of all matching charities
-# - A list of the top 3 matches (with their id, name & activities)
+# - A list of the top 3 matches (with their id, names & activities)
 
 {
   CHC {
@@ -34,7 +34,7 @@ const defaultQuery = `# Welcome to GraphiQL
       count
       list(limit: 3) {
         id
-        name
+        names
         activities
       }
     }
