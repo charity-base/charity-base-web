@@ -1,48 +1,31 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
-import { Divider, message } from 'antd'
+import { Divider } from 'antd'
 import { DownloadResults } from '../general/download'
 import { CopyUrl } from '../general/CopyUrl'
 import { MenuBarHeader } from '../general/MenuBar'
 import { Filters } from './filters'
-import charityBase from '../../lib/charityBaseClient'
+import { Query } from 'react-apollo'
+import { COUNT_CHARITIES } from '../../lib/gql'
 
-class ResultsCount extends Component {
-  state = {
-    count: null,
-    isLoading: false,
-  }
-  componentDidMount() {
-    this.countResults(this.props.query)
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.queryString !== prevProps.queryString) {
-      this.countResults(this.props.query)
-    }
-  }
-  countResults = query => {
-    this.setState({ isLoading: true })
-    charityBase.charity.count({
-      ...query,
-      accessToken: localStorage.getItem('access_token'),
-    })
-    .then(res => this.setState({ isLoading: false, count: res.count }))
-    .catch(e => message.error('Oops, something went wrong'))
-  }
-  formatCount = x => numeral(x).format('0,0')
-  render() {
-    const isValidCount = this.state.count !== null && !this.state.isLoading
-    return (
-      <div style={{ height: '30px', marginTop: '20px', textAlign: 'center' }}>
-        {isValidCount && `${this.formatCount(this.state.count)} charities`}
-      </div>
-    )
-  }
-}
+const formatCount = x => numeral(x).format('0,0')
+
+const ResultsCount = ({ filters }) => (
+  <div style={{ height: '30px', marginTop: '20px', textAlign: 'center' }}>
+    <Query query={COUNT_CHARITIES} variables={{ filters }}>
+      {({ loading, error, data }) => {
+        if (loading) return 'Loading...'
+        if (error) return 'Error :('
+        return (
+          `${formatCount(data.CHC.getCharities.count)} charities`
+        )
+      }}
+    </Query>
+  </div>
+)
 ResultsCount.propTypes = {
-  queryString: PropTypes.string,
-  query: PropTypes.object,
+  filters: PropTypes.object.isRequired,
 }
 
 const FilterBar = ({ queryString, query }) => (
@@ -51,8 +34,7 @@ const FilterBar = ({ queryString, query }) => (
       <Filters queryString={queryString} />
       <Divider />
       <ResultsCount
-        queryString={queryString}
-        query={query}
+        filters={{}} // todo: use value from query string
       />
       <div style={{ marginTop: '5px' }}><CopyUrl /></div>
       <div style={{ marginTop: '5px' }}><DownloadResults queryString={queryString}/></div>
