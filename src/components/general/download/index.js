@@ -161,7 +161,7 @@ import TextButton from '../TextButton'
 //                 <div>
 //                   <b>Note:</b> this CSV only offers a subset of the available fields for each charity.
 //                   For the full database please use JSON instead.
-//                   If there are any fields you'd particularly like in CSV format, email <b>dan@charitybase.uk</b>
+//                   If there are any fields you'd particularly like in CSV format, email <b>dan.kwiat@charitybase.uk</b>
 //                 </div>
 //               }
 //             />

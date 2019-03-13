@@ -90,7 +90,7 @@ class About extends Component {
               <p><strong>Researchers</strong> at universities and non-profits use the raw data to analyse the charity sector and spot trends.</p>
               <p><strong>Developers</strong> and service designers use the API to help build services for and about charities.</p>
               <p><strong>Donors</strong>, grantmakers and philanthropists use the web platform to look up charities and carry out due diligence.</p>
-              <p>If CharityBase is useful to you, please let us know what you’re using it for! And feel free to get in touch with any questions, comments or feedback: <strong>dan@charitybase.uk</strong></p>
+              <p>If CharityBase is useful to you, please let us know what you’re using it for! And feel free to get in touch with any questions, comments or feedback: <strong>dan.kwiat@charitybase.uk</strong></p>
             </Answer>
 
             <Question id="api" hash={hash}>
@@ -114,7 +114,7 @@ class About extends Component {
             </Question>
             <Answer>
               <p>We hope to add Scottish and Northern Irish charities to the register soon but don't have a set deadline.</p>
-              <p>Get in touch if you'd like to see these or any other countries in our database: <strong>dan@charitybase.uk</strong></p>
+              <p>Get in touch if you'd like to see these or any other countries in our database: <strong>dan.kwiat@charitybase.uk</strong></p>
             </Answer>
 
             <Question id="who-makes-it" hash={hash}>
@@ -137,7 +137,7 @@ class About extends Component {
             </Question>
             <Answer>
               <p>If you encounter any problems or have a feature request, please <a rel='noopener noreferrer' target='_blank' href='https://github.com/charity-base/charity-base-web/issues/new'>add an issue</a>.</p>
-              <p>For any other feedback or questions, email <strong>dan@charitybase.uk</strong></p>
+              <p>For any other feedback or questions, email <strong>dan.kwiat@charitybase.uk</strong></p>
             </Answer>
 
             <Question id='licence' hash={hash}>
