@@ -3,9 +3,11 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import { List, Button, Spin, message } from 'antd'
-import { NoneText } from '../general/NoneText'
-import charityBase from '../../lib/charityBaseClient'
+import { List, Button, Spin } from 'antd'
+import { Query } from 'react-apollo'
+import { LIST_CHARITIES } from '../../lib/gql'
+
+const MAX_LIST_LENGTH = 500
 
 const IncomeIcon = ({ income }) => (
   <svg style={{ width: '50px', height: '50px', }}>
@@ -47,118 +49,118 @@ const Income = ({ income }) => (
   </div>
 )
 
+const LoadMore = ({ loading, error, data, fetchMore }) => {
+  if (loading) return <div className='load-more-container'><Spin /></div>
+  if (error) return null
+  const dataLength = data.CHC ? data.CHC.getCharities.list.length : 0
+  const count = data.CHC ? data.CHC.getCharities.count : 0
+  if (dataLength >= count) {
+    return (
+      <div className='load-more-container'>
+        End of Results
+      </div>
+    )
+  }
+  if (dataLength > MAX_LIST_LENGTH) {
+    return (
+      <div className='load-more-container'>
+        Gosh you're persistent.  Please download the results or apply more filters to find what you're looking for.
+      </div>
+    )
+  }
+  return (
+    <div className='load-more-container'>
+      <Button
+        onClick={() =>
+          fetchMore({
+            variables: {
+              skip: dataLength,
+            },
+            updateQuery: (prev, { fetchMoreResult }) => {
+              if (!fetchMoreResult) return prev
+              return {
+                ...prev,
+                CHC: {
+                  ...prev.CHC,
+                  getCharities: {
+                    ...prev.CHC.getCharities,
+                    list: [
+                      ...prev.CHC.getCharities.list,
+                      ...fetchMoreResult.CHC.getCharities.list,
+                    ]
+                  }
+                }
+              }
+            }
+          })
+        }
+      >
+        Show More
+      </Button>
+    </div>
+  )
+}
+LoadMore.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.object,
+  data: PropTypes.object.isRequired,
+  fetchMore: PropTypes.func.isRequired,
+}
 
 class CharitiesList extends Component {
-  state = {
-    loading: true,
-    loadingMore: false,
-    showLoadingMore: true,
-    data: [],
-    limit: 10,
-    skip: 0,
-  }
-  componentDidMount() {
-    this.refreshSearch(this.props.query)
-  }
-  componentWillReceiveProps(nextProps) {
-    if (this.props.queryString !== nextProps.queryString) {
-      this.refreshSearch(nextProps.query)
-    }
-  }
-  refreshSearch = query => {
-    this.setState({
-      loading: true,
-      loadingMore: false,
-      showLoadingMore: true,
-      data: [],
-      limit: 10,
-      skip: 0,
-    })
-    this.getData(query, 0, res => {
-      this.setState({
-        data: res.charities,
-        loading: false,
-        limit: res.query.size,
-        skip: res.query.from + res.query.size,
-      })
-    })
-  }
-  getData = (query, skip, callback) => {
-    charityBase.charity.list({
-      ...query,
-      accessToken: localStorage.getItem('access_token'),
-      fields: ['ids', 'name', 'alternativeNames', 'activities', 'income.latest.total', 'contact.geoCoords'],
-      limit: this.state.limit,
-      skip: skip,
-    })
-    .then(callback)
-    .catch(e => message.error('Oops, something went wrong'))
-  }
-  onLoadMore = () => {
-    this.setState({
-      loadingMore: true,
-    });
-    this.getData(this.props.query, this.state.skip, res => {
-      const data = this.state.data.concat(res.charities)
-      this.setState({
-        data,
-        loadingMore: false,
-        limit: res.query.size,
-        skip: res.query.from + res.query.size,
-      }, () => {
-        // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
-        // In real scene, you can using public method of react-virtualized:
-        // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
-        window.dispatchEvent(new Event('resize'));
-      });
-    });
-  }
   render() {
-    const { onHover } = this.props
-    const { loading, loadingMore, showLoadingMore, data, limit } = this.state;
-    const isMore = data.length/limit === Math.round(data.length/limit)
-    const loadMore = showLoadingMore ? (
-      <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
-        {loadingMore && <Spin />}
-        {!loadingMore && isMore && <Button onClick={this.onLoadMore}>Show More</Button>}
-        {!loadingMore && !isMore && <NoneText>end of results</NoneText>}
-      </div>
-    ) : null
+    const { onHover, filters } = this.props
     return (
-      <List
-        size="large"
-        itemLayout="vertical"
-        loading={loading}
-        loadMore={loadMore}
-        dataSource={data}
-        renderItem={({ ids, name, activities, income, alternativeNames, contact }) => (
-          <List.Item
-            actions={[
-              // <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
-              // <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
-              // <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
-            ]}
-            onMouseEnter={() => onHover({ ids, name, activities, income, alternativeNames, contact })}
-            onMouseLeave={() => onHover({})}
-          >
-            <List.Item.Meta
-              title={
-                <Link to={`/charities/${ids['GB-CHC']}`}>
-                  {name} <Income income={income && income.latest.total} />
-                </Link>
-              }
-              description={alternativeNames.filter(x => x !== name).join(', ')}
+      <Query
+        query={LIST_CHARITIES}
+        variables={{ filters, skip: 0 }}
+        notifyOnNetworkStatusChange={true}
+      >
+        {({ loading, error, data, fetchMore }) => {
+          if (error) return 'error oops'
+          return (
+            <List
+              size="large"
+              itemLayout="vertical"
+              loading={loading}
+              loadMore={
+                <LoadMore
+                  loading={loading}
+                  error={error}
+                  data={data}
+                  fetchMore={fetchMore}
+                />}
+              dataSource={data.CHC ? data.CHC.getCharities.list : []}
+              renderItem={({ id, names, activities, geo, finances }) => (
+                <List.Item
+                  actions={[
+                    // <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
+                    // <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
+                    // <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
+                  ]}
+                  onMouseEnter={() => onHover(geo)}
+                  onMouseLeave={() => onHover({})}
+                >
+                  <List.Item.Meta
+                    title={
+                      <Link to={`/charities/${id}`}>
+                        {names.reduce((agg, x) => (x.primary ? x.value : agg), null)} <Income income={finances.length > 0 ? finances[0].income : null} />
+                      </Link>
+                    }
+                    description={names.reduce((agg, x) => (x.primary ? agg : [...agg, x.value]), []).join(', ')}
+                  />
+                  {activities && `${activities.slice(0,120)}...`}
+                </List.Item>
+              )}
             />
-            {activities && `${activities.slice(0,120)}...`}
-          </List.Item>
-        )}
-      />
+          )
+        }}
+      </Query>
     )
   }
 }
 CharitiesList.propTypes = {
-  queryString: PropTypes.string,
-  query: PropTypes.object,
+  filters: PropTypes.object.isRequired,
   onHover: PropTypes.func.isRequired,
 }
 

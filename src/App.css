@@ -30,3 +30,10 @@ button:focus {
 .api-explorer-container .history-title-bar {
   box-sizing: content-box;
 }
+
+.load-more-container {
+  text-align: center;
+  margin-top: 1em;
+  height: 2em;
+  line-height: 2em;
+}
