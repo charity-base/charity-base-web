@@ -28,13 +28,13 @@ ResultsCount.propTypes = {
   filters: PropTypes.object.isRequired,
 }
 
-const FilterBar = ({ queryString, query }) => (
+const FilterBar = ({ filters, queryString, query }) => (
   <div>
     <MenuBarHeader>
       <Filters queryString={queryString} />
       <Divider />
       <ResultsCount
-        filters={{}} // todo: use value from query string
+        filters={filters}
       />
       <div style={{ marginTop: '5px' }}><CopyUrl /></div>
       <div style={{ marginTop: '5px' }}><DownloadResults queryString={queryString}/></div>
@@ -42,8 +42,8 @@ const FilterBar = ({ queryString, query }) => (
   </div>
 )
 FilterBar.propTypes = {
+  filters: PropTypes.object.isRequired,
   queryString: PropTypes.string,
-  query: PropTypes.object,
 }
 
 export { FilterBar }

@@ -18,10 +18,14 @@ class Charities extends Component {
   }
   render() {
     const { query, queryString, isMobile } = this.props
+    const filters = {search: ''} // todo: get filters from query string
     return (
       <Page isMobile={isMobile}>
         <ResponsiveSider isMobile={isMobile}>
-          <FilterBar queryString={queryString} query={query} />
+          <FilterBar
+            filters={filters}
+            queryString={queryString}
+          />
         </ResponsiveSider>
         <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF', height: '100%' }}>
           <FixedHeader isMobile={isMobile}>
@@ -32,8 +36,7 @@ class Charities extends Component {
             <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} style={{ height: '100%' }}>
               <ScrollableContent isMobile={isMobile}>
                 <CharitiesList
-                  queryString={queryString}
-                  query={query}
+                  filters={filters}
                   onHover={hoveredItem => this.setState({ hoveredItem })}
                 />
               </ScrollableContent>
