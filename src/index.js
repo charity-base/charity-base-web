@@ -7,10 +7,10 @@ import './index.css'
 import App from './App'
 import { unregister } from './registerServiceWorker'
 // import registerServiceWorker from './registerServiceWorker'
-import { charityBaseApiKey } from './lib/constants'
+import { charityBaseGqlApiUri, charityBaseApiKey } from './lib/constants'
 
 const client = new ApolloClient({
-  uri: 'https://charitybase.uk/api/graphql',
+  uri: charityBaseGqlApiUri,
   headers: {
     Authorization: `Apikey ${charityBaseApiKey}`,
   },
