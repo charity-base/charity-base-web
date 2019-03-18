@@ -15,6 +15,7 @@ import { AGG_GEOHASH_CHARITIES } from '../../../lib/gql'
 import geohash from 'ngeohash'
 import numeral from 'numeral'
 import { transparentize } from 'polished'
+import { cluster } from '../../../lib/mapHelpers'
 
 const INITIAL_ZOOM = 5
 const INITIAL_CENTER = [54.91244, -3.05385]
@@ -84,10 +85,11 @@ class CharitiesChart extends Component {
               key: x.key,
               center: geohashToLatLng(x.key),
               count: x.count,
-            })).sort((a, b) => a.count - b.count)
+            }))
           ) : []
-          const size = count => buckets[0].count === buckets[buckets.length - 1].count ? 1 : (
-            (count - buckets[0].count)/(buckets[buckets.length - 1].count - buckets[0].count)
+          const clusters = cluster(buckets, bounds, zoom).sort((a, b) => a.count - b.count)
+          const size = count => clusters[0].count === clusters[clusters.length - 1].count ? 1 : (
+            (count - clusters[0].count)/(clusters[clusters.length - 1].count - clusters[0].count)
           )
           if (error) return null
           return (
@@ -104,14 +106,14 @@ class CharitiesChart extends Component {
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              {zooming ? null : buckets.map(x => (
+              {zooming ? null : clusters.map(x => (
                 <CircleMarker
                   key={x.key}
                   center={x.center}
                   color={null}
                   fillColor={transparentize(0.5*(1 - size(x.count)), '#EC407A')}
-                  fillOpacity={0.5}
-                  radius={10 + 20*size(x.count)}
+                  fillOpacity={0.6}
+                  radius={20 + 20*size(x.count)}
                   onClick={() => this.onMarkerClick(x)}
                 >
                   <Tooltip>{formatCount(x.count)} charities</Tooltip>
