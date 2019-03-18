@@ -1,4 +1,4 @@
-import { fitBounds } from 'google-map-react/utils'
+// import { fitBounds } from 'google-map-react/utils'
 import geohash from 'ngeohash'
 import supercluster from 'supercluster'
 
@@ -103,12 +103,12 @@ const defaultCenterZoom = {
   zoom: 4,
 }
 
-const getCenterZoom = (boundsString, width, height) => {
-  const bounds = boundsStringToGmaps(boundsString)
-  if (!bounds) return defaultCenterZoom
-  const { center, zoom } = fitBounds(bounds, { width, height })
-  return { center, zoom }
-}
+// const getCenterZoom = (boundsString, width, height) => {
+//   const bounds = boundsStringToGmaps(boundsString)
+//   if (!bounds) return defaultCenterZoom
+//   const { center, zoom } = fitBounds(bounds, { width, height })
+//   return { center, zoom }
+// }
 
 const geoHashToLatLon = hash => {
   const { latitude, longitude } = geohash.decode(hash)
@@ -143,46 +143,38 @@ const isCenterZoomEqual = (x, y, decimals=8) => {
 }
 
 const index = supercluster({
-  radius: 40,
+  radius: 200,
   extent: 512,
-  minZoom: 0,
-  maxZoom: 17,
+  // minZoom: 0,
+  // maxZoom: 17,
   initial: function() { return { sum: 0 } },
-  map: function(props) {return { sum: props.doc_count || 0 } },
+  map: function(props) {return { sum: props.count || 0 } },
   reduce: function(acc, props) { acc.sum += (props.sum || 0) }
 })
 
-const cluster = (buckets, gmapsZoom) => {
+const cluster = (buckets, bounds, leafletZoom) => {
   const geoJsonIn = buckets.map(x => {
-    const { latitude, longitude } = geoHashToLatLon(x.key)
     return {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [longitude, latitude]
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [x.center[1], x.center[0]]
       },
-      "properties": {
-        bucketId: x.key,
-        doc_count: x.doc_count,
+      properties: {
+        key: x.key,
+        count: x.count,
       },
     }
   })
   index.load(geoJsonIn)
-  const bounds = [-180, -90, 180, 90]
-  const geoJsonOut = index.getClusters(bounds, mapBoxZoom(gmapsZoom))
+  const boundsList = [bounds.left, bounds.bottom, bounds.right, bounds.top]
+  const geoJsonOut = index.getClusters(boundsList, leafletZoom)
   const clustered = geoJsonOut.map(({ id, geometry, properties }) => ({
-    clusterId: id, // undefined if this is a single-point cluster
-    bucketId: properties.bucketId, // undefined if this is a multi-point cluster
-    count: properties.sum || properties.doc_count || 0,
-    lng: geometry.coordinates[0],
-    lat: geometry.coordinates[1],
+    key: id || `geohash-${properties.key}`, // id is undefined if this is a single-geohash cluster
+    count: properties.sum || properties.count || 0,
+    center: [geometry.coordinates[1], geometry.coordinates[0]],
   }))
-  const minCount = Math.min(...clustered.map(x => x.count))
-  const maxCount = Math.max(...clustered.map(x => x.count))
-  return clustered.map(x => ({
-    ...x,
-    normCount: maxCount === minCount ? 1 : (x.count - minCount)/(maxCount - minCount),
-  }))
+  return clustered
 }
 
 const getConstituentHashes = clusterId => {
@@ -194,7 +186,7 @@ export {
   zoomToPrecision,
   esBoundsToString,
   gmapsBoundsToString,
-  getCenterZoom,
+  // getCenterZoom,
   geoHashToLatLon,
   geoHashToBoundingBox,
   geoHashesBounds,
