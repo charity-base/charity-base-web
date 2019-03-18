@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import qs from 'query-string'
 import { FilterBar } from './FilterBar'
 import { CharitiesSearch } from './CharitiesSearch'
 import { CharitiesSort } from './CharitiesSort'
@@ -13,12 +12,9 @@ class Charities extends Component {
   state = {
     hoveredItem: {},
   }
-  onQueryUpdate = query => {
-    this.context.router.history.push(`/?${qs.stringify(query)}`)
-  }
   render() {
     const { query, queryString, isMobile } = this.props
-    const filters = {search: ''} // todo: get filters from query string
+    const filters = { search: '' } // todo: get filters from query string
     return (
       <Page isMobile={isMobile}>
         <ResponsiveSider isMobile={isMobile}>
@@ -43,8 +39,7 @@ class Charities extends Component {
             </Col>
             <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={{ paddingTop: 150, height: '100%' }}>
               <CharitiesChart
-                query={query}
-                onQueryUpdate={this.onQueryUpdate}
+                filters={filters}
                 hoveredItem={this.state.hoveredItem}
               />
             </Col>
@@ -58,9 +53,6 @@ Charities.propTypes = {
   query: PropTypes.object,
   queryString: PropTypes.string,
   isMobile: PropTypes.bool,
-}
-Charities.contextTypes = {
-  router: PropTypes.object,
 }
 
 export { Charities }
