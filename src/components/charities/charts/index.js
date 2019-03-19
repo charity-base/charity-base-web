@@ -9,16 +9,18 @@ import {
   TileLayer,
   Marker,
   Tooltip,
+  Popup,
 } from 'react-leaflet'
 import { Query } from 'react-apollo'
-import { AGG_GEOHASH_CHARITIES } from '../../../lib/gql'
+import { AGG_GEOHASH_CHARITIES, LIST_CHARITIES } from '../../../lib/gql'
 import geohash from 'ngeohash'
 import numeral from 'numeral'
 import { transparentize } from 'polished'
-import { cluster } from '../../../lib/mapHelpers'
+import { cluster, geoHashesBounds } from '../../../lib/mapHelpers'
 
 const INITIAL_ZOOM = 5
 const INITIAL_CENTER = [54.91244, -3.05385]
+const POPUP_LIST_MAX_LENGTH = 10
 
 const geohashToLatLng = hash => {
   const { latitude, longitude } = geohash.decode(hash)
@@ -26,6 +28,72 @@ const geohashToLatLng = hash => {
 }
 
 const formatCount = x => numeral(x).format('0a')
+
+const ClusterTooltip = ({ count }) => (
+  <Tooltip>
+    <div>{formatCount(count)} charities</div>
+    {count <= POPUP_LIST_MAX_LENGTH ? (
+      <div>(click to list)</div>
+    ) : null}
+  </Tooltip>
+)
+
+const ClusterPopup = ({ count, geohashes, filters }) => (
+  count <= POPUP_LIST_MAX_LENGTH ? (
+    <Popup autoPan={false}>
+      <div style={{ width: '200px' }}>
+        <Query
+          query={LIST_CHARITIES}
+          variables={{ filters: {
+            ...filters,
+            geo: {
+              ...filters.geo,
+              boundingBox: geoHashesBounds(geohashes) // todo: merge with pre-existing filter and map bounds too
+            }
+          } }}
+        >
+          {({ loading, error, data }) => {
+            if (loading) return 'loading...'
+            if (error) return 'oops something went wrong'
+            return data.CHC.getCharities.list.map(x => (
+              <div
+                style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                key={x.id}
+              >
+                {x.names[0].value}
+              </div>
+            ))
+          }}
+        </Query>
+      </div>
+    </Popup>
+  ) : null
+)
+
+const strokeDashArray = (radius, dashCount=5) => {
+  const strokeDashSum = (Math.PI*2*radius)/5
+  return `${0.5*strokeDashSum} ${0.5*strokeDashSum}`
+}
+
+const ClusterMarker = ({ key, count, center, filters, geohashes, size, onClick }) => {
+  const radius = 20 + 20*size
+  return (
+    <CircleMarker
+      key={key}
+      center={center}
+      stroke={count <= POPUP_LIST_MAX_LENGTH}
+      color='#EC407A'
+      dashArray={strokeDashArray(radius)}
+      fillColor={transparentize(0.5*(1 - size), '#EC407A')}
+      fillOpacity={0.6}
+      radius={radius}
+      onClick={onClick}
+    >
+      <ClusterTooltip count={count} />
+      <ClusterPopup count={count} geohashes={geohashes} filters={filters} />
+    </CircleMarker>
+  )
+}
 
 class CharitiesChart extends Component {
   state = {
@@ -64,11 +132,15 @@ class CharitiesChart extends Component {
       }
     })
   }
-  onMarkerClick = ({ center }) => {
+  onMarkerClick = ({ center, count }) => {
+    if (count <= POPUP_LIST_MAX_LENGTH) return
     this.setState(s => ({
       center,
       zoom: s.zoom + 1,
     }))
+  }
+  relSize = (count, min, max) => {
+    return min === max ? 1 : (count - min)/(max - min)
   }
   render() {
     const { filters, hoveredItem } = this.props
@@ -88,9 +160,6 @@ class CharitiesChart extends Component {
             }))
           ) : []
           const clusters = cluster(buckets, bounds, zoom).sort((a, b) => a.count - b.count)
-          const size = count => clusters[0].count === clusters[clusters.length - 1].count ? 1 : (
-            (count - clusters[0].count)/(clusters[clusters.length - 1].count - clusters[0].count)
-          )
           if (error) return null
           return (
             <Map
@@ -106,19 +175,20 @@ class CharitiesChart extends Component {
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              {zooming ? null : clusters.map(x => (
-                <CircleMarker
-                  key={x.key}
-                  center={x.center}
-                  color={null}
-                  fillColor={transparentize(0.5*(1 - size(x.count)), '#EC407A')}
-                  fillOpacity={0.6}
-                  radius={20 + 20*size(x.count)}
-                  onClick={() => this.onMarkerClick(x)}
-                >
-                  <Tooltip>{formatCount(x.count)} charities</Tooltip>
-                </CircleMarker>
-              ))}
+              {zooming ? null : clusters.map(x => {
+                const size = this.relSize(x.count, clusters[0].count, clusters[clusters.length - 1].count)
+                return (
+                  <ClusterMarker
+                    key={x.key}
+                    count={x.count}
+                    center={x.center}
+                    geohashes={x.geohashes}
+                    filters={filters}
+                    size={size}
+                    onClick={() => this.onMarkerClick(x)}
+                  />
+                )
+              })}
               {filtersBounds ? (
                 <Rectangle bounds={[
                   [filtersBounds.bottom, filtersBounds.left],
