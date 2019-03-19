@@ -1,53 +1,51 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { FilterBar } from './FilterBar'
-import { CharitiesSearch } from './CharitiesSearch'
+import CharitiesSearch from './search'
 import { CharitiesSort } from './CharitiesSort'
 import { CharitiesList } from './CharitiesList'
 import { Layout, Row, Col } from 'antd'
 import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
 import CharitiesChart from './charts'
 
-class Charities extends Component {
-  state = {
-    hoveredItem: {},
-  }
-  render() {
-    const { query, queryString, isMobile } = this.props
-    const filters = { search: '' } // todo: get filters from query string
-    return (
-      <Page isMobile={isMobile}>
-        <ResponsiveSider isMobile={isMobile}>
-          <FilterBar
+const Charities = ({ query, queryString, isMobile }) => {
+  const [hoveredItem, setHoveredItem] = useState({})
+  const [filters, setFilters] = useState({}) // todo: get from query string
+  return (
+    <Page isMobile={isMobile}>
+      <ResponsiveSider isMobile={isMobile}>
+        <FilterBar
+          filters={filters}
+          queryString={queryString}
+        />
+      </ResponsiveSider>
+      <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF', height: '100%' }}>
+        <FixedHeader isMobile={isMobile}>
+          <CharitiesSearch
             filters={filters}
-            queryString={queryString}
+            setFilters={setFilters}
           />
-        </ResponsiveSider>
-        <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF', height: '100%' }}>
-          <FixedHeader isMobile={isMobile}>
-            <CharitiesSearch query={query} />
-            <CharitiesSort query={query} />
-          </FixedHeader>
-          <Row type='flex' style={{ height: '100%' }}>
-            <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} style={{ height: '100%' }}>
-              <ScrollableContent isMobile={isMobile}>
-                <CharitiesList
-                  filters={filters}
-                  onHover={hoveredItem => this.setState({ hoveredItem })}
-                />
-              </ScrollableContent>
-            </Col>
-            <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={{ paddingTop: 150, height: '100%' }}>
-              <CharitiesChart
+          <CharitiesSort query={query} />
+        </FixedHeader>
+        <Row type='flex' style={{ height: '100%' }}>
+          <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} style={{ height: '100%' }}>
+            <ScrollableContent isMobile={isMobile}>
+              <CharitiesList
                 filters={filters}
-                hoveredItem={this.state.hoveredItem}
+                onHover={setHoveredItem}
               />
-            </Col>
-          </Row>
-        </Layout.Content>
-      </Page>
-    )
-  }
+            </ScrollableContent>
+          </Col>
+          <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={{ paddingTop: 150, height: '100%' }}>
+            <CharitiesChart
+              filters={filters}
+              hoveredItem={hoveredItem}
+            />
+          </Col>
+        </Row>
+      </Layout.Content>
+    </Page>
+  )
 }
 Charities.propTypes = {
   query: PropTypes.object,
