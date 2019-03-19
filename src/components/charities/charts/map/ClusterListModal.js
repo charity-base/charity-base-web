@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
+import { Link } from 'react-router-dom'
 import { List, Modal, Skeleton } from 'antd'
 import { LIST_CHARITIES } from '../../../../lib/gql'
 
@@ -68,7 +69,11 @@ const ClusterListModal = ({ bounds, count, geohashes, filters, onClose, open }) 
                 >
                   <Skeleton loading={loading} active>
                     <List.Item.Meta
-                      title={<a href='/'>{item.names ? item.names[0].value : null}</a>}
+                      title={
+                        <Link to={`/charities/${item.id}`}>
+                          {item.names ? item.names[0].value : null}
+                        </Link>
+                      }
                     />
                     {item.activities ? item.activities.slice(0, 240)+'...' : null}
                   </Skeleton>
