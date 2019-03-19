@@ -50,7 +50,7 @@ const ClusterListModal = ({ bounds, count, geohashes, filters, onClose, open }) 
         return (
           <div
             style={{
-              maxHeight: '800px',
+              maxHeight: '60vh',
               overflowY: 'scroll',
               padding: '1em',
               marginTop: '2em',
