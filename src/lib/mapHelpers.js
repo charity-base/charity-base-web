@@ -126,7 +126,12 @@ const geoHashesBounds = hashes => {
   const minLon = Math.min(...boundses.map(x => x[1]))
   const maxLat = Math.max(...boundses.map(x => x[2]))
   const maxLon = Math.max(...boundses.map(x => x[3]))
-  return [maxLat, minLon, minLat, maxLon].join(',')
+  return {
+    top: maxLat,
+    left: minLon,
+    bottom: minLat,
+    right: maxLon,
+  }
 }
 
 const isCenterZoomEqual = (x, y, decimals=8) => {
@@ -173,6 +178,9 @@ const cluster = (buckets, bounds, leafletZoom) => {
     key: id || `geohash-${properties.key}`, // id is undefined if this is a single-geohash cluster
     count: properties.sum || properties.count || 0,
     center: [geometry.coordinates[1], geometry.coordinates[0]],
+    geohashes: id ? (
+      index.getLeaves(id, 10).map(leaf => leaf.properties.key) // limited to 10 leaves
+    ) : [properties.key]
   }))
   return clustered
 }
