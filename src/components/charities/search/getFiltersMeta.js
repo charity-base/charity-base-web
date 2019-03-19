@@ -1,44 +1,47 @@
+import React from 'react'
+import { Icon } from 'antd'
+
 const getFiltersMeta = filterType => {
   switch (filterType) {
     case 'search':
       return {
-        // icon: <MaterialIcon icon='search' />,
+        icon: <Icon type='search' />,
         prefix: null,
         prompt: 'Search all records',
       }
     case 'id':
       return {
-        // icon: <MaterialIcon icon='business' />,
+        icon: <Icon type='link' />,
         prefix: null,
         prompt: 'View charity',
       }
     case 'funder':
       return {
-        // icon: <MaterialIcon icon='card_giftcard' />,
+        icon: <Icon type='gift' />,
         prefix: null,
         prompt: 'Filter by funder',
       }
     case 'area':
       return {
-        // icon: <MaterialIcon icon='public' />,
+        icon: <Icon type='global' />,
         prefix: null,
         prompt: 'Filter by area of operation',
       }
     case 'cause':
       return {
-        // icon: <MaterialIcon icon='local_hospital' />,
+        icon: <Icon type='medicine-box' />,
         prefix: null,
         prompt: 'Filter by cause',
       }
     case 'operation':
       return {
-        // icon: <MaterialIcon icon='build' />,
+        icon: <Icon type='tool' />,
         prefix: null,
         prompt: 'Filter by operation',
       }
     case 'beneficiary':
       return {
-        // icon: <MaterialIcon icon='child_care' />,
+        icon: <Icon type='team' />,
         prefix: null,
         prompt: 'Filter by beneficiary',
       }
