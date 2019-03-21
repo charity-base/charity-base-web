@@ -52,6 +52,7 @@ const Income = ({ income }) => (
 const LoadMore = ({ loading, error, data, fetchMore }) => {
   if (loading || error) return null
   const dataLength = data.CHC ? data.CHC.getCharities.list.length : 0
+  if (dataLength === 0) return null
   const count = data.CHC ? data.CHC.getCharities.count : 0
   if (dataLength >= count) {
     return (
@@ -128,7 +129,9 @@ class CharitiesList extends Component {
                   error={error}
                   data={data}
                   fetchMore={fetchMore}
-                />}
+                />
+              }
+              locale={{ emptyText: 'No Charities Found' }}
               dataSource={data.CHC ? data.CHC.getCharities.list : []}
               renderItem={({ id, names, activities, geo, finances }) => (
                 <List.Item
