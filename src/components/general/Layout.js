@@ -12,7 +12,7 @@ const FixedHeader = styled.div`
     right: 0;
     height: ${height || 150}px;
     background-color: #FFF;
-    z-index: 999;
+    z-index: 9999;
     box-shadow: 0 0 1em;
   `}
 `

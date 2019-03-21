@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import CharityBaseSearch from 'charity-base-search'
-import getFiltersMeta from './getFiltersMeta'
+import mapItem from './mapItem'
 import reduceFilters from './reduceFilters'
 
 class CharitiesSearch extends Component {
@@ -18,11 +18,11 @@ class CharitiesSearch extends Component {
   }
   render() {
     return (
-      <div style={{ position: 'relative', zIndex: 1 }}>
+      <div style={{ position: 'relative' }}>
         <CharityBaseSearch
-          label='Filter by charity...'
+          label='Search by charity, funder, cause, area...'
           onSelect={this.onSelect}
-          getFiltersMeta={getFiltersMeta}
+          mapItem={mapItem}
         />
       </div>
     )

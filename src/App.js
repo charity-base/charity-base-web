@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { LocaleProvider, Layout } from 'antd'
-import './App.css'
+import './App.scss'
 import enGB from 'antd/lib/locale-provider/en_GB'
 import { Router } from './Router'
 import { NavBar } from './components/nav'
