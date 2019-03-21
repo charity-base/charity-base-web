@@ -50,8 +50,7 @@ const Income = ({ income }) => (
 )
 
 const LoadMore = ({ loading, error, data, fetchMore }) => {
-  if (loading) return <div className='load-more-container'><Spin /></div>
-  if (error) return null
+  if (loading || error) return null
   const dataLength = data.CHC ? data.CHC.getCharities.list.length : 0
   const count = data.CHC ? data.CHC.getCharities.count : 0
   if (dataLength >= count) {
