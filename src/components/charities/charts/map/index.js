@@ -8,10 +8,12 @@ import {
 } from 'react-leaflet'
 import { Query } from 'react-apollo'
 import geohash from 'ngeohash'
+import { Button } from 'antd'
 import { AGG_GEOHASH_CHARITIES } from '../../../../lib/gql'
 import cluster from './cluster'
 import ClusterMarker from './ClusterMarker'
 import ClusterListModal from './ClusterListModal'
+import RemoveMarker from './RemoveMarker'
 
 const INITIAL_ZOOM = 5
 const INITIAL_CENTER = [54.91244, -3.05385]
@@ -50,19 +52,24 @@ class CharitiesMap extends Component {
       map.leafletElement.invalidateSize()
     }, 10)
   }
-  onChange = ({ center, zoom }) => {
+  portalBounds = () => {
     const map = this.mapRef.current
-    if (!map) return
+    if (!map) return null
     const bounds = map.leafletElement.getBounds()
+    return {
+      top: Math.min(90, bounds.getNorth()),
+      left: Math.max(-180, bounds.getWest()),
+      bottom: Math.max(-90, bounds.getSouth()),
+      right: Math.min(180, bounds.getEast()),
+    }
+  }
+  onChange = ({ center, zoom }) => {
+    const bounds = this.portalBounds()
+    if (!bounds) return
     this.setState({
       zoom,
       center,
-      bounds: {
-        top: bounds.getNorth(),
-        left: bounds.getWest(),
-        bottom: bounds.getSouth(),
-        right: bounds.getEast(),
-      }
+      bounds,
     })
   }
   onMarkerClick = ({ center, count, geohashes }) => {
@@ -92,6 +99,14 @@ class CharitiesMap extends Component {
       }
     }))
   }
+  onFilterChange = boundingBox => {
+    const { filters, setFilters } = this.props
+    const geo = boundingBox ? { boundingBox } : {}
+    setFilters({
+      ...filters,
+      geo,
+    })
+  }
   render() {
     const { filters, hoveredItem } = this.props
     const { zooming, center, zoom, bounds, selectedCluster } = this.state
@@ -112,15 +127,17 @@ class CharitiesMap extends Component {
           )
           const clusters = cluster(buckets, bounds, zoom).sort((a, b) => a.count - b.count)
           return (
-            <Fragment>
+            <div style={{ position: 'relative', width : '100%', height: '100%', }}>
               <Map
                 center={center}
-                zoom={zoom}
-                style={{ width : '100%', height: '100%', position: 'relative', opacity: (zooming || loading) ? 0.5 : 1 }}
+                maxZoom={19}
+                minZoom={4}
                 onViewportChanged={this.onChange}
-                onZoomstart={() => this.setState({ zooming: true })}
                 onZoomend={() => this.setState({ zooming: false })}
+                onZoomstart={() => this.setState({ zooming: true })}
                 ref={this.mapRef}
+                style={{ width : '100%', height: '100%', position: 'relative', opacity: (zooming || loading) ? 0.5 : 1 }}
+                zoom={zoom}
               >
                 <TileLayer
                   attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -140,10 +157,22 @@ class CharitiesMap extends Component {
                   )
                 })}
                 {filtersBounds ? (
-                  <Rectangle bounds={[
-                    [filtersBounds.bottom, filtersBounds.left],
-                    [filtersBounds.top, filtersBounds.right],
-                  ]} color="black" />
+                  <Fragment>
+                    <Rectangle
+                      bounds={[
+                        [filtersBounds.bottom, filtersBounds.left],
+                        [filtersBounds.top, filtersBounds.right],
+                      ]}
+                      className='grab-cursor'
+                      color='black'
+                      weight={1}
+                    />
+                    <RemoveMarker
+                      center={[filtersBounds.top, filtersBounds.right]}
+                      hide={loading || zooming}
+                      onClick={() => this.onFilterChange()}
+                    />
+                  </Fragment>
                 ) : null}
                 {hoveredItem && hoveredItem.latitude && hoveredItem.longitude ? (
                   <Marker
@@ -157,7 +186,15 @@ class CharitiesMap extends Component {
                 onClose={this.onModalClose}
                 {...selectedCluster}
               />
-            </Fragment>
+              <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 999 }}>
+                <Button
+                  icon='filter'
+                  onClick={() => this.onFilterChange(bounds)}
+                >
+                  Filter This Area
+                </Button>
+              </div>
+            </div>
           )
         }}
       </Query>
@@ -167,6 +204,7 @@ class CharitiesMap extends Component {
 CharitiesMap.propTypes = {
   filters: PropTypes.object.isRequired,
   hoveredItem: PropTypes.object,
+  setFilters: PropTypes.func.isRequired,
 }
 
 export default CharitiesMap
