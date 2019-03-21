@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import { List, Button, Spin } from 'antd'
+import { List, Button } from 'antd'
 import { Query } from 'react-apollo'
 import { LIST_CHARITIES } from '../../lib/gql'
 

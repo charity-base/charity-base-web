@@ -40,6 +40,7 @@ const Charities = ({ query, queryString, isMobile }) => {
             <CharitiesChart
               filters={filters}
               hoveredItem={hoveredItem}
+              setFilters={setFilters}
             />
           </Col>
         </Row>
