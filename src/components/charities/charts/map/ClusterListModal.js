@@ -71,11 +71,14 @@ const ClusterListModal = ({ bounds, count, geohashes, filters, onClose, open }) 
                     <List.Item.Meta
                       title={
                         <Link to={`/charities/${item.id}`}>
-                          {item.names ? item.names[0].value : null}
+                          {item.names ? item.names.reduce((agg, x) => (x.primary ? x.value : agg), null) : null}
                         </Link>
                       }
+                      description={item.names ? (
+                        item.names.reduce((agg, x) => (x.primary ? agg : [...agg, x.value]), []).join(', ')
+                      ) : null}
                     />
-                    {item.activities ? item.activities.slice(0, 240)+'...' : null}
+                    {item.activities ? `${item.activities.slice(0,240)}...` : null}
                   </Skeleton>
                 </List.Item>
               )}
