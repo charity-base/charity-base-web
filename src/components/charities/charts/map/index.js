@@ -14,6 +14,7 @@ import cluster from './cluster'
 import ClusterMarker from './ClusterMarker'
 import ClusterListModal from './ClusterListModal'
 import RemoveMarker from './RemoveMarker'
+import { mapItem } from '../../helpers'
 
 const INITIAL_ZOOM = 5
 const INITIAL_CENTER = [54.91244, -3.05385]
@@ -100,22 +101,22 @@ class CharitiesMap extends Component {
     }))
   }
   onFilterChange = boundingBox => {
-    // todo: use reduceFilters method?
-    const { filters, setFilters } = this.props
-    const geo = boundingBox ? { boundingBox } : {}
-    setFilters({
-      ...filters,
-      geo,
+    const { onAddFilter, onRemoveFilter } = this.props
+    const filterItem = mapItem({
+      id: 'geo-',
+      filterType: 'geo',
+      value: boundingBox,
     })
+    boundingBox ? onAddFilter(filterItem) : onRemoveFilter(filterItem)
   }
   render() {
-    const { filters, hoveredItem } = this.props
+    const { filtersObj, hoveredItem } = this.props
     const { zooming, center, zoom, bounds, selectedCluster } = this.state
-    const filtersBounds = filters && filters.geo && filters.geo.boundingBox
+    const filtersBounds = filtersObj && filtersObj.geo && filtersObj.geo.boundingBox
     return (
       <Query
         query={AGG_GEOHASH_CHARITIES}
-        variables={{ filters, ...bounds }}
+        variables={{ filters: filtersObj, ...bounds }}
       >
         {({ loading, error, data }) => {
           if (error) return null
@@ -183,7 +184,7 @@ class CharitiesMap extends Component {
               </Map>
               <ClusterListModal
                 bounds={bounds}
-                filters={filters}
+                filters={filtersObj}
                 onClose={this.onModalClose}
                 {...selectedCluster}
               />
@@ -203,9 +204,10 @@ class CharitiesMap extends Component {
   }
 }
 CharitiesMap.propTypes = {
-  filters: PropTypes.object.isRequired,
+  filtersObj: PropTypes.object.isRequired,
   hoveredItem: PropTypes.object,
-  setFilters: PropTypes.func.isRequired,
+  onAddFilter: PropTypes.func.isRequired,
+  onRemoveFilter: PropTypes.func.isRequired,
 }
 
 export default CharitiesMap

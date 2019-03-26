@@ -2,19 +2,21 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import CharitiesMap from './map'
 
-const CharitiesChart = ({ filters, hoveredItem, setFilters }) => {
+const CharitiesChart = ({ filtersObj, hoveredItem, onAddFilter, onRemoveFilter }) => {
   return (
     <CharitiesMap
-      filters={filters}
+      filtersObj={filtersObj}
       hoveredItem={hoveredItem}
-      setFilters={setFilters}
+      onAddFilter={onAddFilter}
+      onRemoveFilter={onRemoveFilter}
     />
   )
 }
 CharitiesMap.propTypes = {
-  filters: PropTypes.object.isRequired,
+  filtersObj: PropTypes.object.isRequired,
   hoveredItem: PropTypes.object,
-  setFilters: PropTypes.func.isRequired,
+  onAddFilter: PropTypes.func.isRequired,
+  onRemoveFilter: PropTypes.func.isRequired,
 }
 
 export default CharitiesChart

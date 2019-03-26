@@ -109,11 +109,11 @@ LoadMore.propTypes = {
 
 class CharitiesList extends Component {
   render() {
-    const { onHover, filters } = this.props
+    const { onHover, filtersObj } = this.props
     return (
       <Query
         query={LIST_CHARITIES}
-        variables={{ filters, skip: 0 }}
+        variables={{ filters: filtersObj, skip: 0 }}
         notifyOnNetworkStatusChange={true}
       >
         {({ loading, error, data, fetchMore }) => {
@@ -162,7 +162,7 @@ class CharitiesList extends Component {
   }
 }
 CharitiesList.propTypes = {
-  filters: PropTypes.object.isRequired,
+  filtersObj: PropTypes.object.isRequired,
   onHover: PropTypes.func.isRequired,
 }
 
