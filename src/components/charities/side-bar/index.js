@@ -2,15 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 import { Divider, Tag, Icon } from 'antd'
-import { DownloadResults } from '../general/download'
-import { CopyUrl } from '../general/CopyUrl'
-import { MenuBarHeader } from '../general/MenuBar'
+import { DownloadResults } from '../../general/download'
+import { CopyUrl } from '../../general/CopyUrl'
+import { MenuBarHeader } from '../../general/MenuBar'
 // import { Filters } from './filters'
 import { Query } from 'react-apollo'
-import { COUNT_CHARITIES, LIST_FILTERS } from '../../lib/gql'
-import { SideBarTitle } from '../general/InfoText'
-import mapItem from './search/mapItem' // todo: move to helpers folder
-import reduceFilters from './search/reduceFilters' // todo: move to helpers folder
+import { COUNT_CHARITIES, LIST_FILTERS } from '../../../lib/gql'
+import { SideBarTitle } from '../../general/InfoText'
+import mapItem from '../search/mapItem' // todo: move to helpers folder
+import reduceFilters from '../search/reduceFilters' // todo: move to helpers folder
 const formatCount = x => numeral(x).format('0,0')
 
 const ResultsCount = ({ filters }) => (
@@ -152,7 +152,7 @@ Filters.propTypes = {
   setFilters: PropTypes.func.isRequired,
 }
 
-const FilterBar = ({ filters, queryString, query, setFilters }) => (
+const SideBar = ({ filters, queryString, query, setFilters }) => (
   <div>
     <MenuBarHeader>
       <SideBarTitle>
@@ -172,10 +172,10 @@ const FilterBar = ({ filters, queryString, query, setFilters }) => (
     </MenuBarHeader>
   </div>
 )
-FilterBar.propTypes = {
+SideBar.propTypes = {
   filters: PropTypes.object.isRequired,
   queryString: PropTypes.string,
   setFilters: PropTypes.func.isRequired,
 }
 
-export { FilterBar }
+export default SideBar

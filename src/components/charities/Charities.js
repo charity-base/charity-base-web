@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { FilterBar } from './FilterBar'
+import SideBar from './side-bar'
 import CharitiesSearch from './search'
 import { CharitiesSort } from './CharitiesSort'
 import { CharitiesList } from './CharitiesList'
@@ -15,7 +15,7 @@ const Charities = ({ query, queryString, isMobile }) => {
   return (
     <Page isMobile={isMobile}>
       <ResponsiveSider isMobile={isMobile}>
-        <FilterBar
+        <SideBar
           filters={filters}
           setFilters={setFilters}
           queryString={queryString}
