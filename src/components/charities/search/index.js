@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import CharityBaseSearch from 'charity-base-search'
-import mapItem from './mapItem'
-import reduceFilters from './reduceFilters'
+import { mapItem, reduceFilters } from '../helpers'
 
 class CharitiesSearch extends Component {
   onSelect = ({ filterType, value }) => {
