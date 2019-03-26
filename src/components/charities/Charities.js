@@ -4,7 +4,7 @@ import SideBar from './side-bar'
 import CharitiesSearch from './search'
 import { CharitiesList } from './CharitiesList'
 import { Layout, Row, Col } from 'antd'
-import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
+import { FixedHeader, ScrollableContent, Page, ResponsiveSider, HEADER_HEIGHT } from '../general/Layout'
 import CharitiesChart from './charts'
 import { filtersListToObj, addFilter, removeFilter } from './helpers'
 
@@ -38,7 +38,7 @@ const Charities = ({ query, queryString, isMobile }) => {
               />
             </ScrollableContent>
           </Col>
-          <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={{ paddingTop: 150, height: '100%' }}>
+          <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={{ paddingTop: HEADER_HEIGHT, height: '100%' }}>
             <CharitiesChart
               filtersObj={filtersObj}
               hoveredItem={hoveredItem}

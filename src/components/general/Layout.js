@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Layout, Icon } from 'antd'
 
+const HEADER_HEIGHT = 100
+
 const FixedHeader = styled.div`
   padding: 24px;
   ${({ isMobile, height }) => !isMobile && `
@@ -10,7 +12,7 @@ const FixedHeader = styled.div`
     top: 0;
     left: 0;
     right: 0;
-    height: ${height || 150}px;
+    height: ${height || HEADER_HEIGHT}px;
     background-color: #FFF;
     z-index: 9999;
     box-shadow: 0 0 1em;
@@ -29,7 +31,7 @@ const ScrollContainer = styled.div`
   ` : `
     position: relative;
     box-sizing: border-box;
-    padding-top: ${paddingTop === undefined ? 150 : paddingTop}px;
+    padding-top: ${paddingTop === undefined ? HEADER_HEIGHT : paddingTop}px;
     height: 100%;
   `}
 `
@@ -151,4 +153,4 @@ Page.propTypes = {
   width: PropTypes.number,
 }
 
-export { FixedHeader, ScrollableContent, Page, ResponsiveSider }
+export { FixedHeader, ScrollableContent, Page, ResponsiveSider, HEADER_HEIGHT }
