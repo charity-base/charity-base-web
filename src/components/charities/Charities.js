@@ -10,12 +10,14 @@ import CharitiesChart from './charts'
 
 const Charities = ({ query, queryString, isMobile }) => {
   const [hoveredItem, setHoveredItem] = useState({})
-  const [filters, setFilters] = useState({}) // todo: get from query string
+  const [filters, setFilters] = useState({"causes":{"some":["105"]}}) // todo: get from query string
+  console.log(JSON.stringify(filters))
   return (
     <Page isMobile={isMobile}>
       <ResponsiveSider isMobile={isMobile}>
         <FilterBar
           filters={filters}
+          setFilters={setFilters}
           queryString={queryString}
         />
       </ResponsiveSider>
