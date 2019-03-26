@@ -9,8 +9,8 @@ import { MenuBarHeader } from '../../general/MenuBar'
 import { Query } from 'react-apollo'
 import { COUNT_CHARITIES, LIST_FILTERS } from '../../../lib/gql'
 import { SideBarTitle } from '../../general/InfoText'
-import mapItem from '../search/mapItem' // todo: move to helpers folder
-import reduceFilters from '../search/reduceFilters' // todo: move to helpers folder
+import { mapItem, reduceFilters } from '../helpers'
+
 const formatCount = x => numeral(x).format('0,0')
 
 const ResultsCount = ({ filters }) => (
