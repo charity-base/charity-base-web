@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import SideBar from './side-bar'
 import CharitiesSearch from './search'
-import { CharitiesSort } from './CharitiesSort'
 import { CharitiesList } from './CharitiesList'
 import { Layout, Row, Col } from 'antd'
 import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
@@ -29,7 +28,6 @@ const Charities = ({ query, queryString, isMobile }) => {
           <CharitiesSearch
             onAddFilter={item => setFiltersList(addFilter(filtersList, item))}
           />
-          <CharitiesSort query={query} />
         </FixedHeader>
         <Row type='flex' style={{ height: '100%' }}>
           <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} style={{ height: '100%' }}>
