@@ -7,25 +7,27 @@ import { CharitiesList } from './CharitiesList'
 import { Layout, Row, Col } from 'antd'
 import { FixedHeader, ScrollableContent, Page, ResponsiveSider } from '../general/Layout'
 import CharitiesChart from './charts'
+import { filtersListToObj, addFilter, removeFilter } from './helpers'
+
 
 const Charities = ({ query, queryString, isMobile }) => {
   const [hoveredItem, setHoveredItem] = useState({})
-  const [filters, setFilters] = useState({"causes":{"some":["105"]}}) // todo: get from query string
-  console.log(JSON.stringify(filters))
+  const [filtersList, setFiltersList] = useState([])
+  const filtersObj = filtersListToObj(filtersList)
+  console.log(JSON.stringify(filtersObj))
   return (
     <Page isMobile={isMobile}>
       <ResponsiveSider isMobile={isMobile}>
         <SideBar
-          filters={filters}
-          setFilters={setFilters}
-          queryString={queryString}
+          filtersObj={filtersObj}
+          filtersList={filtersList}
+          onRemoveFilter={item => setFiltersList(removeFilter(filtersList, item))}
         />
       </ResponsiveSider>
       <Layout.Content style={{ position: 'relative', backgroundColor: '#FFF', height: '100%' }}>
         <FixedHeader isMobile={isMobile}>
           <CharitiesSearch
-            filters={filters}
-            setFilters={setFilters}
+            onAddFilter={item => setFiltersList(addFilter(filtersList, item))}
           />
           <CharitiesSort query={query} />
         </FixedHeader>
@@ -33,16 +35,17 @@ const Charities = ({ query, queryString, isMobile }) => {
           <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} style={{ height: '100%' }}>
             <ScrollableContent isMobile={isMobile}>
               <CharitiesList
-                filters={filters}
+                filtersObj={filtersObj}
                 onHover={setHoveredItem}
               />
             </ScrollableContent>
           </Col>
           <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={{ paddingTop: 150, height: '100%' }}>
             <CharitiesChart
-              filters={filters}
+              filtersObj={filtersObj}
               hoveredItem={hoveredItem}
-              setFilters={setFilters}
+              onAddFilter={item => setFiltersList(addFilter(filtersList, item))}
+              onRemoveFilter={item => setFiltersList(removeFilter(filtersList, item))}
             />
           </Col>
         </Row>

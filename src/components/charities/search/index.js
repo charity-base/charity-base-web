@@ -1,19 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import CharityBaseSearch from 'charity-base-search'
-import { mapItem, reduceFilters } from '../helpers'
+import { mapItem } from '../helpers'
 
 class CharitiesSearch extends Component {
-  onSelect = ({ filterType, value }) => {
-    if (filterType === 'id') {
-      return this.context.router.history.push(`/charities/${value}`)
+  onSelect = (item) => {
+    if (item.filterType === 'id') {
+      return this.context.router.history.push(`/charities/${item.value}`)
     }
-    const filters = reduceFilters(
-      this.props.filters,
-      filterType,
-      value,
-    )
-    this.props.setFilters(filters)
+    this.props.onAddFilter(item)
   }
   render() {
     return (
@@ -28,8 +23,7 @@ class CharitiesSearch extends Component {
   }
 }
 CharitiesSearch.propTypes = {
-  filters: PropTypes.object.isRequired,
-  setFilters: PropTypes.func.isRequired,
+  onAddFilter: PropTypes.func.isRequired,
 }
 CharitiesSearch.contextTypes = {
   router: PropTypes.object,
