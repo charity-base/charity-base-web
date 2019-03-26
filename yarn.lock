@@ -2284,9 +2284,9 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
 
-charity-base-search@3.0.0-alpha.2:
-  version "3.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/charity-base-search/-/charity-base-search-3.0.0-alpha.2.tgz#3bb4c781ffb61c0b8d1557bf1de6828024708260"
+charity-base-search@3.0.0-alpha.4:
+  version "3.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/charity-base-search/-/charity-base-search-3.0.0-alpha.4.tgz#8eb38158f6e5a94892beca43f7d9966eaa2c9e58"
   dependencies:
     filter-suggest "3.1.2"
     graphql-tag "^2.10.1"
