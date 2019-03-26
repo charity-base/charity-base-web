@@ -5,7 +5,7 @@ import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import { List, Button } from 'antd'
 import { Query } from 'react-apollo'
-import { LIST_CHARITIES } from '../../lib/gql'
+import { LIST_CHARITIES } from '../../../lib/gql'
 
 const MAX_LIST_LENGTH = 500
 
@@ -166,4 +166,4 @@ CharitiesList.propTypes = {
   onHover: PropTypes.func.isRequired,
 }
 
-export { CharitiesList }
+export default CharitiesList
