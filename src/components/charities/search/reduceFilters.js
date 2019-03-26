@@ -1,11 +1,18 @@
 const LIST_LOGIC = 'some'
 
-const reduceFilters = (filters, filterType, value) => {
+const appendOrRemove = (list, value, remove) => {
+  if (remove) {
+    return list.filter(x => x !== value)
+  }
+  return Array.from(new Set([ ...list, value, ]))
+}
+
+const reduceFilters = (filters, filterType, value, remove=false) => {
   switch (filterType) {
     case 'search':
       return {
         ...filters,
-        search: value,
+        search: remove ? undefined : value,
       }
     case 'funder':
       return {
@@ -13,10 +20,11 @@ const reduceFilters = (filters, filterType, value) => {
         grants: {
           ...filters.grants,
           funders: {
-            [LIST_LOGIC]: [
-              ...((filters.grants && filters.grants.funders && filters.grants.funders[LIST_LOGIC]) || []),
+            [LIST_LOGIC]: appendOrRemove(
+              ((filters.grants && filters.grants.funders && filters.grants.funders[LIST_LOGIC]) || []),
               value,
-            ]
+              remove,
+            )
           }
         },
       }
@@ -24,40 +32,51 @@ const reduceFilters = (filters, filterType, value) => {
       return {
         ...filters,
         areas: {
-          [LIST_LOGIC]: [
-            ...((filters.areas && filters.areas[LIST_LOGIC]) || []),
+          [LIST_LOGIC]: appendOrRemove(
+            ((filters.areas && filters.areas[LIST_LOGIC]) || []),
             value,
-          ]
+            remove,
+          )
         },
       }
     case 'cause':
       return {
         ...filters,
         causes: {
-          [LIST_LOGIC]: [
-            ...((filters.causes && filters.causes[LIST_LOGIC]) || []),
+          [LIST_LOGIC]: appendOrRemove(
+            ((filters.causes && filters.causes[LIST_LOGIC]) || []),
             value,
-          ]
+            remove,
+          )
         },
       }
     case 'operation':
       return {
         ...filters,
         operations: {
-          [LIST_LOGIC]: [
-            ...((filters.operations && filters.operations[LIST_LOGIC]) || []),
+          [LIST_LOGIC]: appendOrRemove(
+            ((filters.operations && filters.operations[LIST_LOGIC]) || []),
             value,
-          ]
+            remove,
+          )
         },
       }
     case 'beneficiary':
       return {
         ...filters,
         beneficiaries: {
-          [LIST_LOGIC]: [
-            ...((filters.beneficiaries && filters.beneficiaries[LIST_LOGIC]) || []),
+          [LIST_LOGIC]: appendOrRemove(
+            ((filters.beneficiaries && filters.beneficiaries[LIST_LOGIC]) || []),
             value,
-          ]
+            remove,
+          )
+        },
+      }
+    case 'geo':
+      return {
+        ...filters,
+        geo: remove ? {} : {
+          boundingBox: value
         },
       }
     default:

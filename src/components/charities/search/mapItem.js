@@ -66,6 +66,15 @@ const mapItem = ({ id, filterType, value, label }) => {
         value: value,
         filterType: filterType,
       }
+    case 'geo':
+      return {
+        id: id,
+        icon: <Icon type='environment-o' />,
+        primary: 'Map filter',
+        // secondary: null,
+        value: value,
+        filterType: filterType,
+      }
     default:
       return {}
   }

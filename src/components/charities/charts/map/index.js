@@ -100,6 +100,7 @@ class CharitiesMap extends Component {
     }))
   }
   onFilterChange = boundingBox => {
+    // todo: use reduceFilters method?
     const { filters, setFilters } = this.props
     const geo = boundingBox ? { boundingBox } : {}
     setFilters({
