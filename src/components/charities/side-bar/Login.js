@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Button } from 'antd'
+import Button from './Button'
 import auth from '../../../lib/auth'
 
 const userName = user => {
