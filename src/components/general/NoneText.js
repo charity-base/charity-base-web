@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const NoneText = styled.span`
-  color: rgba(0,0,0,.4);
+  opacity: 0.9;
   font-size: ${({ size }) => size ? size : 14}px;
 `
 

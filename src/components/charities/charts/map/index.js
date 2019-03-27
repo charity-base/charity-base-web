@@ -109,9 +109,15 @@ class CharitiesMap extends Component {
     })
     boundingBox ? onAddFilter(filterItem) : onRemoveFilter(filterItem)
   }
+  isValidBounds = bounds => {
+    if (bounds.top - bounds.bottom <= 0) return false
+    if (bounds.right - bounds.left <= 0) return false
+    return true
+  }
   render() {
     const { filtersObj, hoveredItem } = this.props
     const { zooming, center, zoom, bounds, selectedCluster } = this.state
+    if (!this.isValidBounds(bounds)) return null
     const filtersBounds = filtersObj && filtersObj.geo && filtersObj.geo.boundingBox
     return (
       <Query

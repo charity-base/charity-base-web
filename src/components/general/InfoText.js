@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 const SideBarTitle = styled.div`
-  color: rgba(0,0,0,0.6);
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 2px;

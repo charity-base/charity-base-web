@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
-import { LocaleProvider, Layout } from 'antd'
-import './App.scss'
-import enGB from 'antd/lib/locale-provider/en_GB'
+import React, { Component, Fragment } from 'react'
 import { Router } from './Router'
-import { NavBar } from './components/nav'
+import { LocaleProvider } from 'antd'
+import enGB from 'antd/lib/locale-provider/en_GB'
 import AuthHandler from './components/general/AuthHandler'
+import './App.scss'
 
 class App extends Component {
   render() {
@@ -12,11 +11,10 @@ class App extends Component {
     const isMobile = innerWidth < 992
     return (
       <LocaleProvider locale={enGB}>
-        <Layout>
+        <Fragment>
           <Router isMobile={isMobile}/>
-          <NavBar isMobile={isMobile} />
           <AuthHandler />
-        </Layout>
+        </Fragment>
       </LocaleProvider>
     )
   }

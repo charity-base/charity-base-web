@@ -4,7 +4,7 @@ import { Tag } from 'antd'
 import { NoneText } from '../../general/NoneText'
 
 const Filters = ({ filtersList, onClose }) => (
-  <div style={{ width: '100%', textAlign: 'center' }}>
+  <div style={{ width: '100%', textAlign: 'center', minHeight: '30px' }}>
     {filtersList.length > 0 ? (
       filtersList.map((x, i) => {
         const { icon, primary } = x
