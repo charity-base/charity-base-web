@@ -1,13 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import { Divider, Icon } from 'antd'
 import { DownloadResults } from '../../general/download'
 import { CopyUrl } from '../../general/CopyUrl'
 import { MenuBarHeader } from '../../general/MenuBar'
 import { SideBarTitle } from '../../general/InfoText'
 import Filters from './Filters'
+import Login from './Login'
 import ResultsCount from './ResultsCount'
-import styled from 'styled-components'
 
 const HomeLink = styled.a`
   color: #EC407A;
@@ -39,6 +40,8 @@ const SideBar = ({ filtersList, filtersObj, onRemoveFilter }) => (
       />
       <div style={{ marginTop: '5px' }}><CopyUrl /></div>
       <div style={{ marginTop: '5px' }}><DownloadResults queryString={''} /></div>
+      <Divider />
+      <Login />
     </MenuBarHeader>
   </div>
 )
