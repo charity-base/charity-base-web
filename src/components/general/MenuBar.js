@@ -49,6 +49,7 @@ MenuBar.propTypes = {
 const MenuBarHeader = styled.div`
   padding: 20px;
   height: 200px;
+  text-align: center;
 `
 
 export { MenuBar, MenuBarHeader }

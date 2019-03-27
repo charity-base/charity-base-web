@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { Layout, Icon } from 'antd'
 
 const HEADER_HEIGHT = 100
+const SIDER_WIDTH = 240
 
 const FixedHeader = styled.div`
   padding: 24px;
@@ -31,7 +32,7 @@ const ScrollContainer = styled.div`
   ` : `
     position: relative;
     box-sizing: border-box;
-    padding-top: ${paddingTop === undefined ? HEADER_HEIGHT : paddingTop}px;
+    padding-top: ${paddingTop === undefined ? 0 : paddingTop}px;
     height: 100%;
   `}
 `
@@ -49,6 +50,16 @@ ScrollableContent.propTypes = {
   isMobile: PropTypes.bool,
   paddingTop: PropTypes.number,
 }
+
+const ResponsiveScroll = styled.div`
+  padding: 2em;
+  @media (min-width: 992px) {
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: scroll;
+    position: relative;
+  }
+`
 
 const PageContent = styled(Layout.Content)`
   ${({ isMobile }) => isMobile ? `
@@ -76,6 +87,18 @@ const PageLayout = styled(Layout)`
     position: relative;
     height: 100%;
   `}
+`
+
+const ContentLayout = styled(Layout)`
+  margin-left: ${SIDER_WIDTH}px;
+  @media (min-width: 992px) {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
 `
 
 const Page = ({ isMobile, children }) => (
@@ -153,4 +176,4 @@ Page.propTypes = {
   width: PropTypes.number,
 }
 
-export { FixedHeader, ScrollableContent, Page, ResponsiveSider, HEADER_HEIGHT }
+export { FixedHeader, ScrollableContent, Page, ResponsiveSider, ContentLayout, ResponsiveScroll }

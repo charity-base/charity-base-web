@@ -21,7 +21,7 @@ const Router = ({ isMobile }) => (
     }} />
     <Switch>
       <Route exact path="/" render={({ location }) => (
-        <Charities isMobile={isMobile} queryString={location.search} query={qs.parse(location.search)} />
+        <Charities />
       )} />
       <Route path="/charities/:charityId" render={({ match, location }) => (
         <Charity isMobile={isMobile} charityId={match.params.charityId} view={qs.parse(location.search).view} />
