@@ -35,21 +35,21 @@ const CharitiesChart = ({ filtersObj, hoveredItem, onAddFilter, onRemoveFilter }
           }}>
             Aggregations
           </span>
-          <Select
-            onChange={x => setView(x)}
-            value={view}
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              width: 110,
-            }}
-            size='large'
-          >
-            <Option value='map'>Map</Option>
-            <Option value='income'>Income</Option>
-          </Select>
         </Title>
+        <Select
+          onChange={x => setView(x)}
+          value={view}
+          style={{
+            position: 'absolute',
+            top: 10,
+            right: 10,
+            width: 110,
+          }}
+          size='large'
+        >
+          <Option value='map'>Map</Option>
+          <Option value='income'>Income</Option>
+        </Select>
       </div>
       <div
         style={{
