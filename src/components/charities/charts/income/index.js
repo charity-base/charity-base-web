@@ -52,7 +52,7 @@ const CharitiesIncome = ({ filtersObj }) => {
               <BarChart
                 data={buckets.map(mapBucket)}
                 layout='vertical'
-                margin={{ top: 50, right: 5, left: 15, bottom: 30 }}
+                margin={{ top: 0, right: 5, left: 15, bottom: 30 }}
               >
                 <CartesianGrid strokeDasharray='3 3' />
                 <YAxis
@@ -60,7 +60,7 @@ const CharitiesIncome = ({ filtersObj }) => {
                   tickFormatter={key => formatCurrency(Math.pow(10, key))}
                   domain={[0, 9]}
                   type='number'
-                  label={{ value: 'Charity Income Bands', fontSize: 20, angle: -90, position: 'insideLeft', offset: 10 }}
+                  label={{ value: 'Charity Income', fontSize: 20, angle: -90, position: 'insideLeft', offset: 10 }}
                 />
                 <XAxis
                   tickFormatter={dataKeys[dataKey].formatter}
@@ -87,7 +87,7 @@ const CharitiesIncome = ({ filtersObj }) => {
             <Select
               onChange={x => setDataKey(x)}
               value={dataKey}
-              style={{ position: 'absolute', top: 10, right: 10 }}
+              style={{ position: 'absolute', top: 40, right: 100 }}
             >
               {Object.keys(dataKeys).map(x => (
                 <Option
@@ -103,7 +103,7 @@ const CharitiesIncome = ({ filtersObj }) => {
               checkedChildren='log'
               unCheckedChildren='linear'
               onChange={x => setLogScale(x)}
-              style={{ position: 'absolute', top: 50, right: 10 }}
+              style={{ position: 'absolute', top: 45, right: 20 }}
             />
           </Fragment>
         )
