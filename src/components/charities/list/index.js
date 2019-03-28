@@ -1,13 +1,18 @@
-import React, { Component } from 'react'
+import React, { Fragment, useState } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import { List, Button } from 'antd'
+import { Button, List, Select } from 'antd'
 import { Query } from 'react-apollo'
 import { LIST_CHARITIES } from '../../../lib/gql'
+import { ResponsiveScroll } from '../../general/Layout'
+
+const { Option } = Select
 
 const MAX_LIST_LENGTH = 500
+
+const formatCount = x => numeral(x).format('0,0')
 
 const IncomeIcon = ({ income }) => (
   <svg style={{ width: '50px', height: '50px', }}>
@@ -107,59 +112,100 @@ LoadMore.propTypes = {
   fetchMore: PropTypes.func.isRequired,
 }
 
-class CharitiesList extends Component {
-  render() {
-    const { onHover, filtersObj } = this.props
-    return (
-      <Query
-        query={LIST_CHARITIES}
-        variables={{ filters: filtersObj, skip: 0 }}
-        notifyOnNetworkStatusChange={true}
-      >
-        {({ loading, error, data, fetchMore }) => {
-          if (error) return 'error oops'
-          return (
-            <List
-              size="large"
-              itemLayout="vertical"
-              loading={loading}
-              loadMore={
-                <LoadMore
-                  loading={loading}
-                  error={error}
-                  data={data}
-                  fetchMore={fetchMore}
-                />
-              }
-              locale={{ emptyText: 'No Charities Found' }}
-              dataSource={data.CHC ? data.CHC.getCharities.list : []}
-              renderItem={({ id, names, activities, geo, finances }) => (
-                <List.Item
-                  actions={[
-                    // <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
-                    // <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
-                    // <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
-                  ]}
-                  onMouseEnter={() => onHover(geo)}
-                  onMouseLeave={() => onHover({})}
-                >
-                  <List.Item.Meta
-                    title={
-                      <Link to={`/charities/${id}`}>
-                        {names.reduce((agg, x) => (x.primary ? x.value : agg), null)} <Income income={finances.length > 0 ? finances[0].income : null} />
-                      </Link>
-                    }
-                    description={names.reduce((agg, x) => (x.primary ? agg : [...agg, x.value]), []).join(', ')}
+const CharitiesList = ({ onHover, filtersObj }) => {
+  const [sort, setSort] = useState('default')
+  return (
+    <Query
+      query={LIST_CHARITIES}
+      variables={{ filters: filtersObj, skip: 0, sort }}
+      notifyOnNetworkStatusChange={true}
+    >
+      {({ loading, error, data, fetchMore }) => {
+        if (error) return 'error oops'
+        return (
+          <Fragment>
+            <div style={{
+              background: '#fff',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '5em',
+              zIndex: 2,
+              borderBottom: '1px solid #eee',
+              borderRight: '1px solid #eee',
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '1em',
+                left: '1em',
+                color: 'rgba(0,0,0,0.5)',
+              }}>
+                {!loading && data.CHC ? `${formatCount(data.CHC.getCharities.count)} results` : null}
+              </div>
+              <Select
+                onChange={x => setSort(x)}
+                value={sort}
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  right: 10,
+                  width: 145,
+                }}
+                size='large'
+              >
+                <Option value='default'>Relevance</Option>
+                <Option value='income_desc'>Largest</Option>
+                <Option value='income_asc'>Smallest</Option>
+                <Option value='age_desc'>Oldest</Option>
+                <Option value='age_asc'>Youngest</Option>
+                <Option value='random'>Random</Option>
+              </Select>
+            </div>
+            <ResponsiveScroll>
+              <List
+                size="large"
+                itemLayout="vertical"
+                loading={loading}
+                loadMore={
+                  <LoadMore
+                    loading={loading}
+                    error={error}
+                    data={data}
+                    fetchMore={fetchMore}
                   />
-                  {activities && `${activities.slice(0,120)}...`}
-                </List.Item>
-              )}
-            />
-          )
-        }}
-      </Query>
-    )
-  }
+                }
+                locale={{ emptyText: 'No Charities Found' }}
+                dataSource={data.CHC ? data.CHC.getCharities.list : []}
+                renderItem={({ id, names, activities, geo, finances }) => (
+                  <List.Item
+                    actions={[
+                      // <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
+                      // <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
+                      // <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
+                    ]}
+                    onMouseEnter={() => onHover(geo)}
+                    onMouseLeave={() => onHover({})}
+                  >
+                    <List.Item.Meta
+                      title={
+                        <Link to={`/charities/${id}`}>
+                          {names.reduce((agg, x) => (x.primary ? x.value : agg), null)} <Income income={finances.length > 0 ? finances[0].income : null} />
+                        </Link>
+                      }
+                      description={names.reduce((agg, x) => (x.primary ? agg : [...agg, x.value]), []).join(', ')}
+                    />
+                    {activities && `${activities.slice(0,120)}...`}
+                  </List.Item>
+                )}
+                style={{ marginTop: '5em' }}
+              />
+            </ResponsiveScroll>
+          </Fragment>
+        )
+      }}
+    </Query>
+  )
 }
 CharitiesList.propTypes = {
   filtersObj: PropTypes.object.isRequired,
