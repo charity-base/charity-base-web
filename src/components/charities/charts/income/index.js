@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 import numeral from 'numeral'
-import { Select } from 'antd'
+import { Select, Switch } from 'antd'
 import { AGG_INCOME_CHARITIES } from '../../../../lib/gql'
 import {
   BarChart,
@@ -17,7 +17,7 @@ import {
 const { Option } = Select
 
 const formatCount = x => numeral(x).format('0a')
-const formatCurrency = x => `£${numeral(x).format('0.0a')}`
+const formatCurrency = x => `£${numeral(x).format('0a')}`
 const limitBuckets = buckets => {
   const nonZero = buckets
     .reduce((agg, x) => (x.count > 0 ? [...agg, x] : agg), [])
@@ -45,6 +45,7 @@ const dataKeys = {
 
 const CharitiesIncome = ({ filtersObj }) => {
   const [dataKey, setDataKey] = useState(Object.keys(dataKeys)[0])
+  const [logScale, setLogScale] = useState(false)
   return (
     <Query
       query={AGG_INCOME_CHARITIES}
@@ -72,6 +73,9 @@ const CharitiesIncome = ({ filtersObj }) => {
                 <XAxis
                   tickFormatter={dataKeys[dataKey].formatter}
                   type='number'
+                  domain={['minData', 'maxData']}
+                  allowDataOverflow
+                  scale={logScale ? 'log' : 'linear'}
                 />
                 <Tooltip
                   labelFormatter={key => `Income Band: ${formatCurrency(Math.pow(10, key))} - ${formatCurrency(Math.pow(10, key+0.5))}`}
@@ -101,6 +105,13 @@ const CharitiesIncome = ({ filtersObj }) => {
                 </Option>
               ))}
             </Select>
+            <Switch
+              checked={logScale}
+              checkedChildren='log'
+              unCheckedChildren='linear'
+              onChange={setLogScale}
+              style={{ position: 'absolute', bottom: 0, right: 10 }}
+            />
           </Fragment>
         )
       }}
