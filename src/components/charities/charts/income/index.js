@@ -18,27 +18,17 @@ const { Option } = Select
 
 const formatCount = x => numeral(x).format('0a')
 const formatCurrency = x => `£${numeral(x).format('0a')}`
-const limitBuckets = buckets => {
-  const nonZero = buckets
-    .reduce((agg, x) => (x.count > 0 ? [...agg, x] : agg), [])
-    .sort((a, b) => parseFloat(a.key) - parseFloat(b.key))
-    .map(x => ({
-      ...x,
-      key: parseFloat(x.key),
-    }))
-  // todo: add in buckets with count=0?
-  return nonZero
-}
+const mapBucket = x => ({ ...x, key: parseFloat(x.key) })
 
 const dataKeys = {
   count: {
     tooltipSuffix: 'charities',
-    selectorLabel: 'Number Charities',
+    label: 'Number Charities',
     formatter: formatCount,
   },
   sum: {
     tooltipSuffix: 'combined income',
-    selectorLabel: 'Combined Income',
+    label: 'Combined Income',
     formatter: formatCurrency,
   },
 }
@@ -60,8 +50,9 @@ const CharitiesIncome = ({ filtersObj }) => {
           <Fragment>
             <ResponsiveContainer width='100%' height='100%'>
               <BarChart
-                data={limitBuckets(buckets)}
+                data={buckets.map(mapBucket)}
                 layout='vertical'
+                margin={{ top: 50, right: 5, left: 15, bottom: 30 }}
               >
                 <CartesianGrid strokeDasharray='3 3' />
                 <YAxis
@@ -69,13 +60,15 @@ const CharitiesIncome = ({ filtersObj }) => {
                   tickFormatter={key => formatCurrency(Math.pow(10, key))}
                   domain={[0, 9]}
                   type='number'
+                  label={{ value: 'Charity Income Bands', fontSize: 20, angle: -90, position: 'insideLeft', offset: 10 }}
                 />
                 <XAxis
                   tickFormatter={dataKeys[dataKey].formatter}
                   type='number'
-                  domain={['minData', 'maxData']}
+                  domain={logScale ? [1, 'maxData'] : [0, 'auto']}
                   allowDataOverflow
                   scale={logScale ? 'log' : 'linear'}
+                  orientation='top'
                 />
                 <Tooltip
                   labelFormatter={key => `Income Band: ${formatCurrency(Math.pow(10, key))} - ${formatCurrency(Math.pow(10, key+0.5))}`}
@@ -92,7 +85,7 @@ const CharitiesIncome = ({ filtersObj }) => {
               </BarChart>
             </ResponsiveContainer>
             <Select
-              onChange={setDataKey}
+              onChange={x => setDataKey(x)}
               value={dataKey}
               style={{ position: 'absolute', top: 10, right: 10 }}
             >
@@ -101,7 +94,7 @@ const CharitiesIncome = ({ filtersObj }) => {
                   key={x}
                   value={x}
                 >
-                  {dataKeys[x].selectorLabel}
+                  {dataKeys[x].label}
                 </Option>
               ))}
             </Select>
@@ -109,8 +102,8 @@ const CharitiesIncome = ({ filtersObj }) => {
               checked={logScale}
               checkedChildren='log'
               unCheckedChildren='linear'
-              onChange={setLogScale}
-              style={{ position: 'absolute', bottom: 0, right: 10 }}
+              onChange={x => setLogScale(x)}
+              style={{ position: 'absolute', top: 50, right: 10 }}
             />
           </Fragment>
         )
