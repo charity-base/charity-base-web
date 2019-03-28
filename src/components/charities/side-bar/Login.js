@@ -20,6 +20,7 @@ const Login = (_, { router }) => {
         <Fragment>
           <p>Logged in as {userName(user)}</p>
           <Button
+            icon='logout'
             onClick={auth.logout}
             style={{ width: '100%' }}
           >
@@ -30,6 +31,7 @@ const Login = (_, { router }) => {
         <Fragment>
           <p>Log in to enable downloads</p>
           <Button
+            icon='login'
             onClick={() => {
               auth.login(router.history)
             }}
