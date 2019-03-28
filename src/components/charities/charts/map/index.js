@@ -19,6 +19,12 @@ import { mapItem } from '../../helpers'
 const INITIAL_ZOOM = 5
 const INITIAL_CENTER = [54.91244, -3.05385]
 const POPUP_LIST_MAX_LENGTH = 10
+const DEFAULT_BOUNDS = {
+  top: 90,
+  left: -180,
+  bottom: -90,
+  right: 180,
+}
 
 const geohashToLatLng = hash => {
   const { latitude, longitude } = geohash.decode(hash)
@@ -27,15 +33,10 @@ const geohashToLatLng = hash => {
 
 class CharitiesMap extends Component {
   state = {
-    zoom: INITIAL_ZOOM,
+    bounds: DEFAULT_BOUNDS,
     center: INITIAL_CENTER,
+    zoom: INITIAL_ZOOM,
     zooming: false,
-    bounds: {
-      top: 90,
-      left: -180,
-      bottom: -90,
-      right: 180,
-    },
     selectedCluster: {
       open: false,
       geohashes: [],
@@ -44,18 +45,13 @@ class CharitiesMap extends Component {
   }
   mapRef = createRef()
   componentDidMount() {
-    this.invalidateSize()
-  }
-  invalidateSize() {
-    const map = this.mapRef.current
-    if (!map) return
-    setTimeout(() => {
-      map.leafletElement.invalidateSize()
-    }, 10)
+    this.setState({
+      bounds: this.portalBounds()
+    })
   }
   portalBounds = () => {
     const map = this.mapRef.current
-    if (!map) return null
+    if (!map) return DEFAULT_BOUNDS
     const bounds = map.leafletElement.getBounds()
     return {
       top: Math.min(90, bounds.getNorth()),
@@ -65,12 +61,10 @@ class CharitiesMap extends Component {
     }
   }
   onChange = ({ center, zoom }) => {
-    const bounds = this.portalBounds()
-    if (!bounds) return
     this.setState({
       zoom,
       center,
-      bounds,
+      bounds: this.portalBounds(),
     })
   }
   onMarkerClick = ({ center, count, geohashes }) => {
@@ -116,7 +110,7 @@ class CharitiesMap extends Component {
   }
   render() {
     const { filtersObj, hoveredItem } = this.props
-    const { zooming, center, zoom, bounds, selectedCluster } = this.state
+    const { bounds, center, zoom, zooming, selectedCluster } = this.state
     if (!this.isValidBounds(bounds)) return null
     const filtersBounds = filtersObj && filtersObj.geo && filtersObj.geo.boundingBox
     return (
