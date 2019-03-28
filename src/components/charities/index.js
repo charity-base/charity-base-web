@@ -4,7 +4,7 @@ import CharitiesChart from './charts'
 import CharitiesList from './list'
 import CharitiesSearch from './search'
 import SideBar from './side-bar'
-import { ContentLayout, ResponsiveScroll } from '../general/Layout'
+import { ContentLayout } from '../general/Layout'
 import { filtersListToObj, addFilter, removeFilter } from './helpers'
 
 const {
@@ -53,12 +53,10 @@ const Charities = () => {
         }}>
           <Row type='flex' style={{ position: 'relative', height: '100%' }} >
             <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} style={{ position: 'relative', height: '100%' }} >
-              <ResponsiveScroll>
-                <CharitiesList
-                  filtersObj={filtersObj}
-                  onHover={setHoveredItem}
-                />
-              </ResponsiveScroll>
+              <CharitiesList
+                filtersObj={filtersObj}
+                onHover={setHoveredItem}
+              />
             </Col>
             <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={{ position: 'relative', height: '100%' }} >
               <CharitiesChart
