@@ -8,10 +8,8 @@ import { MenuBarHeader } from '../../general/MenuBar'
 import { SideBarTitle } from '../../general/InfoText'
 import Filters from './Filters'
 import Login from './Login'
-import ResultsCount from './ResultsCount'
 
-
-const SideBar = ({ filtersList, filtersObj, onRemoveFilter }) => (
+const SideBar = ({ filtersList, onRemoveFilter }) => (
   <div>
     <MenuBarHeader>
       <HomeLink href="/">CharityBase</HomeLink>
@@ -24,9 +22,6 @@ const SideBar = ({ filtersList, filtersObj, onRemoveFilter }) => (
         onClose={onRemoveFilter}
       />
       <Divider />
-      <ResultsCount
-        filtersObj={filtersObj}
-      />
       <div style={{ marginTop: '5px' }}><CopyUrl /></div>
       <div style={{ marginTop: '5px' }}><DownloadResults queryString={''} /></div>
       <Divider />
@@ -35,7 +30,6 @@ const SideBar = ({ filtersList, filtersObj, onRemoveFilter }) => (
   </div>
 )
 SideBar.propTypes = {
-  filtersObj: PropTypes.object.isRequired,
   filtersList: PropTypes.array.isRequired,
   onRemoveFilter: PropTypes.func.isRequired,
 }
