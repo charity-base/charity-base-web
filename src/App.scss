@@ -2,6 +2,10 @@ $mdc-theme-primary: #EC407A;
 @import '~antd/dist/antd.css';
 @import '~charity-base-search/es/index.scss';
 
+.mdc-text-field {
+  @include mdc-text-field-shape-radius(0px);
+}
+
 .ant-layout-sider-zero-width-trigger {
   z-index: 999;
   position: fixed;

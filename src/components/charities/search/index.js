@@ -12,13 +12,11 @@ class CharitiesSearch extends Component {
   }
   render() {
     return (
-      <div style={{ position: 'relative' }}>
-        <CharityBaseSearch
-          label='Search by charity, funder, cause, area...'
-          onSelect={this.onSelect}
-          mapItem={mapItem}
-        />
-      </div>
+      <CharityBaseSearch
+        label='Search by charity, funder, cause, area...'
+        onSelect={this.onSelect}
+        mapItem={mapItem}
+      />
     )
   }
 }
