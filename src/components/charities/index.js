@@ -30,7 +30,6 @@ const Charities = () => {
         }}
       >
         <SideBar
-          filtersObj={filtersObj}
           filtersList={filtersList}
           onRemoveFilter={item => setFiltersList(removeFilter(filtersList, item))}
         />
