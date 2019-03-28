@@ -49,9 +49,11 @@ const Charities = () => {
           margin: '0 0 0 0',
           overflow: 'initial',
           zIndex: 1,
+          position: 'relative',
+          height: '100%',
         }}>
-          <Row type='flex' style={{ height: '100%' }}>
-            <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} style={{ height: '100%' }}>
+          <Row type='flex' style={{ position: 'relative', height: '100%' }} >
+            <Col xxl={12} xl={12} lg={12} md={24} sm={24} xs={24} style={{ position: 'relative', height: '100%' }} >
               <ResponsiveScroll>
                 <CharitiesList
                   filtersObj={filtersObj}
@@ -59,7 +61,7 @@ const Charities = () => {
                 />
               </ResponsiveScroll>
             </Col>
-            <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={{ height: '100%' }}>
+            <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={{ position: 'relative', height: '100%' }} >
               <CharitiesChart
                 filtersObj={filtersObj}
                 hoveredItem={hoveredItem}
