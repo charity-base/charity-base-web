@@ -87,7 +87,12 @@ const CharitiesIncome = ({ filtersObj }) => {
             <Select
               onChange={x => setDataKey(x)}
               value={dataKey}
-              style={{ position: 'absolute', top: 40, right: 100 }}
+              style={{
+                position: 'absolute',
+                top: 40,
+                right: 100,
+                width: 170,
+              }}
             >
               {Object.keys(dataKeys).map(x => (
                 <Option

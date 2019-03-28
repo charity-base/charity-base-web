@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Radio } from 'antd'
+import { Icon, Select, Typography } from 'antd'
 import CharitiesMap from './map'
 import CharitiesIncome from './income'
 
-const { Group } = Radio
+const { Option } = Select
+const { Title } = Typography
 
-const HEADER_HEIGHT = '4em'
+const HEADER_HEIGHT = '5em'
 
 const CharitiesChart = ({ filtersObj, hoveredItem, onAddFilter, onRemoveFilter }) => {
-  const [view, setView] = useState('income')
+  const [view, setView] = useState('map')
   return (
     <div
       style={{
@@ -27,13 +28,28 @@ const CharitiesChart = ({ filtersObj, hoveredItem, onAddFilter, onRemoveFilter }
         right: 0,
         height: HEADER_HEIGHT,
       }}>
-        <Group
-          onChange={e => setView(e.target.value)}
-          value={view}
-        >
-          <Radio value='map'>Map</Radio>
-          <Radio value='income'>Income</Radio>
-        </Group>
+        <Title level={3} style={{ textAlign: 'center' }}>
+          <Icon type='bar-chart' />
+          <span style={{
+            marginLeft: '1em',
+          }}>
+            Aggregations
+          </span>
+          <Select
+            onChange={x => setView(x)}
+            value={view}
+            style={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              width: 110,
+            }}
+            size='large'
+          >
+            <Option value='map'>Map</Option>
+            <Option value='income'>Income</Option>
+          </Select>
+        </Title>
       </div>
       <div
         style={{
