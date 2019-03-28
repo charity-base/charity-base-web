@@ -176,4 +176,24 @@ Page.propTypes = {
   width: PropTypes.number,
 }
 
-export { FixedHeader, ScrollableContent, Page, ResponsiveSider, ContentLayout, ResponsiveScroll }
+const HomeLink = styled.a`
+  color: #EC407A;
+  font-size: 2em;
+  letter-spacing: 0.13em;
+  font-weight: 300;
+  display: block;
+  margin-bottom: 1em;
+  :hover {
+    color: #D81B60;
+  }
+`
+
+export {
+  FixedHeader,
+  ScrollableContent,
+  Page,
+  ResponsiveSider,
+  ContentLayout,
+  ResponsiveScroll,
+  HomeLink,
+}

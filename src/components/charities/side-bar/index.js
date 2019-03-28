@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import { Divider, Icon } from 'antd'
+import { HomeLink } from '../../general/Layout'
 import { DownloadResults } from '../../general/download'
 import { CopyUrl } from '../../general/CopyUrl'
 import { MenuBarHeader } from '../../general/MenuBar'
@@ -10,17 +10,6 @@ import Filters from './Filters'
 import Login from './Login'
 import ResultsCount from './ResultsCount'
 
-const HomeLink = styled.a`
-  color: #EC407A;
-  font-size: 2em;
-  letter-spacing: 0.13em;
-  font-weight: 300;
-  display: block;
-  margin-bottom: 1em;
-  :hover {
-    color: #D81B60;
-  }
-`
 
 const SideBar = ({ filtersList, filtersObj, onRemoveFilter }) => (
   <div>

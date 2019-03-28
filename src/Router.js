@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import qs from 'query-string'
+import Home from './components/home'
 import Charities from './components/charities'
 import { Charity } from './components/charity'
 import { About } from './components/about'
@@ -20,7 +21,10 @@ const Router = ({ isMobile }) => (
       return null
     }} />
     <Switch>
-      <Route exact path="/" render={({ location }) => (
+      <Route exact path="/" render={() => (
+        <Home />
+      )} />
+      <Route path="/chc" render={({ location }) => (
         <Charities />
       )} />
       <Route path="/charities/:charityId" render={({ match, location }) => (
