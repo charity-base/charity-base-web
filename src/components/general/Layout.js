@@ -53,6 +53,7 @@ ScrollableContent.propTypes = {
 
 const ResponsiveScroll = styled.div`
   padding: 2em;
+  border-right: 1px solid #eee;
   @media (min-width: 992px) {
     box-sizing: border-box;
     height: 100%;
