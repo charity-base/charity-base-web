@@ -135,7 +135,7 @@ class CharitiesMap extends Component {
           )
           const clusters = cluster(buckets, bounds, zoom).sort((a, b) => a.count - b.count)
           return (
-            <div style={{ position: 'relative', width : '100%', height: '100%', }}>
+            <Fragment>
               <Map
                 center={center}
                 maxZoom={19}
@@ -144,7 +144,7 @@ class CharitiesMap extends Component {
                 onZoomend={() => this.setState({ zooming: false })}
                 onZoomstart={() => this.setState({ zooming: true })}
                 ref={this.mapRef}
-                style={{ width : '100%', height: '100%', position: 'relative', opacity: (zooming || loading) ? 0.5 : 1 }}
+                style={{ width : '100%', height: '100%', opacity: (zooming || loading) ? 0.5 : 1 }}
                 zoom={zoom}
               >
                 <TileLayer
@@ -202,7 +202,7 @@ class CharitiesMap extends Component {
                   Filter This Area
                 </Button>
               </div>
-            </div>
+            </Fragment>
           )
         }}
       </Query>
