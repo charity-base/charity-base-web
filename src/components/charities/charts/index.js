@@ -7,7 +7,7 @@ import CharitiesIncome from './income'
 const { Group } = Radio
 
 const CharitiesChart = ({ filtersObj, hoveredItem, onAddFilter, onRemoveFilter }) => {
-  const [view, setView] = useState('income')
+  const [view, setView] = useState('map')
   return (
     <div
       style={{
