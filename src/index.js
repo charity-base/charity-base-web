@@ -8,11 +8,12 @@ import App from './App'
 import { unregister } from './registerServiceWorker'
 // import registerServiceWorker from './registerServiceWorker'
 import { charityBaseGqlApiUri, charityBaseApiKey } from './lib/constants'
+import auth from './lib/auth'
 
 const client = new ApolloClient({
   uri: charityBaseGqlApiUri,
   headers: {
-    Authorization: `Apikey ${charityBaseApiKey}`,
+    Authorization: `Apikey ${charityBaseApiKey}, Bearer ${auth.accessToken || ''}`,
   },
 })
 

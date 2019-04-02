@@ -6,7 +6,7 @@ import Home from './components/home'
 import Charities from './components/charities'
 import { Charity } from './components/charity'
 import { About } from './components/about'
-import { ApiPortal } from './components/api-portal'
+import ApiPortal from './components/api-portal'
 import { ApiExplorer } from './components/api-explorer'
 // import { Analysis } from './components/analysis'
 
