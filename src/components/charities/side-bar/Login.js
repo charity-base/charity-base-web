@@ -13,7 +13,7 @@ const userName = user => {
 }
 
 const Login = (_, { router }) => {
-  const user = auth.getUser()
+  const user = auth.user
   return (
     <div style={{ width: '100%', textAlign: 'center', minHeight: '30px' }}>
       {user ? (

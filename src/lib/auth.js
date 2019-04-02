@@ -15,13 +15,16 @@ class Auth {
     this.scheduleRenewal = this.scheduleRenewal.bind(this)
     this.isAuthenticated = this.isAuthenticated.bind(this)
     this.setSession = this.setSession.bind(this)
-    this.getUser = this.getUser.bind(this)
     this.sendPasswordResetEmail = this.sendPasswordResetEmail.bind(this)
     this.wrapAuthentication = this.wrapAuthentication.bind(this)
   }
 
   get accessToken() {
     return localStorage.getItem('access_token')
+  }
+
+  get user() {
+    return this.isAuthenticated() ? jwtDecode(localStorage.getItem('id_token')) : null
   }
 
   login(history) {
@@ -92,10 +95,6 @@ class Auth {
   isAuthenticated() {
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'))
     return Date.now() < expiresAt
-  }
-
-  getUser() {
-    return this.isAuthenticated() ? jwtDecode(localStorage.getItem('id_token')) : null
   }
 
   sendPasswordResetEmail({ email, connection }, cb) {

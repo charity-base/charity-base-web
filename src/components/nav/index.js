@@ -58,7 +58,7 @@ class NavBar extends Component {
   }
   render() {
     const { isMobile } = this.props
-    const user = auth.getUser()
+    const user = auth.user
     return(
       <AppHeader isMobile={isMobile}>
         {!isMobile && <HeaderTitle isMobile={isMobile} to="/">CharityBase</HeaderTitle>}
