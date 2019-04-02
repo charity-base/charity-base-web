@@ -20,6 +20,10 @@ class Auth {
     this.wrapAuthentication = this.wrapAuthentication.bind(this)
   }
 
+  get accessToken() {
+    return localStorage.getItem('access_token')
+  }
+
   login(history) {
     const { pathname, search } = history.location
     const origin_uri = `${pathname}${search}`
@@ -40,7 +44,6 @@ class Auth {
         this.internalRedirect(history)
       } else if (err) {
         this.internalRedirect(history)
-        console.log(err)
       }
     })
   }
@@ -48,7 +51,6 @@ class Auth {
   renewToken() {
     this.auth0.checkSession({}, (err, result) => {
       if (err) {
-        console.log(err)
         this.logout()
       } else {
         this.setSession(result)
