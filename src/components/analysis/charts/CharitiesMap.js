@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { desaturate, transparentize } from 'polished'
 import GoogleMapReact from 'google-map-react'
 import { Button, Row, Col } from 'antd'
-import { googleApiKey } from '../../../lib/constants'
+// import { googleApiKey } from '../../../lib/constants'
 import { zoomToPrecision, gmapsBoundsToString, geoHashToLatLon, geoHashToBoundingBox, getCenterZoom } from '../../../lib/mapHelpers'
 import ContainerSizeConsumer from '../../general/ContainerSizeConsumer'
 import { Alerts } from '../../general/Alerts'
@@ -103,7 +103,7 @@ class CharitiesMap extends Component {
                 <div style={{ width, height, position: 'relative', opacity: loading || this.state.zooming ? 0.5 : 1 }}>
                   <GoogleMapReact
                     bootstrapURLKeys={{
-                      key: googleApiKey,
+                      // key: googleApiKey,
                     }}
                     zoom={zoom}
                     center={center}
