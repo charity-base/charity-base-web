@@ -7,6 +7,7 @@ import defaultQuery from './defaultQuery'
 import ApiKeyModal from './ApiKeyModal'
 import { Page, ScrollableContent, ResponsiveSider } from '../general/Layout'
 import { charityBaseApiUri } from '../../lib/constants'
+import auth from '../../lib/auth'
 import 'graphiql/graphiql.css'
 
 const getGraphQLFetcher = apiKey => graphQLParams => {
@@ -14,7 +15,7 @@ const getGraphQLFetcher = apiKey => graphQLParams => {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Apikey ${apiKey}`,
+      'Authorization': `Apikey ${apiKey}, Bearer ${auth.accessToken || ''}`,
     },
     body: JSON.stringify(graphQLParams),
   }).then(response => response.json())

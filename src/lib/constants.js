@@ -16,7 +16,7 @@ const auth0Config = {
   clientID: 'my-auth0-client-id',
   redirectUri: isProduction ? domain : 'http://localhost:3000',
   responseType: 'token id_token',
-  scope: 'openid profile email',
+  scope: 'openid profile email edit:apikeys',
 }
 
 export {
