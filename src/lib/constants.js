@@ -8,8 +8,6 @@ const charityBaseApiUri = isProduction ? `${domain}/api` : '/api'
 
 const charityBaseApiKey = 'my-charity-base-api-key'
 
-const googleApiKey = 'my-google-api-key'
-
 const auth0Config = {
   audience: 'https://charitybase.uk/api',
   domain: 'charity-base.eu.auth0.com',
@@ -23,6 +21,5 @@ export {
   charityBaseApiKey,
   charityBaseApiUri,
   charityBaseGqlApiUri,
-  googleApiKey,
   auth0Config,
 }
