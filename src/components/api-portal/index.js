@@ -3,6 +3,7 @@ import { Layout } from 'antd'
 import { ContentLayout } from '../general/Layout'
 import ApiKeys from './api-keys'
 import SideBarContent from './side-bar'
+import Playground from './playground'
 
 const {
   Content, Footer, Sider,
@@ -18,7 +19,7 @@ const MENU_ITEMS = [
 ]
 
 const ApiPortal = () => {
-  const [itemId, setItemId] = useState(MENU_ITEMS[0].id)
+  const [itemId, setItemId] = useState(MENU_ITEMS[2].id)
   return (
     <Layout>
       <Sider
@@ -59,7 +60,7 @@ const ApiPortal = () => {
             <ApiKeys />
           ) : null}
           {itemId === 'playground' ? (
-            <div>graphiql goes here</div>
+            <Playground />
           ) : null}
           {itemId === 'docs' ? (
             <div>README and link to github go here</div>
