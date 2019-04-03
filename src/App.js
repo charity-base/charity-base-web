@@ -9,26 +9,25 @@ import auth from './lib/auth'
 import { Router } from './Router'
 import './App.scss'
 
-class App extends Component {
-  state = {
-    accessToken: auth.accessToken,
+const client = new ApolloClient({
+  uri: charityBaseGqlApiUri,
+  request: operation => {
+    // ensures we use the latest access token:
+    operation.setContext({
+      headers: {
+        Authorization: `Apikey ${charityBaseApiKey}, Bearer ${auth.accessToken || ''}`,
+      }
+    })
   }
+})
+
+class App extends Component {
   componentDidMount() {
     auth.handleAuthentication(
       this.context.router.history,
-      this.onAccessTokenChange,
     )
   }
-  onAccessTokenChange = accessToken => {
-    this.setState({ accessToken })
-  }
   render() {
-    const client = new ApolloClient({
-      uri: charityBaseGqlApiUri,
-      headers: {
-        Authorization: `Apikey ${charityBaseApiKey}, Bearer ${this.state.accessToken || ''}`,
-      },
-    })
     const innerWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 320
     const isMobile = innerWidth < 992
     return (
