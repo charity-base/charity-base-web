@@ -17,6 +17,7 @@ class Auth {
     this.setSession = this.setSession.bind(this)
     this.sendPasswordResetEmail = this.sendPasswordResetEmail.bind(this)
     this.wrapAuthentication = this.wrapAuthentication.bind(this)
+    this.onAccessTokenChange = () => {}
   }
 
   get accessToken() {
@@ -40,13 +41,21 @@ class Auth {
     localStorage.removeItem('origin_uri')
   }
 
-  handleAuthentication(history) {
+  handleAuthentication(history, onAccessTokenChange) {
+    this.onAccessTokenChange = onAccessTokenChange
     this.auth0.parseHash((err, authResult) => {
+      if (err) {
+        this.logout()
+        return
+      }
       if (authResult && authResult.accessToken) { // && authResult.idToken
         this.setSession(authResult)
         this.internalRedirect(history)
-      } else if (err) {
-        this.internalRedirect(history)
+        return
+      }
+      if (this.isAuthenticated()) {
+        this.scheduleRenewal()
+        return
       }
     })
   }
@@ -54,10 +63,9 @@ class Auth {
   renewToken() {
     this.auth0.checkSession({}, (err, result) => {
       if (err) {
-        this.logout()
-      } else {
-        this.setSession(result)
+        return this.logout()
       }
+      this.setSession(result)
     })
   }
 
@@ -73,6 +81,7 @@ class Auth {
   }
 
   setSession(authResult) {
+    this.onAccessTokenChange(authResult.accessToken)
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + Date.now())
     localStorage.setItem('access_token', authResult.accessToken)
     localStorage.setItem('id_token', authResult.idToken)
@@ -81,6 +90,7 @@ class Auth {
   }
 
   logout() {
+    this.onAccessTokenChange(null)
     localStorage.removeItem('access_token')
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
