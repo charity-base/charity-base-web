@@ -2,8 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
 import { Button } from 'antd'
+import authClient from '../../../lib/authApolloClient'
 import { DELETE_KEY, LIST_KEYS } from '../../../lib/gql'
-import authClient from './authClient'
+
+// Todo: open a 'confirm delete?' modal on click
 
 const DeleteKey = ({ disabled, id }) => {
   return (

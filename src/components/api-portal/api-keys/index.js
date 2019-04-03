@@ -2,11 +2,11 @@ import React, { Fragment } from 'react'
 import { Query } from 'react-apollo'
 import { Icon, List, Skeleton, Typography } from 'antd'
 import auth from '../../../lib/auth'
+import authClient from '../../../lib/authApolloClient'
 import { LIST_KEYS } from '../../../lib/gql'
 import { LogIn } from '../../general/LogInOrOut'
 import CreateKey from './CreateKey'
 import DeleteKey from './DeleteKey'
-import authClient from './authClient'
 
 const { Title, Paragraph } = Typography
 
