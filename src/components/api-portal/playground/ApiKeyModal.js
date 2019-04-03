@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Modal, Button, Input } from 'antd'
-import { InfoText } from '../general/InfoText'
+import { InfoText } from '../../general/InfoText'
 
 const ApiKeyModal = ({ isOpen, onChange, onClose }) => {
   const [value, setValue] = useState('')
