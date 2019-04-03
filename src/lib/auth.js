@@ -17,7 +17,6 @@ class Auth {
     this.setSession = this.setSession.bind(this)
     this.sendPasswordResetEmail = this.sendPasswordResetEmail.bind(this)
     this.wrapAuthentication = this.wrapAuthentication.bind(this)
-    this.onAccessTokenChange = () => {}
   }
 
   get accessToken() {
@@ -41,8 +40,7 @@ class Auth {
     localStorage.removeItem('origin_uri')
   }
 
-  handleAuthentication(history, onAccessTokenChange) {
-    this.onAccessTokenChange = onAccessTokenChange
+  handleAuthentication(history) {
     this.auth0.parseHash((err, authResult) => {
       if (err) {
         this.logout()
@@ -86,7 +84,6 @@ class Auth {
     localStorage.setItem('id_token', authResult.idToken)
     localStorage.setItem('expires_at', expiresAt)
     this.scheduleRenewal()
-    this.onAccessTokenChange(authResult.accessToken)
   }
 
   logout() {
@@ -99,7 +96,6 @@ class Auth {
       clientID: this.auth0Config.clientID,
       returnTo: this.auth0Config.redirectUri,
     })
-    this.onAccessTokenChange(null)
   }
 
   isAuthenticated() {
