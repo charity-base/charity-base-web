@@ -30,16 +30,16 @@ const CreateKey = ({ disabled }) => {
     <Mutation
       client={CLIENT}
       mutation={CREATE_KEY}
-      update={(cache, { data: { apiKeys: { create } } }) => {
+      update={(cache, { data: { apiKeys: { createKey } } }) => {
         const { apiKeys } = cache.readQuery({ query: LIST_KEYS })
         cache.writeQuery({
           query: LIST_KEYS,
           data: {
             apiKeys: {
               ...apiKeys,
-              list: [
-                ...apiKeys.list,
-                create,
+              listKeys: [
+                ...apiKeys.listKeys,
+                createKey,
               ],
             }
           },
@@ -73,15 +73,15 @@ const DeleteKey = ({ disabled, id }) => {
       client={CLIENT}
       mutation={DELETE_KEY}
       variables={{ id }}
-      update={(cache, { data }) => {
+      update={(cache, { data: { apiKeys: { deleteKey } } }) => {
         const { apiKeys } = cache.readQuery({ query: LIST_KEYS })
         cache.writeQuery({
           query: LIST_KEYS,
           data: {
             apiKeys: {
               ...apiKeys,
-              list: apiKeys.list.reduce((agg, x) => {
-                return x.id === data.apiKeys.delete.id ? agg : [...agg, x]
+              listKeys: apiKeys.listKeys.reduce((agg, x) => {
+                return x.id === deleteKey.id ? agg : [...agg, x]
               }, []),
             }
           },
@@ -139,7 +139,7 @@ const ApiKeys = () => {
     >
       {({ loading, error, data }) => {
         if (error) return 'error oops'
-        const keys = data && data.apiKeys ? data.apiKeys.list : []
+        const keys = data && data.apiKeys ? data.apiKeys.listKeys : []
         return (
           <Fragment>
             <ApiKeysTitle />
