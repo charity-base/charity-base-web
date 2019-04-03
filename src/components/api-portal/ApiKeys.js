@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react'
-import { Query, Mutation } from 'react-apollo'
 import PropTypes from 'prop-types'
+import ApolloClient from 'apollo-boost'
+import { Query, Mutation } from 'react-apollo'
+import { charityBaseGqlAuthUri } from '../../lib/constants'
 import auth from '../../lib/auth'
 import { LIST_KEYS, CREATE_KEY, DELETE_KEY } from '../../lib/gql'
 import { Icon, Button, List, Skeleton, Typography } from 'antd'
@@ -10,9 +12,23 @@ const { Title, Paragraph } = Typography
 
 const MAX_KEYS = 3
 
+const CLIENT = new ApolloClient({
+  uri: charityBaseGqlAuthUri,
+  request: operation => {
+    // ensure we use the latest access token:
+    const { accessToken } = auth
+    operation.setContext({
+      headers: {
+        Authorization: `Bearer ${accessToken || ''}`,
+      },
+    })
+  }
+})
+
 const CreateKey = ({ disabled }) => {
   return (
     <Mutation
+      client={CLIENT}
       mutation={CREATE_KEY}
       update={(cache, { data: { apiKeys: { create } } }) => {
         const { apiKeys } = cache.readQuery({ query: LIST_KEYS })
@@ -54,6 +70,7 @@ CreateKey.propTypes = {
 const DeleteKey = ({ disabled, id }) => {
   return (
     <Mutation
+      client={CLIENT}
       mutation={DELETE_KEY}
       variables={{ id }}
       update={(cache, { data }) => {
@@ -117,6 +134,7 @@ const ApiKeys = () => {
   }
   return (
     <Query
+      client={CLIENT}
       query={LIST_KEYS}
     >
       {({ loading, error, data }) => {

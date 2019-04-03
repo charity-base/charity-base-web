@@ -4,6 +4,8 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 const charityBaseGqlApiUri = isProduction ? `${domain}/api/graphql` : '/api/graphql'
 
+const charityBaseGqlAuthUri = isProduction ? `${domain}/auth/graphql` : '/auth/graphql'
+
 const charityBaseApiUri = isProduction ? `${domain}/api` : '/api'
 
 const charityBaseApiKey = 'my-charity-base-api-key'
@@ -21,5 +23,6 @@ export {
   charityBaseApiKey,
   charityBaseApiUri,
   charityBaseGqlApiUri,
+  charityBaseGqlAuthUri,
   auth0Config,
 }
