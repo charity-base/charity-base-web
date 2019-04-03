@@ -1,8 +1,8 @@
 import ApolloClient from 'apollo-boost'
-import auth from '../../../lib/auth'
-import { charityBaseGqlAuthUri } from '../../../lib/constants'
+import auth from './auth'
+import { charityBaseGqlAuthUri } from './constants'
 
-const authClient = new ApolloClient({
+const authApolloClient = new ApolloClient({
   uri: charityBaseGqlAuthUri,
   request: operation => {
     // ensure we use the latest access token:
@@ -14,4 +14,4 @@ const authClient = new ApolloClient({
   }
 })
 
-export default authClient
+export default authApolloClient
