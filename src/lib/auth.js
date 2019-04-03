@@ -81,16 +81,15 @@ class Auth {
   }
 
   setSession(authResult) {
-    this.onAccessTokenChange(authResult.accessToken)
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + Date.now())
     localStorage.setItem('access_token', authResult.accessToken)
     localStorage.setItem('id_token', authResult.idToken)
     localStorage.setItem('expires_at', expiresAt)
     this.scheduleRenewal()
+    this.onAccessTokenChange(authResult.accessToken)
   }
 
   logout() {
-    this.onAccessTokenChange(null)
     localStorage.removeItem('access_token')
     localStorage.removeItem('id_token')
     localStorage.removeItem('expires_at')
@@ -100,6 +99,7 @@ class Auth {
       clientID: this.auth0Config.clientID,
       returnTo: this.auth0Config.redirectUri,
     })
+    this.onAccessTokenChange(null)
   }
 
   isAuthenticated() {
