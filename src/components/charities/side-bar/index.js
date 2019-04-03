@@ -7,7 +7,7 @@ import { CopyUrl } from '../../general/CopyUrl'
 import { MenuBarHeader } from '../../general/MenuBar'
 import { SideBarTitle } from '../../general/InfoText'
 import Filters from './Filters'
-import Login from './Login'
+import LogInOrOut from '../../general/LogInOrOut'
 
 const SideBar = ({ filtersList, onRemoveFilter }) => (
   <div>
@@ -25,7 +25,10 @@ const SideBar = ({ filtersList, onRemoveFilter }) => (
       <div style={{ marginTop: '5px' }}><CopyUrl /></div>
       <div style={{ marginTop: '5px' }}><DownloadResults queryString={''} /></div>
       <Divider />
-      <Login />
+      <LogInOrOut
+        renderLoggedInText={name => <p>Logged in as {name}</p>}
+        renderLoggedOutText={name => <p>Log in to enable downloads</p>}
+      />
     </MenuBarHeader>
   </div>
 )

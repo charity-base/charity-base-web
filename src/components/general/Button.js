@@ -1,7 +1,7 @@
 import { Button } from 'antd'
 import styled from 'styled-components'
 
-const SideBarButton = styled(Button)`
+const SeeThroughButton = styled(Button)`
   background-color: inherit !important;
   color: inherit !important;
   width: 100%;
@@ -10,4 +10,4 @@ const SideBarButton = styled(Button)`
   }
 `
 
-export default SideBarButton
+export default SeeThroughButton
