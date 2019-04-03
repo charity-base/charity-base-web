@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Layout } from 'antd'
 import { ContentLayout } from '../general/Layout'
 import ApiKeys from './api-keys'
+import SideBarContent from './side-bar'
 
 const {
   Content, Footer, Sider,
@@ -9,7 +10,15 @@ const {
 
 const SIDER_WIDTH = 240
 
+const MENU_ITEMS = [
+  { id: 'overview', text: 'Overview', icon: 'api' },
+  { id: 'keys', text: 'API Keys', icon: 'key' },
+  { id: 'playground', text: 'Playground', icon: 'code' },
+  { id: 'docs', text: 'Docs', icon: 'book' },
+]
+
 const ApiPortal = () => {
+  const [itemId, setItemId] = useState(MENU_ITEMS[0].id)
   return (
     <Layout>
       <Sider
@@ -22,7 +31,11 @@ const ApiPortal = () => {
           color: 'rgba(255,255,255,0.8)',
         }}
       >
-        Side Bar Content
+        <SideBarContent
+          menuItems={MENU_ITEMS}
+          onSelect={setItemId}
+          selectedId={itemId}
+        />
       </Sider>
       <ContentLayout>
         <div style={{
@@ -39,7 +52,18 @@ const ApiPortal = () => {
           position: 'relative',
           height: '100%',
         }}>
-          <ApiKeys />
+          {itemId === 'overview' ? (
+            <div>The API is useful.</div>
+          ) : null}
+          {itemId === 'keys' ? (
+            <ApiKeys />
+          ) : null}
+          {itemId === 'playground' ? (
+            <div>graphiql goes here</div>
+          ) : null}
+          {itemId === 'docs' ? (
+            <div>README and link to github go here</div>
+          ) : null}
         </Content>
         <Footer style={{
           background: '#fafafa',
