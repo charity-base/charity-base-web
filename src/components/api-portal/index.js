@@ -1,7 +1,7 @@
 import React from 'react'
 import { Layout } from 'antd'
 import { ContentLayout } from '../general/Layout'
-import ApiKeys from './ApiKeys'
+import ApiKeys from './api-keys'
 
 const {
   Content, Footer, Sider,
