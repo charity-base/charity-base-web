@@ -16,10 +16,9 @@ const CLIENT = new ApolloClient({
   uri: charityBaseGqlAuthUri,
   request: operation => {
     // ensure we use the latest access token:
-    const { accessToken } = auth
     operation.setContext({
       headers: {
-        Authorization: `Bearer ${accessToken || ''}`,
+        Authorization: `Bearer ${auth.accessToken || ''}`,
       },
     })
   }

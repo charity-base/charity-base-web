@@ -11,11 +11,13 @@ import auth from '../../lib/auth'
 import 'graphiql/graphiql.css'
 
 const getGraphQLFetcher = apiKey => graphQLParams => {
+  const { user } = auth
   return fetch(`${charityBaseApiUri}/graphql`, {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Apikey ${apiKey}, Bearer ${auth.accessToken || ''}`,
+      'Authorization': `Apikey ${apiKey}`,
+      'UserId': user ? user.sub : undefined,
     },
     body: JSON.stringify(graphQLParams),
   }).then(response => response.json())
