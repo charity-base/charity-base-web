@@ -3,7 +3,7 @@ import { gql } from 'apollo-boost'
 const CREATE_KEY = gql`
   mutation CBWEB_CREATE_KEY {
     apiKeys {
-      create {
+      createKey {
         id
         roles
       }

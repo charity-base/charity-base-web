@@ -5,7 +5,7 @@ const DELETE_KEY = gql`
     $id: ID
   ) {
     apiKeys {
-      delete(
+      deleteKey(
         id: $id
       ) {
         id
