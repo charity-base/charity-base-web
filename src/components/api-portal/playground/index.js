@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { parse, print } from 'graphql'
 import GraphiQL from 'graphiql'
-import { Layout } from 'antd'
 import defaultQuery from './defaultQuery'
 import ApiKeyModal from './ApiKeyModal'
 import { charityBaseApiUri } from '../../../lib/constants'
@@ -15,7 +13,7 @@ const getGraphQLFetcher = apiKey => graphQLParams => {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Apikey ${apiKey}`,
+      'Authorization': apiKey ? `Apikey ${apiKey}` : undefined,
       'UserId': user ? user.sub : undefined,
     },
     body: JSON.stringify(graphQLParams),
@@ -25,7 +23,7 @@ const getGraphQLFetcher = apiKey => graphQLParams => {
 
 class Playground extends Component {
   state = {
-    apiKey: '',
+    apiKey: undefined,
     isApiKeyModalOpen: true,
   }
   handlePrettifyQuery = event => {
@@ -58,12 +56,13 @@ class Playground extends Component {
             />
             <GraphiQL.Button
               onClick={() => this.setState({ isApiKeyModalOpen: true })}
-              title='Set API Key'
-              label='Set API Key'
+              title='Select API Key'
+              label='Select API Key'
             />
           </GraphiQL.Toolbar>
         </GraphiQL>
         <ApiKeyModal
+          currentKey={this.state.apiKey}
           isOpen={this.state.isApiKeyModalOpen}
           onChange={apiKey => this.setState({ apiKey, isApiKeyModalOpen: false })}
           onClose={() => this.setState({ isApiKeyModalOpen: false })}
