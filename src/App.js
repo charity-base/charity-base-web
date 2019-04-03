@@ -12,11 +12,12 @@ import './App.scss'
 const client = new ApolloClient({
   uri: charityBaseGqlApiUri,
   request: operation => {
-    // ensures we use the latest access token:
+    const { user } = auth
     operation.setContext({
       headers: {
-        Authorization: `Apikey ${charityBaseApiKey}, Bearer ${auth.accessToken || ''}`,
-      }
+        Authorization: `Apikey ${charityBaseApiKey}`,
+        UserId: user ? user.sub : undefined,
+      },
     })
   }
 })
