@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import auth from '../../lib/auth'
 import { LIST_KEYS, CREATE_KEY, DELETE_KEY } from '../../lib/gql'
 import { Icon, Button, List, Skeleton, Typography } from 'antd'
+import { LogIn } from '../general/LogInOrOut'
 
 const { Title, Paragraph } = Typography
 
@@ -89,9 +90,30 @@ DeleteKey.propTypes = {
   id: PropTypes.string.isRequired,
 }
 
+const ApiKeysTitle = () => {
+  return (
+    <Title level={2}>
+      <Icon type='key' style={{ marginRight: '0.5em' }} />
+      <span>API Keys</span>
+    </Title>
+  )
+}
+
+const PromptLogIn = () => {
+  return (
+    <div>
+      <ApiKeysTitle />
+      <Paragraph>
+        Log In to manage your API keys
+      </Paragraph>
+      <LogIn />
+    </div>
+  )
+}
+
 const ApiKeys = () => {
   if (!auth.isAuthenticated()) {
-    return 'Log In Button Here'
+    return <PromptLogIn />
   }
   return (
     <Query
@@ -102,10 +124,7 @@ const ApiKeys = () => {
         const keys = data && data.apiKeys ? data.apiKeys.list : []
         return (
           <Fragment>
-            <Title level={2}>
-              <Icon type='key' style={{ marginRight: '0.5em' }} />
-              <span>API Keys</span>
-            </Title>
+            <ApiKeysTitle />
             <List
               bordered
               loading={loading}
