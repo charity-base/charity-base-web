@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { parse, print } from 'graphql'
 import GraphiQL from 'graphiql'
 import defaultQuery from './defaultQuery'
@@ -23,8 +24,7 @@ const getGraphQLFetcher = apiKey => graphQLParams => {
 
 class Playground extends Component {
   state = {
-    apiKey: undefined,
-    isApiKeyModalOpen: true,
+    isApiKeyModalOpen: this.props.apiKey ? false : true,
   }
   handlePrettifyQuery = event => {
     const editor = this.graphiqlComp.getQueryEditor()
@@ -36,11 +36,12 @@ class Playground extends Component {
     }))
   }
   render() {
+    const { apiKey, setApiKey } = this.props
     return (
       <div className='api-explorer-container'>
         <GraphiQL
           ref={c => { this.graphiqlComp = c }}
-          fetcher={getGraphQLFetcher(this.state.apiKey)}
+          fetcher={getGraphQLFetcher(apiKey)}
           defaultQuery={defaultQuery}
           >
           <GraphiQL.Toolbar>
@@ -62,9 +63,12 @@ class Playground extends Component {
           </GraphiQL.Toolbar>
         </GraphiQL>
         <ApiKeyModal
-          currentKey={this.state.apiKey}
+          currentKey={apiKey}
           isOpen={this.state.isApiKeyModalOpen}
-          onChange={apiKey => this.setState({ apiKey, isApiKeyModalOpen: false })}
+          onChange={apiKey => {
+            setApiKey(apiKey)
+            this.setState({ isApiKeyModalOpen: false })
+          }}
           onClose={() => this.setState({ isApiKeyModalOpen: false })}
         />
       </div>
@@ -72,6 +76,8 @@ class Playground extends Component {
   }
 }
 Playground.propTypes = {
+  apiKey: PropTypes.string,
+  setApiKey: PropTypes.func.isRequired,
 }
 
 export default Playground

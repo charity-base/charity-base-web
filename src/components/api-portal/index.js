@@ -20,6 +20,7 @@ const MENU_ITEMS = [
 
 const ApiPortal = () => {
   const [itemId, setItemId] = useState(MENU_ITEMS[2].id)
+  const [playgroundKey, setPlaygroundKey] = useState(undefined)
   return (
     <Layout>
       <Sider
@@ -60,7 +61,10 @@ const ApiPortal = () => {
             <ApiKeys />
           ) : null}
           {itemId === 'playground' ? (
-            <Playground />
+            <Playground
+              apiKey={playgroundKey}
+              setApiKey={setPlaygroundKey}
+            />
           ) : null}
           {itemId === 'docs' ? (
             <div>README and link to github go here</div>
