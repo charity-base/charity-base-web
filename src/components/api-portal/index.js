@@ -13,10 +13,10 @@ const {
 const SIDER_WIDTH = 240
 
 const MENU_ITEMS = [
-  { path: '', label: 'Overview', icon: 'api' },
-  { path: 'keys', label: 'API Keys', icon: 'key' },
-  { path: 'playground', label: 'Playground', icon: 'code' },
-  { path: 'docs', label: 'Docs', icon: 'github' },
+  { path: '', label: 'Getting Started' },
+  { path: 'keys', label: 'API Keys' },
+  { path: 'playground', label: 'Playground' },
+  { path: 'docs', label: 'Docs' },
 ]
 
 const ApiPortal = () => {
