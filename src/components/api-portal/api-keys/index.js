@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
-import { Icon, List, Skeleton, Typography } from 'antd'
+import { Icon, Table, Tag, Typography } from 'antd'
 import auth from '../../../lib/auth'
 import authClient from '../../../lib/authApolloClient'
 import { LIST_KEYS } from '../../../lib/gql'
@@ -9,7 +9,8 @@ import { LogIn } from '../../general/LogInOrOut'
 import CreateKey from './CreateKey'
 import DeleteKey from './DeleteKey'
 
-const { Title, Paragraph } = Typography
+const { Column } = Table
+const { Title, Text, Paragraph } = Typography
 
 const MAX_KEYS = 3
 
@@ -48,42 +49,55 @@ const ApiKeys = ({ setPlaygroundKey }) => {
         const keys = data && data.apiKeys ? data.apiKeys.listKeys : []
         return (
           <Fragment>
-            <ApiKeysTitle />
-            <List
-              bordered
-              loading={loading}
-              itemLayout="horizontal"
+            <Table
               dataSource={keys}
-              footer={
+              footer={() => (
                 <CreateKey
                   disabled={loading || keys.length >= MAX_KEYS}
                 />
-              }
-              locale={{ emptyText: 'No registered API keys' }}
-              renderItem={x => (
-                <List.Item
-                  actions={[
-                    <DeleteKey
-                      id={x.id}
-                      disabled={loading}
-                      onDelete={() => setPlaygroundKey(undefined)}
-                    />
-                  ]}
-                >
-                  <Skeleton
-                    title={true}
-                    paragraph={false}
-                    loading={loading}
-                    active={loading}
-                  >
-                    <List.Item.Meta
-                      title={<div><Paragraph copyable>{x.id}</Paragraph>Created At: {x.createdAt}</div>}
-                      style={{ marginTop: '14px' }}
-                    />
-                  </Skeleton>
-                </List.Item>
               )}
-            />
+              loading={loading}
+              locale={{ emptyText: 'No API keys found' }}
+              pagination={false}
+            >
+              <Column
+                title='API Key'
+                dataIndex='id'
+                key='id'
+                render={(apiKey) => (
+                  <Text copyable>{apiKey}</Text>
+                )}
+              />
+              <Column
+                title='Permissions'
+                dataIndex='roles'
+                key='roles'
+                render={(roles) => (
+                  <span>
+                    {roles.map(role => <Tag color='blue' key={role}>{role}</Tag>)}
+                  </span>
+                )}
+              />
+              <Column
+                dataIndex='createdAt'
+                key='createdAt'
+                sortDirections={['ascend']}
+                sorter={(a, b) => (new Date(a.createdAt) - new Date(b.createdAt))}
+                sortOrder='ascend'
+                title='Created (GMT)'
+              />
+              <Column
+                title='Delete'
+                key='delete'
+                render={(_, record) => (
+                  <DeleteKey
+                    id={record.id}
+                    disabled={loading}
+                    onDelete={() => setPlaygroundKey(undefined)}
+                  />
+                )}
+              />
+            </Table>
           </Fragment>
         )
       }}
