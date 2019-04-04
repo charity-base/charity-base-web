@@ -22,16 +22,24 @@ const SideBarContent = ({ menuItems }) => {
           <Item
             key={`path-${path}`}
           >
-            <NavLink
-              to={`/api-portal/${path}`}
-              exact={true}
-              activeStyle={{
-                color: '#EC407A',
-              }}
-            >
-              <Icon type={icon} />
-              {label}
-            </NavLink>
+            {path === 'docs' ? (
+              <a href='https://github.com/charity-base/charity-base-api'>
+                <Icon type={icon} />
+                {label}
+                <Icon type='link' style={{ marginLeft: '0.5em' }} />
+              </a>
+            ) : (
+              <NavLink
+                to={`/api-portal/${path}`}
+                exact={true}
+                activeStyle={{
+                  color: '#EC407A',
+                }}
+              >
+                <Icon type={icon} />
+                {label}
+              </NavLink>
+            )}
           </Item>
         ))}
       </Menu>
