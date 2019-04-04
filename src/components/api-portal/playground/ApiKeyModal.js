@@ -53,7 +53,7 @@ const ApiKeyModal = ({ currentKey, isOpen, onChange, onClose }) => {
                   <Select
                     notFoundContent='No API Keys Found'
                     onChange={x => setApiKey(x)}
-                    placeholder='Select an API key to use'
+                    placeholder='Select an API key'
                     size='large'
                     style={{
                       margin: '1em 0',
