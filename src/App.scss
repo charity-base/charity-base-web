@@ -26,9 +26,6 @@ button:focus {
   bottom: 0;
   left: 0;
   right: 0;
-  border-radius: 4px;
-  overflow: scroll;
-  z-index: 100;
 }
 
 .api-explorer-container .topBar,
@@ -42,13 +39,20 @@ button:focus {
   background-color: #EC407A !important;
   background-image: none !important;
   fill: white !important;
+  box-shadow: none !important;
 }
 
 .docExplorerShow {
-  border-color: #EC407A !important;
+  border-color: none !important;
   background-color: #EC407A !important;
   background-image: none !important;
   color: white !important;
+}
+
+.topBar {
+  background-color: whitesmoke !important;
+  background-image: none !important;
+  color: rgba(0,0,0,0.8) !important;
 }
 
 .load-more-container {
