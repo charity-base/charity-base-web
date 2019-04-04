@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Icon, Select, Typography } from 'antd'
+import { Tabs } from 'antd'
 import CharitiesMap from './map'
 import CharitiesIncome from './income'
 
-const { Option } = Select
-const { Title } = Typography
+const { TabPane } = Tabs
 
 const HEADER_HEIGHT = '5em'
 
@@ -28,28 +27,13 @@ const CharitiesChart = ({ filtersObj, hoveredItem, onAddFilter, onRemoveFilter }
         right: 0,
         height: HEADER_HEIGHT,
       }}>
-        <Title level={3} style={{ textAlign: 'center' }}>
-          <Icon type='bar-chart' />
-          <span style={{
-            marginLeft: '1em',
-          }}>
-            Aggregations
-          </span>
-        </Title>
-        <Select
+        <Tabs
+          activeKey={view}
           onChange={x => setView(x)}
-          value={view}
-          style={{
-            position: 'absolute',
-            top: 10,
-            right: 10,
-            width: 110,
-          }}
-          size='large'
         >
-          <Option value='map'>Map</Option>
-          <Option value='income'>Income</Option>
-        </Select>
+          <TabPane tab="Map" key="map"></TabPane>
+          <TabPane tab="Income" key="income"></TabPane>
+        </Tabs>
       </div>
       <div
         style={{
