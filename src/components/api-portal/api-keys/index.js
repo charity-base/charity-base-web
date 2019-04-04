@@ -77,7 +77,7 @@ const ApiKeys = ({ setPlaygroundKey }) => {
                     active={loading}
                   >
                     <List.Item.Meta
-                      title={<Paragraph copyable>{x.id}</Paragraph>}
+                      title={<div><Paragraph copyable>{x.id}</Paragraph>Created At: {x.createdAt}</div>}
                       style={{ marginTop: '14px' }}
                     />
                   </Skeleton>
