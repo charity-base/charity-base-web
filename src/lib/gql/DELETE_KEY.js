@@ -2,14 +2,13 @@ import { gql } from 'apollo-boost'
 
 const DELETE_KEY = gql`
   mutation CBWEB_DELETE_KEY(
-    $id: ID
+    $id: ID!
   ) {
     apiKeys {
       deleteKey(
         id: $id
       ) {
         id
-        roles
       }
     }
   }
