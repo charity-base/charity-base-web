@@ -16,7 +16,7 @@ const MENU_ITEMS = [
   { path: '', label: 'Overview', icon: 'api' },
   { path: 'keys', label: 'API Keys', icon: 'key' },
   { path: 'playground', label: 'Playground', icon: 'code' },
-  { path: 'docs', label: 'Docs', icon: 'book' },
+  { path: 'docs', label: 'Docs', icon: 'github' },
 ]
 
 const ApiPortal = () => {
@@ -60,9 +60,6 @@ const ApiPortal = () => {
                 apiKey={playgroundKey}
                 setApiKey={setPlaygroundKey}
               />
-            )} />
-            <Route path="/api-portal/docs" render={() => (
-              <div>README and link to github go here</div>
             )} />
             <Redirect to="/api-portal"/>
           </Switch>
