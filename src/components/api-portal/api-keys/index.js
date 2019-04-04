@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 import { Icon, List, Skeleton, Typography } from 'antd'
 import auth from '../../../lib/auth'
@@ -33,7 +34,7 @@ const PromptLogIn = () => {
   )
 }
 
-const ApiKeys = () => {
+const ApiKeys = ({ setPlaygroundKey }) => {
   if (!auth.isAuthenticated()) {
     return <PromptLogIn />
   }
@@ -53,7 +54,11 @@ const ApiKeys = () => {
               loading={loading}
               itemLayout="horizontal"
               dataSource={keys}
-              footer={<CreateKey disabled={loading || keys.length >= MAX_KEYS} />}
+              footer={
+                <CreateKey
+                  disabled={loading || keys.length >= MAX_KEYS}
+                />
+              }
               locale={{ emptyText: 'No registered API keys' }}
               renderItem={x => (
                 <List.Item
@@ -61,6 +66,7 @@ const ApiKeys = () => {
                     <DeleteKey
                       id={x.id}
                       disabled={loading}
+                      onDelete={() => setPlaygroundKey(undefined)}
                     />
                   ]}
                 >
@@ -85,6 +91,7 @@ const ApiKeys = () => {
   )
 }
 ApiKeys.propTypes = {
+  setPlaygroundKey: PropTypes.func.isRequired,
 }
 
 export default ApiKeys

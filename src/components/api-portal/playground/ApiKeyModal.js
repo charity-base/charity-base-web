@@ -6,6 +6,7 @@ import { Query } from 'react-apollo'
 import auth from '../../../lib/auth'
 import { LIST_KEYS } from '../../../lib/gql'
 import { LogIn } from '../../general/LogInOrOut'
+import CreateKey from '../api-keys/CreateKey'
 
 const { Paragraph } = Typography
 const { Option } = Select
@@ -44,23 +45,21 @@ const ApiKeyModal = ({ currentKey, isOpen, onChange, onClose }) => {
             {({ loading, error, data }) => {
               if (error) return 'error oops'
               const keys = data && data.apiKeys ? data.apiKeys.listKeys : []
-              if (keys.length === 0) {
-                return (
-                  <Paragraph>
-                    Create an API key to get started
-                  </Paragraph>
-                )
-              }
               return (
                 <Fragment>
+                  {keys.length === 0 ? (
+                    <CreateKey disabled={loading} />
+                  ) : null}
                   <Select
+                    notFoundContent='No API Keys Found'
                     onChange={x => setApiKey(x)}
                     placeholder='Select an API key to use'
-                    value={apiKey}
+                    size='large'
                     style={{
+                      margin: '1em 0',
                       width: '100%',
                     }}
-                    size='large'
+                    value={apiKey}
                   >
                     {keys.map(x => (
                       <Option key={x.id} value={x.id}>{x.id}</Option>

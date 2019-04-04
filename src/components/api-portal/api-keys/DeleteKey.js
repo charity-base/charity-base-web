@@ -7,7 +7,7 @@ import { DELETE_KEY, LIST_KEYS } from '../../../lib/gql'
 
 // Todo: open a 'confirm delete?' modal on click
 
-const DeleteKey = ({ disabled, id }) => {
+const DeleteKey = ({ disabled, id, onDelete }) => {
   return (
     <Mutation
       client={authClient}
@@ -26,16 +26,17 @@ const DeleteKey = ({ disabled, id }) => {
             }
           },
         })
+        onDelete && onDelete(deleteKey.id)
       }}
     >
-      {(onDelete, { loading }) => {
+      {(triggerDelete, { loading }) => {
         return (
           <Button
             icon='delete'
             type='danger'
             shape='circle'
             disabled={disabled || loading}
-            onClick={onDelete}
+            onClick={triggerDelete}
           />
         )
       }}
@@ -45,6 +46,7 @@ const DeleteKey = ({ disabled, id }) => {
 DeleteKey.propTypes = {
   disabled: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
+  onDelete: PropTypes.func,
 }
 
 export default DeleteKey
