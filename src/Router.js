@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import qs from 'query-string'
 import Home from './components/home'
-import Charities from './components/charities'
+import CHC from './components/chc'
 import { Charity } from './components/charity'
 import { About } from './components/about'
 import ApiPortal from './components/api-portal'
@@ -24,7 +24,7 @@ const Router = ({ isMobile }) => (
         <Home />
       )} />
       <Route path="/chc" render={({ location }) => (
-        <Charities />
+        <CHC />
       )} />
       <Route path="/charities/:charityId" render={({ match, location }) => (
         <Charity isMobile={isMobile} charityId={match.params.charityId} view={qs.parse(location.search).view} />
