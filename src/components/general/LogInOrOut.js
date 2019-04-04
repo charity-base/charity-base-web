@@ -15,9 +15,9 @@ const userName = user => {
 export const LogOut = () => {
   return (
     <Button
+      block
       icon='logout'
       onClick={auth.logout}
-      style={{ width: '100%' }}
     >
       Log Out
     </Button>
@@ -29,11 +29,11 @@ LogOut.propTypes = {
 export const LogIn = (_, { router }) => {
   return (
     <Button
+      block
       icon='login'
       onClick={() => {
         auth.login(router.history)
       }}
-      style={{ width: '100%' }}
     >
       Log In
     </Button>

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
-import { Button } from 'antd'
+import Button from '../../general/Button'
 import authClient from '../../../lib/authApolloClient'
 import { CREATE_KEY, LIST_KEYS } from '../../../lib/gql'
 
@@ -29,12 +29,12 @@ const CreateKey = ({ disabled }) => {
       {(onCreate, { loading }) => {
         return (
           <Button
-            icon='plus'
-            type='primary'
-            size='large'
             block
-            onClick={onCreate}
             disabled={disabled || loading}
+            icon='plus'
+            onClick={onCreate}
+            size='large'
+            type='primary'
           >
             Create API Key
           </Button>
