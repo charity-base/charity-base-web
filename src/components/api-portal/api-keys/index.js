@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
-import { Icon, Table, Tag, Typography } from 'antd'
+import { Table, Tag, Typography } from 'antd'
 import auth from '../../../lib/auth'
 import authClient from '../../../lib/authApolloClient'
 import { LIST_KEYS } from '../../../lib/gql'
@@ -9,35 +9,89 @@ import { LogIn } from '../../general/LogInOrOut'
 import CreateKey from './CreateKey'
 import DeleteKey from './DeleteKey'
 
-const { Column } = Table
-const { Title, Text, Paragraph } = Typography
-
 const MAX_KEYS = 3
 
-const ApiKeysTitle = () => {
+const { Column } = Table
+const { Text } = Typography
+
+const KeysTable = ({ keys, loading, footer, emptyText, onDelete }) => {
   return (
-    <Title level={2}>
-      <Icon type='key' style={{ marginRight: '0.5em' }} />
-      <span>API Keys</span>
-    </Title>
+    <Table
+      dataSource={keys}
+      footer={footer}
+      loading={loading}
+      locale={{ emptyText }}
+      pagination={false}
+      rowKey='id'
+    >
+      <Column
+        title='API Key'
+        dataIndex='id'
+        key='id'
+        render={(apiKey) => (
+          <Text copyable>{apiKey}</Text>
+        )}
+      />
+      <Column
+        title='Permissions'
+        dataIndex='roles'
+        key='roles'
+        render={(roles) => (
+          <span>
+            {roles.map(role => <Tag color='blue' key={role}>{role}</Tag>)}
+          </span>
+        )}
+      />
+      <Column
+        dataIndex='createdAt'
+        key='createdAt'
+        sortDirections={['ascend']}
+        sorter={(a, b) => (new Date(a.createdAt) - new Date(b.createdAt))}
+        sortOrder='ascend'
+        title='Created (GMT)'
+      />
+      <Column
+        title='Delete'
+        key='delete'
+        render={(_, record) => (
+          <DeleteKey
+            id={record.id}
+            disabled={loading}
+            onDelete={onDelete}
+          />
+        )}
+      />
+    </Table>
   )
 }
-
-const PromptLogIn = () => {
-  return (
-    <div>
-      <ApiKeysTitle />
-      <Paragraph>
-        Log In to manage your API keys
-      </Paragraph>
-      <LogIn />
-    </div>
-  )
+KeysTable.propTypes = {
+  keys: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    roles: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    createdAt: PropTypes.string.isRequired,
+  })),
+  loading: PropTypes.bool,
+  onDelete: PropTypes.func,
+  footer: PropTypes.func.isRequired,
+  emptyText: PropTypes.string.isRequired,
+}
+KeysTable.defaultProps = {
+  keys: [],
+  loading: false,
+  onDelete: () => {},
 }
 
 const ApiKeys = ({ setPlaygroundKey }) => {
   if (!auth.isAuthenticated()) {
-    return <PromptLogIn />
+    return (
+      <KeysTable
+        emptyText='Log In to manage your API keys'
+        footer={() => (
+          <LogIn />
+        )}
+        onDelete={() => setPlaygroundKey(undefined)}
+      />
+    )
   }
   return (
     <Query
@@ -48,57 +102,17 @@ const ApiKeys = ({ setPlaygroundKey }) => {
         if (error) return 'error oops'
         const keys = data && data.apiKeys ? data.apiKeys.listKeys : []
         return (
-          <Fragment>
-            <Table
-              dataSource={keys}
-              footer={() => (
-                <CreateKey
-                  disabled={loading || keys.length >= MAX_KEYS}
-                />
-              )}
-              loading={loading}
-              locale={{ emptyText: 'No API keys found' }}
-              pagination={false}
-            >
-              <Column
-                title='API Key'
-                dataIndex='id'
-                key='id'
-                render={(apiKey) => (
-                  <Text copyable>{apiKey}</Text>
-                )}
+          <KeysTable
+            keys={keys}
+            loading={loading}
+            footer={() => (
+              <CreateKey
+                disabled={loading || keys.length >= MAX_KEYS}
               />
-              <Column
-                title='Permissions'
-                dataIndex='roles'
-                key='roles'
-                render={(roles) => (
-                  <span>
-                    {roles.map(role => <Tag color='blue' key={role}>{role}</Tag>)}
-                  </span>
-                )}
-              />
-              <Column
-                dataIndex='createdAt'
-                key='createdAt'
-                sortDirections={['ascend']}
-                sorter={(a, b) => (new Date(a.createdAt) - new Date(b.createdAt))}
-                sortOrder='ascend'
-                title='Created (GMT)'
-              />
-              <Column
-                title='Delete'
-                key='delete'
-                render={(_, record) => (
-                  <DeleteKey
-                    id={record.id}
-                    disabled={loading}
-                    onDelete={() => setPlaygroundKey(undefined)}
-                  />
-                )}
-              />
-            </Table>
-          </Fragment>
+            )}
+            emptyText='No API keys found'
+            onDelete={() => setPlaygroundKey(undefined)}
+          />
         )
       }}
     </Query>
