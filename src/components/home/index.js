@@ -65,7 +65,7 @@ const Home = () => {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header>
-        <HomeLink>CharityBase</HomeLink>
+        <HomeLink to='/'>CharityBase</HomeLink>
       </Header>
       <HomeContent>
         <Section>
