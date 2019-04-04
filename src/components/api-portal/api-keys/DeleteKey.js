@@ -63,7 +63,7 @@ const DeleteKey = ({ disabled, id, onDelete }) => {
                 style={{ margin: '2em 0' }}
               >
                 <Alert
-                  message='This process is irreversible and any applications using this key will break.'
+                  message='This process is irreversible and any applications using the key will break.'
                   type='warning'
                 />
               </div>
