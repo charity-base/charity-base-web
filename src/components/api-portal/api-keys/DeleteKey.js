@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Mutation } from 'react-apollo'
-import { Button } from 'antd'
+import { Alert, Button, Input, Modal } from 'antd'
 import authClient from '../../../lib/authApolloClient'
 import { DELETE_KEY, LIST_KEYS } from '../../../lib/gql'
 
-// Todo: open a 'confirm delete?' modal on click
-
 const DeleteKey = ({ disabled, id, onDelete }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [inputValue, setInputValue] = useState('')
   return (
     <Mutation
       client={authClient}
@@ -31,13 +31,49 @@ const DeleteKey = ({ disabled, id, onDelete }) => {
     >
       {(triggerDelete, { loading }) => {
         return (
-          <Button
-            icon='delete'
-            type='danger'
-            shape='circle'
-            disabled={disabled || loading}
-            onClick={triggerDelete}
-          />
+          <Fragment>
+            <Button
+              icon='delete'
+              type='danger'
+              shape='circle'
+              disabled={disabled || loading}
+              onClick={() => setIsOpen(true)}
+            />
+            <Modal
+              visible={isOpen && !disabled}
+              onCancel={() => {
+                setInputValue('')
+                setIsOpen(false)
+              }}
+              maskClosable={true}
+              footer={[
+                <Button
+                  disabled={inputValue !== id}
+                  key='delete'
+                  icon='delete'
+                  type='danger'
+                  loading={loading}
+                  onClick={triggerDelete}
+                >
+                  Delete
+                </Button>
+              ]}
+            >
+              <div
+                style={{ margin: '2em 0' }}
+              >
+                <Alert
+                  message='This process is irreversible and any applications using this key will break.'
+                  type='warning'
+                />
+              </div>
+              <Input
+                value={inputValue}
+                placeholder='Confirm API key to delete'
+                onChange={e => setInputValue(e.target.value)}
+              />
+            </Modal>
+          </Fragment>
         )
       }}
     </Mutation>
