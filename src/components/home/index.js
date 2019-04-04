@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Affix, Layout, Icon, Typography } from 'antd'
 import { HomeLink } from '../general/Layout'
-import CharitiesSearch from '../charities/search'
+import CharitiesSearch from '../chc/search'
 
 const {
   Content,
