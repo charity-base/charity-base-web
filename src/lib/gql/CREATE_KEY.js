@@ -6,6 +6,7 @@ const CREATE_KEY = gql`
       createKey {
         id
         roles
+        createdAt
       }
     }
   }
