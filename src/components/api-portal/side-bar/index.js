@@ -16,7 +16,7 @@ const SideBarContent = ({ menuItems }) => {
           textAlign: 'center',
         }}
       >
-        <HomeLink href="/">CharityBase</HomeLink>
+        <HomeLink to='/'>CharityBase</HomeLink>
         <Divider />
         <Title
           level={4}

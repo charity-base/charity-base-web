@@ -12,7 +12,7 @@ import LogInOrOut from '../../general/LogInOrOut'
 const SideBar = ({ filtersList, onRemoveFilter }) => (
   <div>
     <MenuBarHeader>
-      <HomeLink href="/">CharityBase</HomeLink>
+      <HomeLink to='/'>CharityBase</HomeLink>
       <SideBarTitle>
         <Icon type='filter' style={{ marginRight: '10px' }}/>
         FILTERS

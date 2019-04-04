@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Layout, Icon } from 'antd'
+import { Link } from 'react-router-dom'
 
 const HEADER_HEIGHT = 100
 const SIDER_WIDTH = 240
@@ -177,7 +178,7 @@ Page.propTypes = {
   width: PropTypes.number,
 }
 
-const HomeLink = styled.a`
+const HomeLink = styled(Link)`
   color: #EC407A;
   font-size: 2em;
   letter-spacing: 0.13em;
