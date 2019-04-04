@@ -58,7 +58,9 @@ const ApiPortal = () => {
             <div>The API is useful.</div>
           ) : null}
           {itemId === 'keys' ? (
-            <ApiKeys />
+            <ApiKeys
+              setPlaygroundKey={setPlaygroundKey}
+            />
           ) : null}
           {itemId === 'playground' ? (
             <Playground
