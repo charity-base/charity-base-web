@@ -7,6 +7,7 @@ import ApiKeyModal from './ApiKeyModal'
 import { charityBaseApiUri } from '../../../lib/constants'
 import auth from '../../../lib/auth'
 import 'graphiql/graphiql.css'
+import Button from '../../general/Button'
 
 const getGraphQLFetcher = apiKey => graphQLParams => {
   const { user } = auth
@@ -37,34 +38,48 @@ class Playground extends Component {
   }
   render() {
     const { apiKey, setApiKey } = this.props
+    const { isApiKeyModalOpen } = this.state
     return (
       <div className='api-explorer-container'>
         <GraphiQL
           ref={c => { this.graphiqlComp = c }}
           fetcher={getGraphQLFetcher(apiKey)}
           defaultQuery={defaultQuery}
-          >
+        >
+          <GraphiQL.Logo>
+            GraphiQL
+          </GraphiQL.Logo>
+          <GraphiQL.Button
+            label='test button'
+          />
           <GraphiQL.Toolbar>
-            <GraphiQL.Button
+            <Button
               onClick={this.handlePrettifyQuery}
               title='Prettify Query (Shift-Ctrl-P)'
-              label='Prettify'
-            />
-            <GraphiQL.Button
+              style={{ margin: '0 0.5em' }}
+            >
+              Prettify
+            </Button>
+            <Button
               onClick={this.handleToggleHistory}
               title='Show History'
-              label='History'
-            />
-            <GraphiQL.Button
+              style={{ margin: '0 0.5em' }}
+            >
+              History
+            </Button>
+            <Button
               onClick={() => this.setState({ isApiKeyModalOpen: true })}
-              title='Select API Key'
-              label='Select API Key'
-            />
+              title='Set Authorization Header'
+              primary={(apiKey || isApiKeyModalOpen) ? false : true}
+              style={{ margin: '0 0.5em' }}
+            >
+              Set Auth Header
+            </Button>
           </GraphiQL.Toolbar>
         </GraphiQL>
         <ApiKeyModal
           currentKey={apiKey}
-          isOpen={this.state.isApiKeyModalOpen}
+          isOpen={isApiKeyModalOpen}
           onChange={apiKey => {
             setApiKey(apiKey)
             this.setState({ isApiKeyModalOpen: false })

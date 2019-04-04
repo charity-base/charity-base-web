@@ -8,15 +8,15 @@ import { LIST_KEYS } from '../../../lib/gql'
 import { LogIn } from '../../general/LogInOrOut'
 import CreateKey from '../api-keys/CreateKey'
 
-const { Paragraph } = Typography
+const { Title, Paragraph } = Typography
 const { Option } = Select
 
 const PromptLogIn = () => {
   return (
-    <div>
-      <Paragraph>
-        Log In to play
-      </Paragraph>
+    <div style={{ textAlign: 'center' }}>
+      <Title level={4}>
+        Log In To Play
+      </Title>
       <LogIn />
     </div>
   )

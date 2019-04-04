@@ -37,6 +37,20 @@ button:focus {
   box-sizing: content-box;
 }
 
+.execute-button {
+  border-color: #EC407A !important;
+  background-color: #EC407A !important;
+  background-image: none !important;
+  fill: white !important;
+}
+
+.docExplorerShow {
+  border-color: #EC407A !important;
+  background-color: #EC407A !important;
+  background-image: none !important;
+  color: white !important;
+}
+
 .load-more-container {
   text-align: center;
   margin-top: 1em;
