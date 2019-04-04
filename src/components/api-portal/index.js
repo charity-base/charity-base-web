@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Switch, Route, Redirect } from 'react-router-dom'
 import { Layout } from 'antd'
 import { ContentLayout } from '../general/Layout'
 import ApiKeys from './api-keys'
@@ -12,14 +13,13 @@ const {
 const SIDER_WIDTH = 240
 
 const MENU_ITEMS = [
-  { id: 'overview', text: 'Overview', icon: 'api' },
-  { id: 'keys', text: 'API Keys', icon: 'key' },
-  { id: 'playground', text: 'Playground', icon: 'code' },
-  { id: 'docs', text: 'Docs', icon: 'book' },
+  { path: '', label: 'Overview', icon: 'api' },
+  { path: 'keys', label: 'API Keys', icon: 'key' },
+  { path: 'playground', label: 'Playground', icon: 'code' },
+  { path: 'docs', label: 'Docs', icon: 'book' },
 ]
 
 const ApiPortal = () => {
-  const [itemId, setItemId] = useState(MENU_ITEMS[2].id)
   const [playgroundKey, setPlaygroundKey] = useState(undefined)
   return (
     <Layout>
@@ -35,17 +35,9 @@ const ApiPortal = () => {
       >
         <SideBarContent
           menuItems={MENU_ITEMS}
-          onSelect={setItemId}
-          selectedId={itemId}
         />
       </Sider>
       <ContentLayout>
-        <div style={{
-          boxShadow: '0 0 1em',
-          zIndex: 2,
-        }}>
-          Nav Content
-        </div>
         <Content style={{
           background: '#fff',
           margin: '0 0 0 0',
@@ -54,23 +46,26 @@ const ApiPortal = () => {
           position: 'relative',
           height: '100%',
         }}>
-          {itemId === 'overview' ? (
-            <div>The API is useful.</div>
-          ) : null}
-          {itemId === 'keys' ? (
-            <ApiKeys
-              setPlaygroundKey={setPlaygroundKey}
-            />
-          ) : null}
-          {itemId === 'playground' ? (
-            <Playground
-              apiKey={playgroundKey}
-              setApiKey={setPlaygroundKey}
-            />
-          ) : null}
-          {itemId === 'docs' ? (
-            <div>README and link to github go here</div>
-          ) : null}
+          <Switch>
+            <Route exact path="/api-portal" render={() => (
+              <div>The API is useful.</div>
+            )} />
+            <Route path="/api-portal/keys" render={() => (
+              <ApiKeys
+                setPlaygroundKey={setPlaygroundKey}
+              />
+            )} />
+            <Route path="/api-portal/playground" render={() => (
+              <Playground
+                apiKey={playgroundKey}
+                setApiKey={setPlaygroundKey}
+              />
+            )} />
+            <Route path="/api-portal/docs" render={() => (
+              <div>README and link to github go here</div>
+            )} />
+            <Redirect to="/api-portal"/>
+          </Switch>
         </Content>
         <Footer style={{
           background: '#fafafa',
