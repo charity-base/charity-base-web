@@ -7,7 +7,6 @@ import CHC from './components/chc'
 import { Charity } from './components/charity'
 import { About } from './components/about'
 import ApiPortal from './components/api-portal'
-// import { Analysis } from './components/analysis'
 
 const Router = ({ isMobile }) => (
   <React.Fragment>
@@ -23,7 +22,7 @@ const Router = ({ isMobile }) => (
       <Route exact path="/" render={() => (
         <Home />
       )} />
-      <Route path="/chc" render={({ location }) => (
+      <Route path="/chc" render={() => (
         <CHC />
       )} />
       <Route path="/charities/:charityId" render={({ match, location }) => (
@@ -49,8 +48,4 @@ Router.propTypes = {
   isMobile: PropTypes.bool,
 }
 
-export { Router }
-
-// <Route exact path="/analysis" render={({ location }) => (
-//   <Analysis isMobile={isMobile} queryString={location.search} query={qs.parse(location.search)} />
-// )} />
+export default Router
