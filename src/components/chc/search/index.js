@@ -6,7 +6,7 @@ import { mapItem } from '../helpers'
 class CharitiesSearch extends Component {
   onSelect = (item) => {
     if (item.filterType === 'id') {
-      return this.context.router.history.push(`/charities/${item.value}`)
+      return this.context.router.history.push(`/chc/${item.value}`)
     }
     this.props.onAddFilter(item)
   }

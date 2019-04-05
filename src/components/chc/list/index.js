@@ -189,7 +189,7 @@ const CharitiesList = ({ onHover, filtersObj }) => {
                   >
                     <List.Item.Meta
                       title={
-                        <Link to={`/charities/${id}`}>
+                        <Link to={`/chc/${id}`}>
                           {names.reduce((agg, x) => (x.primary ? x.value : agg), null)} <Income income={finances.length > 0 ? finances[0].income : null} />
                         </Link>
                       }
