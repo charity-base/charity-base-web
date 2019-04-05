@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import qs from 'query-string'
 import Home from './components/home'
 import CHC from './components/chc'
-import { Charity } from './components/charity'
+import Charity from './components/chc-charity'
 import { About } from './components/about'
 import ApiPortal from './components/api-portal'
 
@@ -22,11 +21,11 @@ const Router = ({ isMobile }) => (
       <Route exact path="/" render={() => (
         <Home />
       )} />
-      <Route path="/chc" render={() => (
+      <Route exact path="/chc" render={() => (
         <CHC />
       )} />
-      <Route path="/charities/:charityId" render={({ match, location }) => (
-        <Charity isMobile={isMobile} charityId={match.params.charityId} view={qs.parse(location.search).view} />
+      <Route path="/chc/:id" render={({ match }) => (
+        <Charity id={match.params.id} />
       )} />
       <Route exact path="/about" render={() => (
         <About isMobile={isMobile} />
