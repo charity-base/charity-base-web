@@ -6,7 +6,7 @@ import { LocaleProvider } from 'antd'
 import enGB from 'antd/lib/locale-provider/en_GB'
 import { charityBaseGqlApiUri, charityBaseApiKey } from './lib/constants'
 import auth from './lib/auth'
-import { Router } from './Router'
+import Router from './Router'
 import './App.scss'
 
 const client = new ApolloClient({
