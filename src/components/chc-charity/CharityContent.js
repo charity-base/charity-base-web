@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import numeral from 'numeral'
 import { Card, Col, Row, Tag, Timeline, Typography } from 'antd'
 import { ResponsiveScroll } from '../general/Layout'
-import { Bar, BarChart } from 'recharts'
+import { Bar, BarChart, Tooltip } from 'recharts'
 
 const {
   Paragraph,
@@ -29,6 +30,8 @@ const CharityContent = ({
   registrations,
   website
 }) => {
+  const sortedFinances = finances.sort((a, b) => (new Date(a.financialYear.end) - new Date(b.financialYear.end)))
+  const sortedRegistrations = registrations.sort((a, b) => (new Date(a.registrationDate) - new Date(b.registrationDate)))
   return (
     <ResponsiveScroll style={{ backgroundColor: '#fafafa' }}>
       <Title level={3}>
@@ -41,7 +44,7 @@ const CharityContent = ({
       </div>
       <div style={{ marginBottom: '1em' }}>
         <Timeline>
-          {registrations.sort((a, b) => (new Date(a.registrationDate) - new Date(b.registrationDate))).map(x => (
+          {sortedRegistrations.map(x => (
             <Fragment
               key={x.registrationDate}
             >
@@ -86,24 +89,43 @@ const CharityContent = ({
           </Card>
         </Col>
         <Col xs={24} sm={24} md={24} lg={24} xl={8} xxl={8} offset={0} pull={0} push={0}>
-          <Card title='Finances' bordered={false} style={{ marginBottom: '2em' }}>
+          <Card
+            bordered={false}
+            extra={<Link to={`/chc/${id}/finances`}>table view</Link>}
+            style={{ marginBottom: '2em' }}
+            title='Finances'
+          >
+            <Paragraph>Latest Income: {formatCurrency(sortedFinances[sortedFinances.length - 1].income)}</Paragraph>
             <BarChart
+              barCategoryGap={3}
+              barGap={0}
               width={300}
               height={80}
-              data={finances.sort((a, b) => (new Date(a.financialYear.end) - new Date(b.financialYear.end)))}
+              data={sortedFinances}
             >
+              <Tooltip
+                labelFormatter={i => `Year Ending: ${sortedFinances[i].financialYear.end.substring(0,10)}`}
+                formatter={(value, dataKey) => ([
+                  dataKey,
+                  formatCurrency(value),
+                ])}
+                separator=' '
+              />
               <Bar dataKey='income' fill='#8884d8' />
               <Bar dataKey='spending' fill='pink' />
             </BarChart>
-            <div>
-              Received {grants.length} public grants totalling {formatCurrency(grants.reduce((agg, x) => (agg + x.amountAwarded), 0))} from:
+            {grants && grants.length > 0 ? (
               <div>
-                {Array.from(new Set(grants.map(x => x.fundingOrganization[0]))).map(x => (
-                  <Tag key={x.id}>{x.name}</Tag>
-                ))}
+                <Paragraph>
+                  Received {grants.length} public grants totalling {formatCurrency(grants.reduce((agg, x) => (agg + x.amountAwarded), 0))} from:
+                </Paragraph>
+                <div>
+                  {Array.from(new Set(grants.map(x => x.fundingOrganization[0]))).map(x => (
+                    <Tag key={x.id}>{x.name}</Tag>
+                  ))}
+                </div>
               </div>
-              <div>Insert link to grants table here</div>
-            </div>
+            ) : null}
           </Card>
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={8} offset={0} pull={0} push={0}>
