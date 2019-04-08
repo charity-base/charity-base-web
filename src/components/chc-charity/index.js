@@ -4,7 +4,7 @@ import { Query } from 'react-apollo'
 import { Layout, Typography } from 'antd'
 import { GET_CHARITY } from '../../lib/gql'
 import { ContentLayout } from '../general/Layout'
-import CharityContent from './CharityContent'
+import CharityOverview from './CharityOverview'
 
 const {
   Content, Footer, Sider,
@@ -59,7 +59,7 @@ const Charity = ({ id }) => {
                 height: '100%',
               }}>
 
-                <CharityContent {...charity} />
+                <CharityOverview {...charity} />
               </Content>
               <Footer style={{
                 background: '#fafafa',

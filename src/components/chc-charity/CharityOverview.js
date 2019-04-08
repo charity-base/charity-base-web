@@ -14,7 +14,7 @@ const {
 const formatPeople = x => numeral(x).format('0,000')
 const formatCurrency = x => `£${numeral(x).format('0a')}`
 
-const CharityContent = ({
+const CharityOverview = ({
   activities,
   areas,
   beneficiaries,
@@ -160,7 +160,7 @@ const CharityContent = ({
     </ResponsiveScroll>
   )
 }
-CharityContent.propTypes = {
+CharityOverview.propTypes = {
   activities: PropTypes.string,
   areas: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -226,4 +226,4 @@ CharityContent.propTypes = {
   website: PropTypes.string,
 }
 
-export default CharityContent
+export default CharityOverview
