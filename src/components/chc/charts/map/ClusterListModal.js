@@ -70,7 +70,7 @@ const ClusterListModal = ({ bounds, count, geohashes, filters, onClose, open }) 
                   <Skeleton loading={loading} active>
                     <List.Item.Meta
                       title={
-                        <Link to={`/charities/${item.id}`}>
+                        <Link to={`/chc/${item.id}`}>
                           {item.names ? item.names.reduce((agg, x) => (x.primary ? x.value : agg), null) : null}
                         </Link>
                       }
