@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
-import { Tag, Timeline, Typography } from 'antd'
+import { Card, Col, Row, Tag, Timeline, Typography } from 'antd'
 import { ResponsiveScroll } from '../general/Layout'
 import { Bar, BarChart } from 'recharts'
 
@@ -30,27 +30,14 @@ const CharityContent = ({
   website
 }) => {
   return (
-    <ResponsiveScroll>
+    <ResponsiveScroll style={{ backgroundColor: '#fafafa' }}>
       <Title level={3}>
         Also known as: {names.reduce((agg, x) => (x.primary ? agg : [...agg, x.value]), []).join(', ')}
       </Title>
-      <Paragraph>
-        {activities}
-      </Paragraph>
       <div style={{ marginBottom: '1em' }}>
         {orgIds.map(x => (
           <Tag key={x.id}>{x.id}</Tag>
         ))}
-      </div>
-      <div style={{ marginBottom: '1em' }}>
-        {website ? <a href={website}>{website}</a> : 'no website recorded'}
-      </div>
-      <div style={{ marginBottom: '1em' }}>
-        <Title level={4}>Contact</Title>
-        <p>{contact.email}</p>
-        <p>{contact.phone}</p>
-        <p>{contact.address.join(', ')}</p>
-        <p>{contact.postcode}</p>
       </div>
       <div style={{ marginBottom: '1em' }}>
         <Timeline>
@@ -76,55 +63,78 @@ const CharityContent = ({
         </Timeline>
       </div>
       <div style={{ marginBottom: '1em' }}>
-        <Title level={4}>People</Title>
-        <div>{formatPeople(numPeople.employees)} employees</div>
-        <div>{formatPeople(numPeople.trustees)} trustees</div>
-        <div>{formatPeople(numPeople.volunteers)} volunteers</div>
+        {website ? <a href={website}>{website}</a> : 'no website recorded'}
       </div>
-      <div style={{ marginBottom: '1em' }}>
-        <Title level={4}>Finances</Title>
-        <BarChart
-          width={300}
-          height={80}
-          data={finances.sort((a, b) => (new Date(a.financialYear.end) - new Date(b.financialYear.end)))}
-        >
-          <Bar dataKey='income' fill='#8884d8' />
-          <Bar dataKey='spending' fill='pink' />
-        </BarChart>
-        <div>
-          Received {grants.length} public grants totalling {formatCurrency(grants.reduce((agg, x) => (agg + x.amountAwarded), 0))} from:
-          <div>
-            {Array.from(new Set(grants.map(x => x.fundingOrganization[0]))).map(x => (
+      <Card bordered={false} style={{ marginBottom: '1em' }}>
+        <Paragraph style={{ fontSize: '1.5em' }}>
+          "{activities}"
+        </Paragraph>
+      </Card>
+      <Row gutter={16} type='flex' justify='space-around' style={{ marginBottom: '1em' }}>
+        <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={8} offset={0} pull={0} push={0}>
+          <Card title='Contact' bordered={false} style={{ marginBottom: '2em' }}>
+            <Paragraph>{contact.email}</Paragraph>
+            <Paragraph>{contact.phone}</Paragraph>
+            <Paragraph>{[...contact.address, contact.postcode].join(', ')}</Paragraph>
+          </Card>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={8} xxl={8} offset={0} pull={0} push={0}>
+          <Card title='People' bordered={false} style={{ marginBottom: '2em' }}>
+            <Paragraph>{formatPeople(numPeople.employees)} employees</Paragraph>
+            <Paragraph>{formatPeople(numPeople.trustees)} trustees</Paragraph>
+            <Paragraph>{formatPeople(numPeople.volunteers)} volunteers</Paragraph>
+          </Card>
+        </Col>
+        <Col xs={24} sm={24} md={24} lg={24} xl={8} xxl={8} offset={0} pull={0} push={0}>
+          <Card title='Finances' bordered={false} style={{ marginBottom: '2em' }}>
+            <BarChart
+              width={300}
+              height={80}
+              data={finances.sort((a, b) => (new Date(a.financialYear.end) - new Date(b.financialYear.end)))}
+            >
+              <Bar dataKey='income' fill='#8884d8' />
+              <Bar dataKey='spending' fill='pink' />
+            </BarChart>
+            <div>
+              Received {grants.length} public grants totalling {formatCurrency(grants.reduce((agg, x) => (agg + x.amountAwarded), 0))} from:
+              <div>
+                {Array.from(new Set(grants.map(x => x.fundingOrganization[0]))).map(x => (
+                  <Tag key={x.id}>{x.name}</Tag>
+                ))}
+              </div>
+              <div>Insert link to grants table here</div>
+            </div>
+          </Card>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={8} offset={0} pull={0} push={0}>
+          <Card title='Areas' bordered={false} style={{ marginBottom: '2em' }}>
+            <Paragraph>
+              {areas.filter(x => x.id[0] === 'A').map(x => (
+                <Tag key={x.id}>{x.name}</Tag>
+              ))}
+            </Paragraph>
+            <Paragraph>{areas.filter(x => ['B', 'C'].indexOf(x.id[0]) > -1).length} local areas</Paragraph>
+            <Paragraph>{areas.filter(x => x.id[0] === 'D').length} countries</Paragraph>
+            <Paragraph>{areas.filter(x => x.id[0] === 'E').length} continents</Paragraph>
+          </Card>
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={12} xxl={8} offset={0} pull={0} push={0}>
+          <Card title='Themes' bordered={false} style={{ marginBottom: '2em' }}>
+            <Paragraph>Causes:</Paragraph>
+            {causes.map(x => (
               <Tag key={x.id}>{x.name}</Tag>
             ))}
-          </div>
-          <div>Insert link to grants table here</div>
-        </div>
-      </div>
-      <div style={{ marginBottom: '1em' }}>
-        <Title level={4}>Areas</Title>
-        {areas.map(x => (
-          <Tag key={x.id}>{x.name}</Tag>
-        ))}
-      </div>
-      <div style={{ marginBottom: '1em' }}>
-        <Title level={4}>Causes</Title>
-        {causes.map(x => (
-          <Tag key={x.id}>{x.name}</Tag>
-        ))}
-      </div>
-      <div style={{ marginBottom: '1em' }}>
-        <Title level={4}>Beneficiaries</Title>
-        {beneficiaries.map(x => (
-          <Tag key={x.id}>{x.name}</Tag>
-        ))}
-      </div>
-      <div style={{ marginBottom: '1em' }}>
-        <Title level={4}>Operations</Title>
-        {operations.map(x => (
-          <Tag key={x.id}>{x.name}</Tag>
-        ))}
-      </div>
+            <Paragraph>Beneficiaries:</Paragraph>
+            {beneficiaries.map(x => (
+              <Tag key={x.id}>{x.name}</Tag>
+            ))}
+            <Paragraph>Operations:</Paragraph>
+            {operations.map(x => (
+              <Tag key={x.id}>{x.name}</Tag>
+            ))}
+          </Card>
+        </Col>
+      </Row>
     </ResponsiveScroll>
   )
 }
