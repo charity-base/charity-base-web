@@ -5,6 +5,7 @@ import { Layout, Typography } from 'antd'
 import { GET_CHARITY } from '../../lib/gql'
 import { ContentLayout } from '../general/Layout'
 import CharityOverview from './CharityOverview'
+import CharityContentRouter from './CharityContentRouter'
 
 const {
   Content, Footer, Sider,
@@ -59,7 +60,7 @@ const Charity = ({ id }) => {
                 height: '100%',
               }}>
 
-                <CharityOverview {...charity} />
+                <CharityContentRouter charity={charity} />
               </Content>
               <Footer style={{
                 background: '#fafafa',
