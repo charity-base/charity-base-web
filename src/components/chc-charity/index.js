@@ -4,8 +4,8 @@ import { Query } from 'react-apollo'
 import { Layout, Typography } from 'antd'
 import { GET_CHARITY } from '../../lib/gql'
 import { ContentLayout } from '../general/Layout'
-import CharityOverview from './CharityOverview'
 import CharityContentRouter from './CharityContentRouter'
+import SideBarContent from './side-bar'
 
 const {
   Content, Footer, Sider,
@@ -39,7 +39,9 @@ const Charity = ({ id }) => {
                 color: 'rgba(255,255,255,0.8)',
               }}
             >
-              <div>side bar content here</div>
+              <SideBarContent
+                charityId={charity.id}
+              />
             </Sider>
             <ContentLayout>
               <div style={{
