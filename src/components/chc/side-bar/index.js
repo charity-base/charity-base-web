@@ -5,22 +5,12 @@ import { HomeLink } from '../../general/Layout'
 import { DownloadResults } from '../../general/download'
 import { CopyUrl } from '../../general/CopyUrl'
 import { MenuBarHeader } from '../../general/MenuBar'
-import { SideBarTitle } from '../../general/InfoText'
-import Filters from './Filters'
 import LogInOrOut from '../../general/LogInOrOut'
 
 const SideBar = ({ filtersList, onRemoveFilter }) => (
   <div>
     <MenuBarHeader>
       <HomeLink to='/'>CharityBase</HomeLink>
-      <SideBarTitle>
-        <Icon type='filter' style={{ marginRight: '10px' }}/>
-        FILTERS
-      </SideBarTitle>
-      <Filters
-        filtersList={filtersList}
-        onClose={onRemoveFilter}
-      />
       <Divider />
       <div style={{ marginTop: '5px' }}><CopyUrl /></div>
       <div style={{ marginTop: '5px' }}><DownloadResults queryString={''} /></div>
