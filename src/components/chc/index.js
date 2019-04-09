@@ -9,30 +9,18 @@ import FilterTags from './filter-tags'
 import { filtersListToObj, addFilter, removeFilter } from './helpers'
 
 const {
-  Content, Footer, Sider,
+  Content, Footer,
 } = Layout
 
-const SIDER_WIDTH = 240
 
 const CharitiesLayout = ({ filtersList, filtersObj, onAddFilter, onRemoveFilter }) => {
   const [hoveredItem, setHoveredItem] = useState({})
   return (
     <Layout>
-      <Sider
-        width={SIDER_WIDTH}
-        style={{
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
-          color: 'rgba(255,255,255,0.8)',
-        }}
-      >
-        <SideBar
-          filtersList={filtersList}
-          onRemoveFilter={onRemoveFilter}
-        />
-      </Sider>
+      <SideBar
+        filtersList={filtersList}
+        onRemoveFilter={onRemoveFilter}
+      />
       <ContentLayout>
         <ContentLayoutHeader
           large={filtersList.length > 0}
