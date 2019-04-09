@@ -1,80 +1,55 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { NavLink } from 'react-router-dom'
-import { Divider, Menu, Typography } from 'antd'
+import React, { Fragment, useState } from 'react'
+import { Route } from 'react-router-dom'
+import { Layout } from 'antd'
 import { HomeLink } from '../../general/Layout'
+import LogInOrOut from '../../general/LogInOrOut'
+import NavMenu from './NavMenu'
+import ListenToProp from './ListenToProp'
 
-const { Title } = Typography
+const SIDER_WIDTH = 240
 
-const SideBarContent = ({ charityId }) => {
+const SideBar = () => {
+  const [chcIds, setChcIds] = useState([])
   return (
-    <div>
-      <div
+    <Fragment>
+      <Route path='/chc/:id' render={({ match }) => (
+        <ListenToProp
+          stringProp={match.params.id}
+          onChange={id => {
+            if (!id) return
+            if (chcIds.indexOf(id) > -1) return
+            setChcIds([...chcIds, id])
+          }}
+        />
+      )} />
+      <Layout.Sider
+        width={SIDER_WIDTH}
         style={{
-          padding: '1em',
-          textAlign: 'center',
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0,
+          color: 'rgba(255,255,255,0.8)',
         }}
       >
-        <HomeLink to='/'>CharityBase</HomeLink>
-        <Divider />
-        <Title
-          level={4}
+        <div
           style={{
-            color: 'inherit',
+            padding: '1em',
+            textAlign: 'center',
           }}
         >
-          Charity # {charityId}
-        </Title>
-        <Divider />
-      </div>
-      <Menu
-        selectable={false}
-        mode='inline'
-        defaultOpenKeys={['finances_submenu']}
-        style={{ borderStyle: 'none' }}
-        theme='dark'
-      >
-        <Menu.Item key='overview_menu_item'>
-          <NavLink
-            to={`/chc/${charityId}`}
-            exact={true}
-            activeStyle={{
-              color: '#EC407A',
-            }}
-          >
-            Overview
-          </NavLink>
-        </Menu.Item>
-        <Menu.SubMenu key='finances_submenu' title='Finances'>
-          <Menu.Item key='income_menu_item'>
-            <NavLink
-              to={`/chc/${charityId}/finances`}
-              exact={true}
-              activeStyle={{
-                color: '#EC407A',
-              }}
-            >
-              Income & Spending
-            </NavLink>
-          </Menu.Item>
-          <Menu.Item key='grants_menu_item'>
-            <NavLink
-              to={`/chc/${charityId}/finances/grants`}
-              exact={true}
-              activeStyle={{
-                color: '#EC407A',
-              }}
-            >
-              Public Grants
-            </NavLink>
-          </Menu.Item>
-        </Menu.SubMenu>
-      </Menu>
-    </div>
+          <HomeLink to='/'>CharityBase</HomeLink>
+          <LogInOrOut
+            renderLoggedInText={name => <p>Logged in as {name}</p>}
+            renderLoggedOutText={name => null}
+          />
+        </div>
+        <NavMenu
+          chcIds={chcIds}
+        />
+      </Layout.Sider>
+    </Fragment>
   )
 }
-SideBarContent.propTypes = {
-  charityId: PropTypes.string.isRequired,
-}
 
-export default SideBarContent
+export default SideBar

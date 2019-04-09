@@ -5,17 +5,15 @@ import { Layout, Typography } from 'antd'
 import { GET_CHARITY } from '../../lib/gql'
 import { ContentLayout } from '../general/Layout'
 import CharityContentRouter from './CharityContentRouter'
-import SideBarContent from './side-bar'
+import SideBar from './side-bar'
 
 const {
-  Content, Footer, Sider,
+  Content, Footer,
 } = Layout
 
 const {
   Title,
 } = Typography
-
-const SIDER_WIDTH = 240
 
 const Charity = ({ id }) => {
   return (
@@ -29,20 +27,7 @@ const Charity = ({ id }) => {
         const charity = (data && data.CHC && data.CHC.getCharities.list[0]) || null
         return charity ? (
           <Layout>
-            <Sider
-              width={SIDER_WIDTH}
-              style={{
-                overflow: 'auto',
-                height: '100vh',
-                position: 'fixed',
-                left: 0,
-                color: 'rgba(255,255,255,0.8)',
-              }}
-            >
-              <SideBarContent
-                charityId={charity.id}
-              />
-            </Sider>
+            <SideBar />
             <ContentLayout>
               <div style={{
                 boxShadow: '0 0 1em',
