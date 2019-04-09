@@ -3,9 +3,9 @@ import { Layout, Row, Col } from 'antd'
 import CharitiesChart from './charts'
 import CharitiesList from './list'
 import CharitiesSearch from './search'
-import SideBar from './side-bar'
-import Filters from './side-bar/Filters'
+import SideBar from '../general/side-bar'
 import { ContentLayout, ContentLayoutHeader } from '../general/Layout'
+import FilterTags from './filter-tags'
 import { filtersListToObj, addFilter, removeFilter } from './helpers'
 
 const {
@@ -41,7 +41,7 @@ const CharitiesLayout = ({ filtersList, filtersObj, onAddFilter, onRemoveFilter 
             onAddFilter={onAddFilter}
           />
           {filtersList.length > 0 ? (
-            <Filters
+            <FilterTags
               filtersList={filtersList}
               onClose={onRemoveFilter}
             />
