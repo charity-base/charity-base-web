@@ -3,40 +3,18 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import { Layout } from 'antd'
 import { ContentLayout } from '../general/Layout'
 import ApiKeys from './api-keys'
-import SideBarContent from './side-bar'
+import SideBar from '../general/side-bar'
 import Playground from './playground'
 
 const {
-  Content, Footer, Sider,
+  Content, Footer,
 } = Layout
-
-const SIDER_WIDTH = 240
-
-const MENU_ITEMS = [
-  { path: '', label: 'Getting Started' },
-  { path: 'keys', label: 'API Keys' },
-  { path: 'playground', label: 'Playground' },
-  { path: 'docs', label: 'Docs' },
-]
 
 const ApiPortal = () => {
   const [playgroundKey, setPlaygroundKey] = useState(undefined)
   return (
     <Layout>
-      <Sider
-        width={SIDER_WIDTH}
-        style={{
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
-          color: 'rgba(255,255,255,0.8)',
-        }}
-      >
-        <SideBarContent
-          menuItems={MENU_ITEMS}
-        />
-      </Sider>
+      <SideBar />
       <ContentLayout>
         <Content style={{
           background: '#fff',
