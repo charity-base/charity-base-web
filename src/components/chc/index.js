@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Component, useState } from 'react'
 import { Layout, Row, Col } from 'antd'
 import CharitiesChart from './charts'
 import CharitiesList from './list'
@@ -13,10 +13,8 @@ const {
 
 const SIDER_WIDTH = 240
 
-const Charities = () => {
+const CharitiesLayout = ({ filtersList, filtersObj, onAddFilter, onRemoveFilter }) => {
   const [hoveredItem, setHoveredItem] = useState({})
-  const [filtersList, setFiltersList] = useState([])
-  const filtersObj = filtersListToObj(filtersList)
   return (
     <Layout>
       <Sider
@@ -31,7 +29,7 @@ const Charities = () => {
       >
         <SideBar
           filtersList={filtersList}
-          onRemoveFilter={item => setFiltersList(removeFilter(filtersList, item))}
+          onRemoveFilter={onRemoveFilter}
         />
       </Sider>
       <ContentLayout>
@@ -40,7 +38,7 @@ const Charities = () => {
           zIndex: 2,
         }}>
           <CharitiesSearch
-            onAddFilter={item => setFiltersList(addFilter(filtersList, item))}
+            onAddFilter={onAddFilter}
           />
         </div>
         <Content style={{
@@ -62,8 +60,8 @@ const Charities = () => {
               <CharitiesChart
                 filtersObj={filtersObj}
                 hoveredItem={hoveredItem}
-                onAddFilter={item => setFiltersList(addFilter(filtersList, item))}
-                onRemoveFilter={item => setFiltersList(removeFilter(filtersList, item))}
+                onAddFilter={onAddFilter}
+                onRemoveFilter={onRemoveFilter}
               />
             </Col>
           </Row>
@@ -81,7 +79,45 @@ const Charities = () => {
     </Layout>
   )
 }
-Charities.propTypes = {
+CharitiesLayout.propTypes = {
 }
+
+class Charities extends Component {
+  state = {
+    filtersList: [],
+  }
+  componentDidMount() {
+    // get filters query string from prop
+    // convert to filtersIdsList
+    // fetch filters from gql getFilters
+    // add syncronous filters
+    // order by alphabetical id
+    // set filtersList state
+  }
+  componentDidUpdate() {
+    // check if filters query string prop has changed
+  }
+  onAddFilter = item => {
+    const { filtersList } = this.state
+    this.setState({ filtersList: addFilter(filtersList, item) })
+  }
+  onRemoveFilter = item => {
+    const { filtersList } = this.state
+    this.setState({ filtersList: removeFilter(filtersList, item) })
+  }
+  render() {
+    const { filtersList } = this.state
+    const filtersObj = filtersListToObj(filtersList)
+    return (
+      <CharitiesLayout
+        filtersList={filtersList}
+        filtersObj={filtersObj}
+        onAddFilter={this.onAddFilter}
+        onRemoveFilter={this.onRemoveFilter}
+      />
+    )
+  }
+}
+// todo add filters string as a prop
 
 export default Charities
