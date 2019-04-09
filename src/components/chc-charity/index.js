@@ -4,8 +4,8 @@ import { Query } from 'react-apollo'
 import { Layout, Typography } from 'antd'
 import { GET_CHARITY } from '../../lib/gql'
 import { ContentLayout } from '../general/Layout'
+import SideBar from '../general/side-bar'
 import CharityContentRouter from './CharityContentRouter'
-import SideBar from './side-bar'
 
 const {
   Content, Footer,
