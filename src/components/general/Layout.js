@@ -104,6 +104,13 @@ const ContentLayout = styled(Layout)`
   }
 `
 
+const ContentLayoutHeader = styled.div`
+  box-shadow: 0 0 1em;
+  z-index: 2;
+  transition: height 0.1s;
+  height: ${({ large }) => large ? 2*56 : 56}px;
+`
+
 const Page = ({ isMobile, children }) => (
   <PageContent isMobile={isMobile}>
     <PageLayout isMobile={isMobile}>
@@ -197,6 +204,7 @@ export {
   Page,
   ResponsiveSider,
   ContentLayout,
+  ContentLayoutHeader,
   ResponsiveScroll,
   HomeLink,
 }

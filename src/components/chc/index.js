@@ -4,7 +4,8 @@ import CharitiesChart from './charts'
 import CharitiesList from './list'
 import CharitiesSearch from './search'
 import SideBar from './side-bar'
-import { ContentLayout } from '../general/Layout'
+import Filters from './side-bar/Filters'
+import { ContentLayout, ContentLayoutHeader } from '../general/Layout'
 import { filtersListToObj, addFilter, removeFilter } from './helpers'
 
 const {
@@ -33,14 +34,19 @@ const CharitiesLayout = ({ filtersList, filtersObj, onAddFilter, onRemoveFilter 
         />
       </Sider>
       <ContentLayout>
-        <div style={{
-          boxShadow: '0 0 1em',
-          zIndex: 2,
-        }}>
+        <ContentLayoutHeader
+          large={filtersList.length > 0}
+        >
           <CharitiesSearch
             onAddFilter={onAddFilter}
           />
-        </div>
+          {filtersList.length > 0 ? (
+            <Filters
+              filtersList={filtersList}
+              onClose={onRemoveFilter}
+            />
+          ) : null}
+        </ContentLayoutHeader>
         <Content style={{
           background: '#fff',
           margin: '0 0 0 0',
