@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import CharityFinances from './finances'
 import CharityOverview from './CharityOverview'
 
 const CharityContentRouter = ({ charity }) => {
@@ -9,8 +10,8 @@ const CharityContentRouter = ({ charity }) => {
       <Route exact path='/chc/:id' render={() => (
         <CharityOverview {...charity} />
       )} />
-      <Route exact path='/chc/:id/finances' render={() => (
-        <div>charity finances table goes here</div>
+      <Route path='/chc/:id/finances' render={() => (
+        <CharityFinances {...charity} />
       )} />
       <Redirect to='/chc/:id' />
     </Switch>
