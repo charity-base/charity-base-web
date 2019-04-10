@@ -17,17 +17,17 @@ const {
 
 const Charity = ({ id }) => {
   return (
-    <Query
-      query={GET_CHARITY}
-      variables={{ id }}
-    >
-      {({ loading, error, data, fetchMore }) => {
-        if (error) return 'oops err'
-        if (loading) return 'loading'
-        const charity = (data && data.CHC && data.CHC.getCharities.list[0]) || null
-        return charity ? (
-          <Layout>
-            <SideBar />
+    <Layout>
+      <SideBar />
+      <Query
+        query={GET_CHARITY}
+        variables={{ id }}
+      >
+        {({ loading, error, data, fetchMore }) => {
+          if (error) return 'oops err'
+          if (loading) return 'loading'
+          const charity = (data && data.CHC && data.CHC.getCharities.list[0]) || null
+          return charity ? (
             <ContentLayout>
               <div style={{
                 boxShadow: '0 0 1em',
@@ -46,7 +46,6 @@ const Charity = ({ id }) => {
                 position: 'relative',
                 height: '100%',
               }}>
-
                 <CharityContentRouter charity={charity} />
               </Content>
               <Footer style={{
@@ -59,12 +58,12 @@ const Charity = ({ id }) => {
                 CharityBase 2019 - created open source by <a href='https://worthwhile.app'>worthwhile.app</a>
               </Footer>
             </ContentLayout>
-          </Layout>
-        ) : (
-          <div>Failed to find a charity with id {id}. Insert CharityBaseSearch component here.</div>
-        )
-      }}
-    </Query>
+          ) : (
+            <div>Failed to find a charity with id {id}. Insert CharityBaseSearch component here.</div>
+          )
+        }}
+      </Query>
+    </Layout>
   )
 }
 Charity.propTypes = {
