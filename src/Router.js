@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route, Redirect } from 'react-router-dom'
-import Home from './components/home'
-import CHC from './components/chc'
-import Charity from './components/chc-charity'
-import { About } from './components/about'
+import About from './components/about'
 import ApiPortal from './components/api-portal'
+import CharityCHC from './components/chc-charity'
+import Home from './components/home'
+import SearchCHC from './components/chc'
 
 const Router = ({ isMobile }) => (
   <React.Fragment>
@@ -22,16 +22,16 @@ const Router = ({ isMobile }) => (
         <Home />
       )} />
       <Route exact path="/chc" render={() => (
-        <CHC />
+        <SearchCHC />
       )} />
       <Route path="/chc/:id" render={({ match }) => (
-        <Charity id={match.params.id} />
+        <CharityCHC id={match.params.id} />
       )} />
-      <Route exact path="/about" render={() => (
-        <About isMobile={isMobile} />
+      <Route exact path="/about/:questionId?" render={({ match }) => (
+        <About questionId={match.params.questionId} />
       )} />
       <Route path="/api-portal" render={() => (
-        <ApiPortal isMobile={isMobile} />
+        <ApiPortal />
       )} />
       <Route exact path="/api-explorer" render={() => (
         <Redirect to="/api-portal/playground"/>
@@ -46,5 +46,7 @@ const Router = ({ isMobile }) => (
 Router.propTypes = {
   isMobile: PropTypes.bool,
 }
+
+// TODO: add redirect from /charities/:id -> /chc/:id
 
 export default Router

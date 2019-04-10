@@ -16,6 +16,7 @@ const NavMenu = ({ chcIds }) => {
         ...chcIds.map(subMenuChcKey),
         ...chcIds.map(subMenuChcFinancesKey),
         'submenu_api',
+        'submenu_about',
       ]}
       style={{ borderStyle: 'none' }}
       theme='dark'
@@ -34,7 +35,7 @@ const NavMenu = ({ chcIds }) => {
               color: '#EC407A',
             }}
           >
-            Search
+            Search Charities
           </NavLink>
         </Menu.Item>
         {chcIds.map(x => (
@@ -141,11 +142,134 @@ const NavMenu = ({ chcIds }) => {
           </a>
         </Menu.Item>
       </Menu.SubMenu>
+      <Menu.SubMenu
+        key='submenu_about'
+        title='About'
+      >
+        <Menu.Item
+          key='menu_item_about_what-is-it'
+        >
+          <NavLink
+            to='/about/what-is-it'
+            exact={true}
+            activeStyle={{
+              color: '#EC407A',
+            }}
+          >
+            What is CharityBase?
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item
+          key='menu_item_about_already-exist'
+        >
+          <NavLink
+            to='/about/already-exist'
+            exact={true}
+            activeStyle={{
+              color: '#EC407A',
+            }}
+          >
+            Doesn't that already exist?
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item
+          key='menu_item_about_who-uses-it'
+        >
+          <NavLink
+            to='/about/who-uses-it'
+            exact={true}
+            activeStyle={{
+              color: '#EC407A',
+            }}
+          >
+            Who uses it?
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item
+          key='menu_item_about_api'
+        >
+          <NavLink
+            to='/about/api'
+            exact={true}
+            activeStyle={{
+              color: '#EC407A',
+            }}
+          >
+            What's an API?
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item
+          key='menu_item_about_download'
+        >
+          <NavLink
+            to='/about/download'
+            exact={true}
+            activeStyle={{
+              color: '#EC407A',
+            }}
+          >
+            Can I Download the Data?
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item
+          key='menu_item_about_other-countries'
+        >
+          <NavLink
+            to='/about/other-countries'
+            exact={true}
+            activeStyle={{
+              color: '#EC407A',
+            }}
+          >
+            What about other countries?
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item
+          key='menu_item_about_who-makes-it'
+        >
+          <NavLink
+            to='/about/who-makes-it'
+            exact={true}
+            activeStyle={{
+              color: '#EC407A',
+            }}
+          >
+            Who's behind it?
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item
+          key='menu_item_about_contact'
+        >
+          <NavLink
+            to='/about/contact'
+            exact={true}
+            activeStyle={{
+              color: '#EC407A',
+            }}
+          >
+            Contact
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item
+          key='menu_item_about_licence'
+        >
+          <NavLink
+            to='/about/licence'
+            exact={true}
+            activeStyle={{
+              color: '#EC407A',
+            }}
+          >
+            Licence
+          </NavLink>
+        </Menu.Item>
+      </Menu.SubMenu>
     </Menu>
   )
 }
+
 NavMenu.propTypes = {
-  charityId: PropTypes.string.isRequired,
+  chcIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
 export default NavMenu
