@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Affix, Layout, Icon, Typography } from 'antd'
-import { CenteredContent } from '../general/Layout'
+import { Affix, Col, Layout, Icon, Row, Typography } from 'antd'
 import SideBar from '../general/side-bar'
 import CharitiesSearch from '../chc/search'
+import { graphiql, income } from './images'
 
 const {
   Content,
@@ -51,6 +52,35 @@ const Search = () => {
 
 const Section = styled.div`
   margin-bottom: 10em;
+  h1 {
+    color: rgba(0,0,0,.65) !important;
+    font-weight: 350 !important;
+    font-size: 3.5em !important;
+    letter-spacing: 0.05em !important;
+  }
+  h2, h3, h4 {
+    color: rgba(0,0,0,.65) !important;
+  }
+
+`
+
+const SectionText = styled.div`
+  font-size: 1.3em;
+  margin: 1.5em auto;
+  padding: 0 2em;
+  max-width: 730px;
+`
+
+const TitleIcon = styled(Icon)`
+  font-size: 3em;
+  margin-bottom: 0.5em;
+  color: #EC407A !important;
+`
+
+const Image = styled.img`
+  width: 100%;
+  ${({ maxWidth }) => maxWidth ? `max-width: ${maxWidth};` : null}
+  box-shadow: rgba(50, 50, 93, 0.25) 0 0 1em;
 `
 
 const Home = () => {
@@ -58,48 +88,74 @@ const Home = () => {
     <Layout>
       <SideBar />
       <Layout style={{ marginLeft: 240, textAlign: 'center', minHeight: '100vh' }}>
-        <Content style={{ padding: '2em 0', backgroundColor: 'papayawhip', }}>
+        <Content style={{ padding: '4em 0', backgroundColor: 'papayawhip', }}>
           <Section>
-            <Title style={{ fontSize: '4em' }}>
+            <Title>
               The Database of Charities
             </Title>
           </Section>
           <Section>
-            <Title level={2}>
-              <Icon type='file-search' style={{ marginRight: '0.8em' }} />
-              Search Engine
+            <TitleIcon type='file-search' />
+            <Title level={3}>
+              SEARCH ENGINE
             </Title>
+            <SectionText>
+              <Paragraph>
+                The database is searchable 👇
+              </Paragraph>
+            </SectionText>
             <Search />
           </Section>
           <Section>
-            <Title level={2}>
-              <Icon type='bar-chart' style={{ marginRight: '0.8em' }} />
-              Visual Analytics
-            </Title>
-          </Section>
-          <Section>
-            <Title level={2}>
-              <Icon type='api' style={{ marginRight: '0.8em' }} />
+            <TitleIcon type='api' />
+            <Title level={3}>
               API
             </Title>
-            <Paragraph>
-              A tool for creating services for & about charities
-            </Paragraph>
-            <Paragraph>
-              Image & link to GraphQL API playground
-            </Paragraph>
+            <SectionText>
+              <Paragraph>
+                The API is a developer-friendly tool for plugging in to our database.
+                We opened it up to allow other organisations to create new or enhance existing digital services for charities.
+                <Link to='/api-portal'> Read more...</Link>
+              </Paragraph>
+            </SectionText>
+            <SectionText>
+              <Link to='/api-portal/playground'>
+                <Image src={graphiql} alt='API Playground' maxWidth='600px' />
+              </Link>
+            </SectionText>
           </Section>
           <Section>
-            <Title level={2}>
-              <Icon type='database' style={{ marginRight: '0.8em' }} />
-              Database
+            <TitleIcon type='bar-chart' />
+            <Title level={3}>
+              VISUALISATIONS
             </Title>
-            <Paragraph>
-              The most comprehensive source of data on charities in the UK
-            </Paragraph>
-            <Paragraph>
-              Download specific search results in CSV or JSON format.
-            </Paragraph>
+            <SectionText>
+              <Row align='middle' type='flex'>
+                <Col xs={24} lg={12}>
+                  <Paragraph>
+                    As well as listing all charities, the web app responds to your searches by aggregating the data in real-time, giving an interactive overview of the sector.
+                  </Paragraph>
+                </Col>
+                <Col xs={24} lg={12}>
+                  <Link to='/chc'>
+                    <Image src={income} alt='Income Bands' maxWidth='300px' />
+                  </Link>
+                </Col>
+              </Row>
+            </SectionText>
+          </Section>
+          <Section>
+            <TitleIcon type='database' />
+            <Title level={3}>
+              DATABASE
+            </Title>
+            <SectionText>
+              <Paragraph>
+                At the heart of CharityBase is the most comprehensive source of public data on charities in the UK.
+                Each month our scripts collect, clean and supplement the latest data from multiple sources before indexing the whole lot to make it easily searchable.
+                <Link to='/about'> Read more...</Link>
+              </Paragraph>
+            </SectionText>
           </Section>
         </Content>
         <Footer style={{
