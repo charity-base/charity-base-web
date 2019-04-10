@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Affix, Layout, Icon, Typography } from 'antd'
-import { HomeLink } from '../general/Layout'
+import { CenteredContent } from '../general/Layout'
+import SideBar from '../general/side-bar'
 import CharitiesSearch from '../chc/search'
 
 const {
   Content,
   Footer,
-  Header,
 } = Layout
 
 const {
@@ -16,17 +16,9 @@ const {
 } = Typography
 
 
-const HomeContent = styled(Content)`
-  text-align: center;
-  background: #001529;
-  h1, h2, div {
-    color: rgba(255,255,255,0.8) !important;
-  }
-`
-
 const SearchContainer = styled.div`
   text-align: left;
-  background-color: #001529;
+  background-color: inherit !important;
   box-sizing: border-box;
   padding: 0 0.5em;
   width: 100%;
@@ -63,50 +55,63 @@ const Section = styled.div`
 
 const Home = () => {
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Header>
-        <HomeLink to='/'>CharityBase</HomeLink>
-      </Header>
-      <HomeContent>
-        <Section>
-          <Title level={2}>
-            <Icon type='file-search' style={{ marginRight: '0.8em' }} />
-            Search Engine
-          </Title>
-          <Search />
-        </Section>
-        <Section>
-          <Title level={2}>
-            <Icon type='bar-chart' style={{ marginRight: '0.8em' }} />
-            Visual Analytics
-          </Title>
-        </Section>
-        <Section>
-          <Title level={2}>
-            <Icon type='api' style={{ marginRight: '0.8em' }} />
-            API
-          </Title>
-          <Paragraph>
-            A tool for creating services for & about charities
-          </Paragraph>
-          <Paragraph>
-            Image & link to GraphQL API playground
-          </Paragraph>
-        </Section>
-        <Section>
-          <Title level={2}>
-            <Icon type='database' style={{ marginRight: '0.8em' }} />
-            Database
-          </Title>
-          <Paragraph>
-            The most comprehensive source of data on charities in the UK
-          </Paragraph>
-          <Paragraph>
-            Download specific search results in CSV or JSON format.
-          </Paragraph>
-        </Section>
-      </HomeContent>
-      <Footer>Footer</Footer>
+    <Layout>
+      <SideBar />
+      <Layout style={{ marginLeft: 240, textAlign: 'center', minHeight: '100vh' }}>
+        <Content style={{ padding: '2em 0', backgroundColor: 'papayawhip', }}>
+          <Section>
+            <Title style={{ fontSize: '4em' }}>
+              The Database of Charities
+            </Title>
+          </Section>
+          <Section>
+            <Title level={2}>
+              <Icon type='file-search' style={{ marginRight: '0.8em' }} />
+              Search Engine
+            </Title>
+            <Search />
+          </Section>
+          <Section>
+            <Title level={2}>
+              <Icon type='bar-chart' style={{ marginRight: '0.8em' }} />
+              Visual Analytics
+            </Title>
+          </Section>
+          <Section>
+            <Title level={2}>
+              <Icon type='api' style={{ marginRight: '0.8em' }} />
+              API
+            </Title>
+            <Paragraph>
+              A tool for creating services for & about charities
+            </Paragraph>
+            <Paragraph>
+              Image & link to GraphQL API playground
+            </Paragraph>
+          </Section>
+          <Section>
+            <Title level={2}>
+              <Icon type='database' style={{ marginRight: '0.8em' }} />
+              Database
+            </Title>
+            <Paragraph>
+              The most comprehensive source of data on charities in the UK
+            </Paragraph>
+            <Paragraph>
+              Download specific search results in CSV or JSON format.
+            </Paragraph>
+          </Section>
+        </Content>
+        <Footer style={{
+          background: '#fafafa',
+          textAlign: 'center',
+          padding: '0.5em 1em',
+          fontSize: '0.8em',
+          lineHight: '0.8em',
+        }}>
+          CharityBase 2019 - created open source by <a href='https://worthwhile.app'>worthwhile.app</a>
+        </Footer>
+      </Layout>
     </Layout>
   )
 }
