@@ -63,6 +63,12 @@ const ResponsiveScroll = styled.div`
   }
 `
 
+const CenteredContent = styled.div`
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 720px;
+`
+
 const PageContent = styled(Layout.Content)`
   ${({ isMobile }) => isMobile ? `
     margin-top: 50px;
@@ -199,6 +205,7 @@ const HomeLink = styled(Link)`
 `
 
 export {
+  CenteredContent,
   FixedHeader,
   ScrollableContent,
   Page,

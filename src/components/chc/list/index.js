@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { Button, List, Select } from 'antd'
 import { Query } from 'react-apollo'
 import { LIST_CHARITIES } from '../../../lib/gql'
-import { ResponsiveScroll } from '../../general/Layout'
+import { CenteredContent, ResponsiveScroll } from '../../general/Layout'
 
 const { Option } = Select
 
@@ -163,43 +163,45 @@ const CharitiesList = ({ onHover, filtersObj }) => {
               </Select>
             </div>
             <ResponsiveScroll>
-              <List
-                size="large"
-                itemLayout="vertical"
-                loading={loading}
-                loadMore={
-                  <LoadMore
-                    loading={loading}
-                    error={error}
-                    data={data}
-                    fetchMore={fetchMore}
-                  />
-                }
-                locale={{ emptyText: 'No Charities Found' }}
-                dataSource={data.CHC ? data.CHC.getCharities.list : []}
-                renderItem={({ id, names, activities, geo, finances }) => (
-                  <List.Item
-                    actions={[
-                      // <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
-                      // <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
-                      // <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
-                    ]}
-                    onMouseEnter={() => onHover(geo)}
-                    onMouseLeave={() => onHover({})}
-                  >
-                    <List.Item.Meta
-                      title={
-                        <Link to={`/chc/${id}`}>
-                          {names.reduce((agg, x) => (x.primary ? x.value : agg), null)} <Income income={finances.length > 0 ? finances[0].income : null} />
-                        </Link>
-                      }
-                      description={names.reduce((agg, x) => (x.primary ? agg : [...agg, x.value]), []).join(', ')}
+              <CenteredContent>
+                <List
+                  size="large"
+                  itemLayout="vertical"
+                  loading={loading}
+                  loadMore={
+                    <LoadMore
+                      loading={loading}
+                      error={error}
+                      data={data}
+                      fetchMore={fetchMore}
                     />
-                    {activities && `${activities.slice(0,120)}...`}
-                  </List.Item>
-                )}
-                style={{ marginTop: '5em' }}
-              />
+                  }
+                  locale={{ emptyText: 'No Charities Found' }}
+                  dataSource={data.CHC ? data.CHC.getCharities.list : []}
+                  renderItem={({ id, names, activities, geo, finances }) => (
+                    <List.Item
+                      actions={[
+                        // <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
+                        // <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
+                        // <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
+                      ]}
+                      onMouseEnter={() => onHover(geo)}
+                      onMouseLeave={() => onHover({})}
+                    >
+                      <List.Item.Meta
+                        title={
+                          <Link to={`/chc/${id}`}>
+                            {names.reduce((agg, x) => (x.primary ? x.value : agg), null)} <Income income={finances.length > 0 ? finances[0].income : null} />
+                          </Link>
+                        }
+                        description={names.reduce((agg, x) => (x.primary ? agg : [...agg, x.value]), []).join(', ')}
+                      />
+                      {activities && `${activities.slice(0,120)}...`}
+                    </List.Item>
+                  )}
+                  style={{ marginTop: '5em' }}
+                />
+              </CenteredContent>
             </ResponsiveScroll>
           </Fragment>
         )
