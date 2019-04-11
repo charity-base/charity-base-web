@@ -16,7 +16,6 @@ const {
   Paragraph,
 } = Typography
 
-
 const SearchContainer = styled.div`
   text-align: left;
   background-color: inherit !important;
@@ -26,29 +25,13 @@ const SearchContainer = styled.div`
   transition: padding 0.2s ease-out;
   ${({ fixed }) => fixed ? `
     padding: 0;
+    box-shadow: 0 0 1em;
   ` : `
     @media (min-width: 992px) {
       padding: 0 20%;
     }
   `}
 `
-
-const Search = () => {
-  const [fixed, setFixed] = useState(false)
-  return (
-    <Affix
-      onChange={fixed => setFixed(fixed)}
-    >
-      <SearchContainer
-        fixed={fixed}
-      >
-        <CharitiesSearch
-          onAddFilter={item => console.log(item)}
-        />
-      </SearchContainer>
-    </Affix>
-  )
-}
 
 const Section = styled.div`
   margin-bottom: 10em;
@@ -81,14 +64,35 @@ const Image = styled.img`
   width: 100%;
   ${({ maxWidth }) => maxWidth ? `max-width: ${maxWidth};` : null}
   box-shadow: rgba(50, 50, 93, 0.25) 0 0 1em;
+  transition: box-shadow 0.2s ease-out;
+  :hover {
+    box-shadow: rgba(50, 50, 93, 0.35) 0 0 2em;
+  }
 `
+
+const Search = () => {
+  const [fixed, setFixed] = useState(false)
+  return (
+    <Affix
+      onChange={fixed => setFixed(fixed)}
+    >
+      <SearchContainer
+        fixed={fixed}
+      >
+        <CharitiesSearch
+          onAddFilter={item => console.log(item)}
+        />
+      </SearchContainer>
+    </Affix>
+  )
+}
 
 const Home = () => {
   return (
     <Layout>
       <SideBar />
       <Layout style={{ marginLeft: 240, textAlign: 'center', minHeight: '100vh' }}>
-        <Content style={{ padding: '4em 0', backgroundColor: 'papayawhip', }}>
+        <Content style={{ padding: '4em 0', backgroundColor: 'rgb(246, 249, 252)', }}>
           <Section>
             <Title>
               The Database of Charities
@@ -114,7 +118,7 @@ const Home = () => {
             <SectionText>
               <Paragraph>
                 The API is a developer-friendly tool for plugging in to our database.
-                We opened it up to allow other organisations to create new or enhance existing digital services for charities.
+                We opened it up to allow other organisations to create new or improve existing digital services for charities.
                 <Link to='/api-portal'> Read more...</Link>
               </Paragraph>
             </SectionText>
@@ -133,7 +137,7 @@ const Home = () => {
               <Row align='middle' type='flex'>
                 <Col xs={24} lg={12}>
                   <Paragraph>
-                    As well as listing all charities, the web app responds to your searches by aggregating the data in real-time, giving an interactive overview of the sector.
+                    As well as listing all charities, the web app responds to your searches by aggregating the data in real-time for an interactive overview of the sector.
                   </Paragraph>
                 </Col>
                 <Col xs={24} lg={12}>
