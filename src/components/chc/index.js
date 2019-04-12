@@ -1,4 +1,5 @@
 import React, { Component, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Layout, Row, Col } from 'antd'
 import CharitiesChart from './charts'
 import CharitiesList from './list'
@@ -6,7 +7,16 @@ import CharitiesSearch from './search'
 import SideBar from '../general/side-bar'
 import { ContentLayout, ContentLayoutHeader } from '../general/Layout'
 import FilterTags from './filter-tags'
-import { filtersListToObj, addFilter, removeFilter } from './helpers'
+import {
+  addFilter,
+  syncFilters,
+  asyncFiltersIds,
+  filtersListToObj,
+  removeFilter,
+  writeFiltersCache,
+} from './helpers'
+import { LIST_FILTERS } from '../../lib/gql'
+import { Query } from 'react-apollo'
 
 const {
   Content, Footer,
@@ -17,10 +27,7 @@ const CharitiesLayout = ({ filtersList, filtersObj, onAddFilter, onRemoveFilter 
   const [hoveredItem, setHoveredItem] = useState({})
   return (
     <Layout>
-      <SideBar
-        filtersList={filtersList}
-        onRemoveFilter={onRemoveFilter}
-      />
+      <SideBar />
       <ContentLayout>
         <ContentLayoutHeader
           large={filtersList.length > 0}
@@ -76,42 +83,64 @@ const CharitiesLayout = ({ filtersList, filtersObj, onAddFilter, onRemoveFilter 
 CharitiesLayout.propTypes = {
 }
 
+const filtersStringToObj = filtersString => {
+  try {
+    const filtersObj = filtersString ? JSON.parse(filtersString) : {}
+    return filtersObj
+  } catch(e) {
+    return {}
+  }
+}
+
 class Charities extends Component {
-  state = {
-    filtersList: [],
+  onAddFilter = (oldFilters, apolloClient) => item => {
+    const filtersList = addFilter(oldFilters, item)
+    this.updateFilters(filtersList, apolloClient)
   }
-  componentDidMount() {
-    // get filters query string from prop
-    // convert to filtersIdsList
-    // fetch filters from gql getFilters
-    // add syncronous filters
-    // order by alphabetical id
-    // set filtersList state
+  onRemoveFilter = (oldFilters, apolloClient) => item => {
+    const filtersList = removeFilter(oldFilters, item)
+    this.updateFilters(filtersList, apolloClient)
   }
-  componentDidUpdate() {
-    // check if filters query string prop has changed
-  }
-  onAddFilter = item => {
-    const { filtersList } = this.state
-    this.setState({ filtersList: addFilter(filtersList, item) })
-  }
-  onRemoveFilter = item => {
-    const { filtersList } = this.state
-    this.setState({ filtersList: removeFilter(filtersList, item) })
+  updateFilters = (filtersList, apolloClient) => {
+    const sortedFilters = writeFiltersCache(filtersList, apolloClient)
+    const filtersObj = filtersListToObj(sortedFilters)
+    const filtersString = JSON.stringify(filtersObj)
+    if (filtersString !== this.props.filtersString) {
+      this.props.onChange({ filters: filtersString })
+    }
   }
   render() {
-    const { filtersList } = this.state
-    const filtersObj = filtersListToObj(filtersList)
+    const filtersObj = filtersStringToObj(this.props.filtersString)
+    const gqlVars = { ids: asyncFiltersIds(filtersObj) }
     return (
-      <CharitiesLayout
-        filtersList={filtersList}
-        filtersObj={filtersObj}
-        onAddFilter={this.onAddFilter}
-        onRemoveFilter={this.onRemoveFilter}
-      />
+      <Query
+        query={LIST_FILTERS}
+        variables={gqlVars}
+      >
+        {({ loading, error, data, client }) => {
+          if (error) return 'err oops'
+          const asyncFilters = data && data.CHC ? data.CHC.getFilters : [] //todo: add sync filters
+          const filtersList = [
+            ...asyncFilters,
+            ...syncFilters(filtersObj),
+          ].sort((a, b) => a.id.localeCompare(b.id))
+          return (
+            <CharitiesLayout
+              // filtersLoading={loading} add this prop
+              filtersList={filtersList}
+              filtersObj={filtersObj}
+              onAddFilter={this.onAddFilter(filtersList, client)}
+              onRemoveFilter={this.onRemoveFilter(filtersList, client)}
+            />
+          )
+        }}
+      </Query>
     )
   }
 }
-// todo add filters string as a prop
+Charities.propTypes = {
+  filtersString: PropTypes.string,
+  onChange: PropTypes.func,
+}
 
 export default Charities

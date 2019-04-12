@@ -4,6 +4,7 @@ import CREATE_KEY from './CREATE_KEY'
 import DELETE_KEY from './DELETE_KEY'
 import GET_CHARITY from './GET_CHARITY'
 import LIST_CHARITIES from './LIST_CHARITIES'
+import LIST_FILTERS from './LIST_FILTERS'
 import LIST_KEYS from './LIST_KEYS'
 
 export {
@@ -13,5 +14,6 @@ export {
   DELETE_KEY,
   GET_CHARITY,
   LIST_CHARITIES,
+  LIST_FILTERS,
   LIST_KEYS,
 }

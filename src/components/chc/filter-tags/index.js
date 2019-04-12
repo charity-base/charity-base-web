@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Tag } from 'antd'
 import { NoneText } from '../../general/NoneText'
+import { mapItem } from '../helpers'
 
 const TagsContainer = styled.div`
   width: 100%;
@@ -14,7 +15,7 @@ const TagsContainer = styled.div`
 const Filters = ({ filtersList, onClose }) => (
   <TagsContainer>
     {filtersList.length > 0 ? (
-      filtersList.map((x, i) => {
+      filtersList.map(mapItem).map((x, i) => {
         const { id, icon, primary } = x
         return (
           <Tag
