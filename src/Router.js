@@ -1,13 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route, Redirect } from 'react-router-dom'
+import qs from 'query-string'
 import About from './components/about'
 import ApiPortal from './components/api-portal'
 import CharityCHC from './components/chc-charity'
 import Home from './components/home'
 import SearchCHC from './components/chc'
 
-const Router = ({ isMobile }) => (
+const Router = ({ isMobile }, { router }) => (
   <React.Fragment>
     <Route path="/" render={({ location }) => {
       if (typeof window.ga === 'function') {
@@ -21,9 +22,21 @@ const Router = ({ isMobile }) => (
       <Route exact path="/" render={() => (
         <Home />
       )} />
-      <Route exact path="/chc" render={() => (
-        <SearchCHC />
-      )} />
+      <Route exact path="/chc" render={({ location }) => {
+        const queryObj = qs.parse(location.search)
+        return (
+          <SearchCHC
+            filtersString={queryObj.filters}
+            onChange={({ filters }) => {
+              const queryString = qs.stringify({
+                ...queryObj,
+                filters,
+              })
+              return router.history.push(`/chc?${queryString}`)
+            }}
+          />
+        )
+      }} />
       <Route path="/chc/:id" render={({ match }) => (
         <CharityCHC id={match.params.id} />
       )} />
@@ -45,6 +58,9 @@ const Router = ({ isMobile }) => (
 )
 Router.propTypes = {
   isMobile: PropTypes.bool,
+}
+Router.contextTypes = {
+  router: PropTypes.object,
 }
 
 // TODO: add redirect from /charities/:id -> /chc/:id
