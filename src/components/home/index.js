@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Affix, Col, Layout, Icon, Row, Typography } from 'antd'
+import { Col, Layout, Icon, Row, Typography } from 'antd'
 import SideBar from '../general/side-bar'
-import CharitiesSearch from '../chc/search'
 import { graphiql, income } from './images'
+import Search from './Search'
 
 const {
   Content,
@@ -15,23 +15,6 @@ const {
   Title,
   Paragraph,
 } = Typography
-
-const SearchContainer = styled.div`
-  text-align: left;
-  background-color: inherit !important;
-  box-sizing: border-box;
-  padding: 0 0.5em;
-  width: 100%;
-  transition: padding 0.2s ease-out;
-  ${({ fixed }) => fixed ? `
-    padding: 0;
-    box-shadow: 0 0 1em;
-  ` : `
-    @media (min-width: 992px) {
-      padding: 0 20%;
-    }
-  `}
-`
 
 const Section = styled.div`
   margin-bottom: 10em;
@@ -44,7 +27,6 @@ const Section = styled.div`
   h2, h3, h4 {
     color: rgba(0,0,0,.65) !important;
   }
-
 `
 
 const SectionText = styled.div`
@@ -70,23 +52,6 @@ const Image = styled.img`
   }
 `
 
-const Search = () => {
-  const [fixed, setFixed] = useState(false)
-  return (
-    <Affix
-      onChange={fixed => setFixed(fixed)}
-    >
-      <SearchContainer
-        fixed={fixed}
-      >
-        <CharitiesSearch
-          onAddFilter={item => console.log(item)}
-        />
-      </SearchContainer>
-    </Affix>
-  )
-}
-
 const Home = () => {
   return (
     <Layout>
@@ -105,7 +70,7 @@ const Home = () => {
             </Title>
             <SectionText>
               <Paragraph>
-                The database is searchable 👇
+                The database is searchable <span role='img' aria-label='see below'>👇</span>
               </Paragraph>
             </SectionText>
             <Search />
