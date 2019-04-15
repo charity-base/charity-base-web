@@ -52,6 +52,9 @@ const Router = ({ isMobile }, { router }) => (
       <Route exact path="/a2fv1" render={() => (
         <Redirect to="/?funders=360G-blf&incomeRange=1%2C100000&addressWithin=20km%2C53.404361%2C-2.979554&causes.id=102"/>
       )} />
+      <Route path="/charities/:id" render={({ match }) => (
+        <Redirect to={`/chc/${match.params.id}`} />
+      )} />
       <Redirect to="/"/>
     </Switch>
   </React.Fragment>
@@ -62,7 +65,5 @@ Router.propTypes = {
 Router.contextTypes = {
   router: PropTypes.object,
 }
-
-// TODO: add redirect from /charities/:id -> /chc/:id
 
 export default Router
