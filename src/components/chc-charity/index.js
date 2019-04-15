@@ -1,19 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
-import { Layout, Typography } from 'antd'
+import { Layout } from 'antd'
 import { GET_CHARITY } from '../../lib/gql'
 import { ContentLayout } from '../general/Layout'
 import SideBar from '../general/side-bar'
 import CharityContentRouter from './CharityContentRouter'
+import Header from './Header'
 
 const {
   Content, Footer,
 } = Layout
-
-const {
-  Title,
-} = Typography
 
 const Charity = ({ id }) => {
   return (
@@ -23,21 +20,15 @@ const Charity = ({ id }) => {
         query={GET_CHARITY}
         variables={{ id }}
       >
-        {({ loading, error, data, fetchMore }) => {
+        {({ loading, error, data }) => {
           if (error) return 'oops err'
-          if (loading) return 'loading'
           const charity = (data && data.CHC && data.CHC.getCharities.list[0]) || null
-          return charity ? (
+          return (
             <ContentLayout>
-              <div style={{
-                boxShadow: '0 0 1em',
-                zIndex: 2,
-                padding: '1em',
-              }}>
-                <Title level={2}>
-                  {charity.names.reduce((agg, x) => (x.primary ? x.value : agg), null)}
-                </Title>
-              </div>
+              <Header
+                loading={loading}
+                names={charity ? charity.names : []}
+              />
               <Content style={{
                 background: '#fff',
                 margin: '0 0 0 0',
@@ -46,7 +37,11 @@ const Charity = ({ id }) => {
                 position: 'relative',
                 height: '100%',
               }}>
-                <CharityContentRouter charity={charity} />
+                <CharityContentRouter
+                  charity={charity}
+                  id={id}
+                  loading={loading}
+                />
               </Content>
               <Footer style={{
                 background: '#fafafa',
@@ -58,8 +53,6 @@ const Charity = ({ id }) => {
                 CharityBase 2019 - created open source by <a href='https://worthwhile.app'>worthwhile.app</a>
               </Footer>
             </ContentLayout>
-          ) : (
-            <div>Failed to find a charity with id {id}. Insert CharityBaseSearch component here.</div>
           )
         }}
       </Query>
