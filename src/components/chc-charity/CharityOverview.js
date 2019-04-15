@@ -21,6 +21,27 @@ const cleanUrl = url => {
   return `http://${url}`
 }
 
+const OrgIdLink = ({ id, scheme, rawId }) => {
+  switch(scheme) {
+    case 'GB-CHC':
+      return (
+        <div>
+          Charity Commission ID:
+          <a href={`https://beta.charitycommission.gov.uk/charity-details/?regid=${rawId}`}>{id}</a>
+        </div>
+      )
+    case 'GB-COH':
+      return (
+        <div>
+          Companies House ID:
+          <a href={`https://beta.companieshouse.gov.uk/company/${rawId}`}>{id}</a>
+        </div>
+      )
+    default:
+      return null
+  }
+}
+
 const CharityOverview = ({
   activities,
   areas,
@@ -47,7 +68,7 @@ const CharityOverview = ({
       </Title>
       <div style={{ marginBottom: '1em' }}>
         {orgIds.map(x => (
-          <Tag key={x.id}>{x.id}</Tag>
+          <OrgIdLink { ...x } />
         ))}
       </div>
       <div style={{ marginBottom: '1em' }}>
