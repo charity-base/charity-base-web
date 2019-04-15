@@ -14,6 +14,13 @@ const {
 const formatPeople = x => numeral(x).format('0,000')
 const formatCurrency = x => `£${numeral(x).format('0a')}`
 
+const cleanUrl = url => {
+  if (!url) return null
+  if (url.indexOf('https://') === 0) return url
+  if (url.indexOf('http://') === 0) return url
+  return `http://${url}`
+}
+
 const CharityOverview = ({
   activities,
   areas,
@@ -32,6 +39,7 @@ const CharityOverview = ({
 }) => {
   const sortedFinances = finances.sort((a, b) => (new Date(a.financialYear.end) - new Date(b.financialYear.end)))
   const sortedRegistrations = registrations.sort((a, b) => (new Date(a.registrationDate) - new Date(b.registrationDate)))
+  const href = cleanUrl(website)
   return (
     <ResponsiveScroll style={{ backgroundColor: '#fafafa' }}>
       <Title level={3}>
@@ -66,7 +74,7 @@ const CharityOverview = ({
         </Timeline>
       </div>
       <div style={{ marginBottom: '1em' }}>
-        {website ? <a href={website}>{website}</a> : 'no website recorded'}
+        {href ? <a href={href}>{href}</a> : 'no website recorded'}
       </div>
       <Card bordered={false} style={{ marginBottom: '1em' }}>
         <Paragraph style={{ fontSize: '1.5em' }}>
@@ -91,7 +99,7 @@ const CharityOverview = ({
         <Col xs={24} sm={24} md={24} lg={24} xl={8} xxl={8} offset={0} pull={0} push={0}>
           <Card
             bordered={false}
-            extra={<Link to={`/chc/${id}/finances`}>table view</Link>}
+            extra={<Link to={`/chc/${id}/finances`}>More</Link>}
             style={{ marginBottom: '2em' }}
             title='Finances'
           >
