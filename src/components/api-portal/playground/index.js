@@ -70,7 +70,7 @@ class Playground extends Component {
             <Button
               onClick={() => this.setState({ isApiKeyModalOpen: true })}
               title='Set Authorization Header'
-              primary={(apiKey || isApiKeyModalOpen) ? false : true}
+              solid={(apiKey || isApiKeyModalOpen) ? false : true}
               style={{ margin: '0 0.5em' }}
             >
               Set Auth Header
