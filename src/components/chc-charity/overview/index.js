@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import numeral from 'numeral'
 import { Card, Col, Row, Tag, Timeline, Typography } from 'antd'
-import { ResponsiveScroll } from '../general/Layout'
+import { ResponsiveScroll } from '../../general/Layout'
 import { Bar, BarChart, Tooltip } from 'recharts'
 
 const {
@@ -58,8 +58,8 @@ const CharityOverview = ({
   registrations,
   website
 }) => {
-  const sortedFinances = finances.sort((a, b) => (new Date(a.financialYear.end) - new Date(b.financialYear.end)))
-  const sortedRegistrations = registrations.sort((a, b) => (new Date(a.registrationDate) - new Date(b.registrationDate)))
+  const sortedFinances = finances ? finances.sort((a, b) => (new Date(a.financialYear.end) - new Date(b.financialYear.end))) : []
+  const sortedRegistrations = registrations ? registrations.sort((a, b) => (new Date(a.registrationDate) - new Date(b.registrationDate))) : []
   const href = cleanUrl(website)
   return (
     <ResponsiveScroll style={{ backgroundColor: '#fafafa' }}>

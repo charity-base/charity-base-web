@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import CharityFinances from './finances'
-import CharityOverview from './CharityOverview'
+import CharityOverview from './overview'
 
 const CharityContentRouter = ({ charity }) => {
   return (
