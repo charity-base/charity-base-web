@@ -68,8 +68,9 @@ class Auth {
   }
 
   scheduleRenewal() {
-    var expiresAt = JSON.parse(localStorage.getItem('expires_at'))
-    var delay = expiresAt - Date.now()
+    const buffer = 2*1000 // refresh 2 seconds before expiry
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'))
+    const delay = expiresAt - Date.now() - buffer
     if (delay > 0) {
       tokenRenewalTimeout = setTimeout(this.renewToken, delay)
     }
