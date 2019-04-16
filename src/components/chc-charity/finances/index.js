@@ -14,8 +14,8 @@ const CharityFinances = ({
   finances,
   grants,
 }) => {
-  const sortedGrants = grants.sort((a, b) => (new Date(a.awardDate) - new Date(b.awardDate)))
-  const sortedFinances = finances.sort((a, b) => (new Date(a.financialYear.end) - new Date(b.financialYear.end)))
+  const sortedGrants = grants ? grants.sort((a, b) => (new Date(a.awardDate) - new Date(b.awardDate))) : []
+  const sortedFinances = finances ? finances.sort((a, b) => (new Date(a.financialYear.end) - new Date(b.financialYear.end))) : []
   return (
     <ResponsiveScroll style={{ backgroundColor: '#fafafa' }}>
       <Switch>
