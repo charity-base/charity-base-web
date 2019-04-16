@@ -267,7 +267,6 @@ const NavMenu = ({ chcIds }) => {
     </Menu>
   )
 }
-
 NavMenu.propTypes = {
   chcIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
