@@ -65,3 +65,21 @@ button:focus {
 .grab-cursor {
   cursor: grab;
 }
+
+.ant-menu-submenu-title {
+  color: rgba(255,255,255,0.5) !important;
+  :hover {
+    color: rgba(255,255,255,0.5) !important;
+  };
+  text-transform: uppercase;
+  cursor: default !important;
+}
+
+.ant-menu {
+  background-color: inherit !important;
+  box-shadow: none !important;
+}
+
+.ant-menu-submenu-title .ant-menu-submenu-arrow {
+  visibility: hidden !important;
+}
