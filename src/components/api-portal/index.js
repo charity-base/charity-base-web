@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import { Layout } from 'antd'
 import { ContentLayout } from '../general/Layout'
-import ApiKeys from './api-keys'
 import SideBar from '../general/side-bar'
+import GettingStarted from './getting-started'
+import ApiKeys from './api-keys'
 import Playground from './playground'
 
 const {
@@ -17,7 +18,6 @@ const ApiPortal = () => {
       <SideBar />
       <ContentLayout>
         <Content style={{
-          background: '#fff',
           margin: '0 0 0 0',
           overflow: 'initial',
           zIndex: 1,
@@ -26,7 +26,7 @@ const ApiPortal = () => {
         }}>
           <Switch>
             <Route exact path="/api-portal" render={() => (
-              <div>The API is useful.</div>
+              <GettingStarted />
             )} />
             <Route path="/api-portal/keys" render={() => (
               <ApiKeys
