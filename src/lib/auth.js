@@ -51,8 +51,8 @@ class Auth {
         this.internalRedirect(history)
         return
       }
-      if (this.isAuthenticated()) {
-        this.scheduleRenewal()
+      if (this.accessToken) {
+        this.renewToken()
         return
       }
     })
