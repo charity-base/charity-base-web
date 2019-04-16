@@ -20,7 +20,7 @@ const GrantsTable = ({ grants }) => {
       dataSource={grants}
       footer={() => {}}
       loading={false}
-      locale={{ emptyText: 'No finances recorded' }}
+      locale={{ emptyText: 'No public grants found' }}
       pagination={false}
       rowKey='id'
     >
