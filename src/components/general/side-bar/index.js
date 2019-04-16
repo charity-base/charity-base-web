@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import { Route } from 'react-router-dom'
+import styled from 'styled-components'
 import { Layout } from 'antd'
 import { HomeLink } from '../../general/Layout'
 import LogInOrOut from '../../general/LogInOrOut'
@@ -7,6 +8,16 @@ import NavMenu from './NavMenu'
 import ListenToProp from './ListenToProp'
 
 const SIDER_WIDTH = 240
+
+const Sider = styled(Layout.Sider)`
+  overflow: auto !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  position: fixed !important;
+  left: 0 !important;
+  color: rgba(255,255,255,0.8) !important;
+  z-index: 2 !important;
+`
 
 const SideBar = () => {
   const [chcIds, setChcIds] = useState([])
@@ -22,15 +33,10 @@ const SideBar = () => {
           }}
         />
       )} />
-      <Layout.Sider
+      <Sider
+        breakpoint='lg'
+        collapsedWidth={0}
         width={SIDER_WIDTH}
-        style={{
-          overflow: 'auto',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
-          color: 'rgba(255,255,255,0.8)',
-        }}
       >
         <div
           style={{
@@ -47,7 +53,7 @@ const SideBar = () => {
         <NavMenu
           chcIds={chcIds}
         />
-      </Layout.Sider>
+      </Sider>
     </Fragment>
   )
 }
