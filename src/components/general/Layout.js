@@ -98,9 +98,11 @@ const PageLayout = styled(Layout)`
 `
 
 const ContentLayout = styled(Layout)`
-  margin-left: ${SIDER_WIDTH}px;
+  background-color: rgb(246, 249, 252) !important;
+  margin-left: 0px;
   min-height: 100vh !important;
   @media (min-width: 992px) {
+    margin-left: ${SIDER_WIDTH}px;
     height: 100vh;
     position: fixed;
     top: 0;

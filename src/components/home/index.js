@@ -52,11 +52,19 @@ const Image = styled.img`
   }
 `
 
+const OffsetLayout = styled(Layout)`
+  text-align: center !important;
+  min-height: 100vh !important;
+  @media (min-width: 992px) {
+    margin-left: 240px !important;
+  }
+`
+
 const Home = () => {
   return (
     <Layout>
       <SideBar />
-      <Layout style={{ marginLeft: 240, textAlign: 'center', minHeight: '100vh' }}>
+      <OffsetLayout>
         <Content style={{ padding: '4em 0', backgroundColor: 'rgb(246, 249, 252)', }}>
           <Section>
             <Title>
@@ -136,7 +144,7 @@ const Home = () => {
         }}>
           CharityBase 2019 - created open source by <a href='https://worthwhile.app'>worthwhile.app</a>
         </Footer>
-      </Layout>
+      </OffsetLayout>
     </Layout>
   )
 }
