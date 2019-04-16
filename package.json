@@ -22,7 +22,6 @@
     "react": "^16.8.1",
     "react-apollo": "^2.5.2",
     "react-copy-to-clipboard": "^5.0.1",
-    "react-debounce-input": "^3.2.0",
     "react-dom": "^16.8.1",
     "react-leaflet": "^2.2.1",
     "react-router-dom": "^4.2.2",
