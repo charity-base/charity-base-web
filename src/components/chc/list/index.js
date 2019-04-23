@@ -191,10 +191,10 @@ const CharitiesList = ({ onHover, filtersObj }) => {
                       <List.Item.Meta
                         title={
                           <Link to={`/chc/${id}`}>
-                            {names.reduce((agg, x) => (x.primary ? x.value : agg), null)} <Income income={finances.length > 0 ? finances[0].income : null} />
+                            {names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)} <Income income={finances && finances.length > 0 ? finances[0].income : null} />
                           </Link>
                         }
-                        description={names.reduce((agg, x) => (x.primary ? agg : [...agg, x.value]), []).join(', ')}
+                        description={names && names.reduce((agg, x) => (x.primary ? agg : [...agg, x.value]), []).join(', ')}
                       />
                       {activities && `${activities.slice(0,120)}...`}
                     </List.Item>
