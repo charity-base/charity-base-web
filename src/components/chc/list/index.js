@@ -124,45 +124,45 @@ const CharitiesList = ({ onHover, filtersObj }) => {
         if (error) return 'error oops'
         return (
           <Fragment>
-            <div style={{
-              background: '#fff',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '5em',
-              zIndex: 2,
-              borderBottom: '1px solid #eee',
-              borderRight: '1px solid #eee',
-            }}>
-              <div style={{
-                position: 'absolute',
-                top: '1em',
-                left: '1em',
-                color: 'rgba(0,0,0,0.5)',
-              }}>
-                {!loading && data.CHC ? `${formatCount(data.CHC.getCharities.count)} results` : null}
-              </div>
-              <Select
-                onChange={x => setSort(x)}
-                value={sort}
-                style={{
-                  position: 'absolute',
-                  top: 10,
-                  right: 10,
-                  width: 145,
-                }}
-                size='large'
-              >
-                <Option value='default'>Relevance</Option>
-                <Option value='income_desc'>Largest</Option>
-                <Option value='income_asc'>Smallest</Option>
-                <Option value='age_desc'>Oldest</Option>
-                <Option value='age_asc'>Youngest</Option>
-                <Option value='random'>Random</Option>
-              </Select>
-            </div>
             <ResponsiveScroll>
+              <div style={{
+                background: '#fff',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '5em',
+                zIndex: 2,
+                borderBottom: '1px solid #eee',
+                borderRight: '1px solid #eee',
+              }}>
+                <div style={{
+                  position: 'absolute',
+                  top: '1em',
+                  left: '1em',
+                  color: 'rgba(0,0,0,0.5)',
+                }}>
+                  {!loading && data.CHC ? `${formatCount(data.CHC.getCharities.count)} results` : null}
+                </div>
+                <Select
+                  onChange={x => setSort(x)}
+                  value={sort}
+                  style={{
+                    position: 'absolute',
+                    top: 10,
+                    right: 10,
+                    width: 145,
+                  }}
+                  size='large'
+                >
+                  <Option value='default'>Relevant</Option>
+                  <Option value='income_desc'>Largest</Option>
+                  <Option value='income_asc'>Smallest</Option>
+                  <Option value='age_desc'>Oldest</Option>
+                  <Option value='age_asc'>Youngest</Option>
+                  <Option value='random'>Random</Option>
+                </Select>
+              </div>
               <CenteredContent>
                 <List
                   size="large"
