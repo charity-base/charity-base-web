@@ -160,19 +160,6 @@ const NavMenu = ({ chcIds }) => {
           </NavLink>
         </Menu.Item>
         <Menu.Item
-          key='menu_item_about_already-exist'
-        >
-          <NavLink
-            to='/about/already-exist'
-            exact={true}
-            activeStyle={{
-              color: '#EC407A',
-            }}
-          >
-            Doesn't that already exist?
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item
           key='menu_item_about_who-uses-it'
         >
           <NavLink
@@ -182,20 +169,7 @@ const NavMenu = ({ chcIds }) => {
               color: '#EC407A',
             }}
           >
-            Who uses it?
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item
-          key='menu_item_about_api'
-        >
-          <NavLink
-            to='/about/api'
-            exact={true}
-            activeStyle={{
-              color: '#EC407A',
-            }}
-          >
-            What's an API?
+            Who uses CharityBase?
           </NavLink>
         </Menu.Item>
         <Menu.Item
