@@ -3,16 +3,13 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import { Button, List, Select } from 'antd'
+import { Button, List } from 'antd'
 import { Query } from 'react-apollo'
 import { LIST_CHARITIES } from '../../../lib/gql'
 import { CenteredContent, ResponsiveScroll } from '../../general/Layout'
-
-const { Option } = Select
+import ListHeader from './ListHeader'
 
 const MAX_LIST_LENGTH = 500
-
-const formatCount = x => numeral(x).format('0,0')
 
 const IncomeIcon = ({ income }) => (
   <svg style={{ width: '50px', height: '50px', }}>
@@ -125,44 +122,12 @@ const CharitiesList = ({ onHover, filtersObj }) => {
         return (
           <Fragment>
             <ResponsiveScroll>
-              <div style={{
-                background: '#fff',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: '5em',
-                zIndex: 2,
-                borderBottom: '1px solid #eee',
-                borderRight: '1px solid #eee',
-              }}>
-                <div style={{
-                  position: 'absolute',
-                  top: '1em',
-                  left: '1em',
-                  color: 'rgba(0,0,0,0.5)',
-                }}>
-                  {!loading && data.CHC ? `${formatCount(data.CHC.getCharities.count)} results` : null}
-                </div>
-                <Select
-                  onChange={x => setSort(x)}
-                  value={sort}
-                  style={{
-                    position: 'absolute',
-                    top: 10,
-                    right: 10,
-                    width: 145,
-                  }}
-                  size='large'
-                >
-                  <Option value='default'>Relevant</Option>
-                  <Option value='income_desc'>Largest</Option>
-                  <Option value='income_asc'>Smallest</Option>
-                  <Option value='age_desc'>Oldest</Option>
-                  <Option value='age_asc'>Youngest</Option>
-                  <Option value='random'>Random</Option>
-                </Select>
-              </div>
+              <ListHeader
+                loading={loading}
+                count={data.CHC ? data.CHC.getCharities.count : null}
+                sort={sort}
+                setSort={setSort}
+              />
               <CenteredContent>
                 <List
                   size="large"
@@ -199,7 +164,6 @@ const CharitiesList = ({ onHover, filtersObj }) => {
                       {activities && `${activities.slice(0,120)}...`}
                     </List.Item>
                   )}
-                  style={{ marginTop: '5em' }}
                 />
               </CenteredContent>
             </ResponsiveScroll>

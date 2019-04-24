@@ -161,7 +161,7 @@ import TextButton from '../TextButton'
 //                 <div>
 //                   <b>Note:</b> this CSV only offers a subset of the available fields for each charity.
 //                   For the full database please use JSON instead.
-//                   If there are any fields you'd particularly like in CSV format, email <b>dan.kwiat@charitybase.uk</b>
+//                   If there are any fields you'd particularly like in CSV format, email <b>support@charitybase.uk</b>
 //                 </div>
 //               }
 //             />
@@ -253,7 +253,7 @@ class DownloadResults extends Component {
         >
           <div style={{ textAlign: 'center' }}>
             <p>Sorry, this functionality is temporarily unavailabe.</p>
-            <p>For urgent requests please email <strong>dan.kwiat@charitybase.uk</strong></p>
+            <p>For urgent requests please email <strong>support@charitybase.uk</strong></p>
           </div>
         </Modal>
         {this.props.linkText ? (
@@ -261,9 +261,7 @@ class DownloadResults extends Component {
             {this.props.linkText}
           </TextButton>
         ) : (
-          <Button icon='download' style={{ width: '100%' }} onClick={() => this.toggleModal(true)}>
-            CSV / JSON
-          </Button>
+          <Button icon='download' shape='circle' size='small' onClick={() => this.toggleModal(true)} />
         )}
       </span>
     )
