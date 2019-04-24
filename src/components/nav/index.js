@@ -48,7 +48,7 @@ class NavBar extends Component {
         { email, connection },
         (err, res) => {
           if (err) {
-            return message.error('Oops, something went wrong. Please email dan.kwiat@charitybase.uk for help.')
+            return message.error('Oops, something went wrong. Please email support@charitybase.uk for help.')
           }
           return message.success(res)
         },
