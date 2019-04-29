@@ -1,11 +1,12 @@
 import React, { Fragment, useState } from 'react'
 import { Route } from 'react-router-dom'
 import styled from 'styled-components'
-import { Layout } from 'antd'
+import { Layout, Divider } from 'antd'
 import { HomeLink } from '../../general/Layout'
 import LogInOrOut from '../../general/LogInOrOut'
 import NavMenu from './NavMenu'
 import ListenToProp from './ListenToProp'
+import { ReactComponent as TwitterIcon } from './twitter.svg'
 
 const SIDER_WIDTH = 240
 
@@ -53,6 +54,22 @@ const SideBar = () => {
         <NavMenu
           chcIds={chcIds}
         />
+        <Divider />
+        <div
+          style={{
+            padding: '0 1em',
+            marginBottom: '2em',
+            textAlign: 'center',
+          }}
+        >
+          <a href='https://twitter.com/charitybase_uk' >
+            <TwitterIcon
+              width='2em'
+              height='2em'
+              fill='rgba(255,255,255,.8)'
+            />
+          </a>
+        </div>
       </Sider>
     </Fragment>
   )
