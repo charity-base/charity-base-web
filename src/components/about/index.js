@@ -118,7 +118,7 @@ class About extends Component {
                     If you encounter any problems or have a feature request, please <a rel='noopener noreferrer' target='_blank' href='https://github.com/charity-base/charity-base-web/issues/new'>add an issue</a>.
                   </Paragraph>
                   <Paragraph>
-                    For any other feedback or questions, email <strong>support@charitybase.uk</strong>
+                    For any other feedback or questions, email <strong>support@charitybase.uk</strong> or tweet <a href='https://twitter.com/charitybase_uk' >@charitybase_uk</a>.
                   </Paragraph>
                 </SectionText>
               </Section>
