@@ -212,6 +212,19 @@ const NavMenu = ({ chcIds }) => {
           </NavLink>
         </Menu.Item>
         <Menu.Item
+          key='menu_item_about_thanks'
+        >
+          <NavLink
+            to='/about/thanks'
+            exact={true}
+            activeStyle={{
+              color: '#EC407A',
+            }}
+          >
+            Acknowledgements
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item
           key='menu_item_about_contact'
         >
           <NavLink
