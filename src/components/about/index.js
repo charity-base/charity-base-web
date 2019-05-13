@@ -47,7 +47,7 @@ class About extends Component {
                 </Title>
                 <SectionText>
                   <Paragraph>
-                    CharityBase is a database, <Link to='/api-portal'>API</Link> and web platform which provides public information on the activities, locations and finances of the 168,000 charities registered in England and Wales.  It's free and open source!
+                    CharityBase is a database, <Link to='/api-portal'>API</Link> and <Link to='/chc'>web app</Link> which provides public information on the activities, locations and finances of the 168,000 charities registered in England and Wales.  It's free and open source!
                   </Paragraph>
                   <Paragraph>
                     The Charity Commission for England and Wales have four online services for accessing their data but none of them are comprehensive: <a rel='noopener noreferrer' target='_blank' href='http://apps.charitycommission.gov.uk/showcharity/registerofcharities/RegisterHomePage.aspx'>original website</a>, <a rel='noopener noreferrer' target='_blank' href='http://beta.charitycommission.gov.uk'>beta website</a>, <a rel='noopener noreferrer' target='_blank' href='http://data.charitycommission.gov.uk/'>file downloads</a> & <a rel='noopener noreferrer' target='_blank' href='http://apps.charitycommission.gov.uk/Showcharity/API/APIHome.aspx'>SOAP API</a>.
@@ -109,6 +109,32 @@ class About extends Component {
                   </Row>
                 </SectionText>
               </Section>
+              <Section id="thanks" selectedId={questionId}>
+                <Title level={3}>
+                  Acknowledgements
+                </Title>
+                <SectionText>
+                  <Paragraph>
+                    The development of CharityBase is made possible thanks to the support of many people and organisations.  In particular:
+                  </Paragraph>
+                  <Paragraph>
+                    <ul>
+                      <li>
+                        <a href='https://nwspk.com'>Newspeak House</a> and <a href='https://space4.tech'>Space4</a> for providing physical space and for fostering communities of practice in the intersection of charity and technology.
+                      </li>
+                      <li>
+                        <a href='https://www.threesixtygiving.org/'>360 Giving</a> for defining a data standard to describe grants and encouraging funders to publish what they fund.
+                      </li>
+                      <li>
+                        <a href='https://www.gov.uk/government/organisations/charity-commission'>The Charity Commission</a> for making their data available.
+                      </li>
+                      <li>
+                        <a href='https://dkane.net'>David Kane</a> for useful conversations around charity data.
+                      </li>
+                    </ul>
+                  </Paragraph>
+                </SectionText>
+              </Section>
               <Section id="contact" selectedId={questionId}>
                 <Title level={3}>
                   Contact
@@ -118,7 +144,13 @@ class About extends Component {
                     If you encounter any problems or have a feature request, please <a rel='noopener noreferrer' target='_blank' href='https://github.com/charity-base/charity-base-web/issues/new'>add an issue</a>.
                   </Paragraph>
                   <Paragraph>
-                    For any other feedback or questions, email <strong>support@charitybase.uk</strong> or tweet <a href='https://twitter.com/charitybase_uk' >@charitybase_uk</a>.
+                    For any other feedback or questions please email or find us on twitter:
+                  </Paragraph>
+                  <Paragraph>
+                    <ul>
+                      <li><strong>support@charitybase.uk</strong></li>
+                      <li><a href='https://twitter.com/charitybase_uk' >https://twitter.com/charitybase_uk</a></li>
+                    </ul>
                   </Paragraph>
                 </SectionText>
               </Section>
