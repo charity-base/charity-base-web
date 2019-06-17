@@ -83,6 +83,16 @@ const mapItem = ({ id, filterType, value, label }) => {
         primary: label || value,
         secondary: `Filter by beneficiary`,
       }
+    case 'trustee':
+      return {
+        id,
+        filterType,
+        value,
+        label,
+        icon: <Icon type='user' />,
+        primary: label || value,
+        secondary: `Filter by Trustee`,
+      }
     default:
       return {}
   }
