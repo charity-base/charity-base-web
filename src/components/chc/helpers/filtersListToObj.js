@@ -27,6 +27,9 @@ const filtersListToObj = filtersList => {
   if (filterTypes.beneficiary) {
     filters.beneficiaries = { [LIST_LOGIC]: filterTypes.beneficiary.map(x => x.value) }
   }
+  if (filterTypes.trustee) {
+    filters.trustees = { [LIST_LOGIC]: filterTypes.trustee.map(x => x.value) }
+  }
   return filters
 }
 

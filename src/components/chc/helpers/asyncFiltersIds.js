@@ -37,6 +37,13 @@ const asyncFiltersIds = filtersObj => {
       })
     }
   }
+  if (filtersObj.trustees) {
+    if (filtersObj.trustees[LIST_LOGIC]) {
+      filtersObj.trustees[LIST_LOGIC].forEach(x => {
+        filtersListIds.push(`trustee-${x}`)
+      })
+    }
+  }
   return filtersListIds.sort((a, b) => a.localeCompare(b))
 }
 
