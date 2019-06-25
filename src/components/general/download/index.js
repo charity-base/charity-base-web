@@ -252,7 +252,7 @@ class DownloadResults extends Component {
           maskClosable={true}
         >
           <div style={{ textAlign: 'center' }}>
-            <p>Sorry, this functionality is temporarily unavailabe.</p>
+            <p>Sorry, this functionality is temporarily unavailable.</p>
             <p>For urgent requests please email <strong>support@charitybase.uk</strong></p>
           </div>
         </Modal>
