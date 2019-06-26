@@ -4,14 +4,14 @@ import { parse, print } from 'graphql'
 import GraphiQL from 'graphiql'
 import defaultQuery from './defaultQuery'
 import ApiKeyModal from './ApiKeyModal'
-import { charityBaseApiUri } from '../../../lib/constants'
+import { charityBaseGqlApiUri } from '../../../lib/constants'
 import auth from '../../../lib/auth'
 import 'graphiql/graphiql.css'
 import Button from '../../general/Button'
 
 const getGraphQLFetcher = apiKey => graphQLParams => {
   const { user } = auth
-  return fetch(`${charityBaseApiUri}/graphql`, {
+  return fetch(charityBaseGqlApiUri, {
     method: 'post',
     headers: {
       'Content-Type': 'application/json',

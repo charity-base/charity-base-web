@@ -6,8 +6,6 @@ const charityBaseGqlApiUri = isProduction ? `${domain}/api/graphql` : '/api/grap
 
 const charityBaseGqlAuthUri = isProduction ? `${domain}/auth/graphql` : '/auth/graphql'
 
-const charityBaseApiUri = isProduction ? `${domain}/api` : '/api'
-
 const charityBaseApiKey = 'my-charity-base-api-key'
 
 const auth0Config = {
@@ -21,7 +19,6 @@ const auth0Config = {
 
 export {
   charityBaseApiKey,
-  charityBaseApiUri,
   charityBaseGqlApiUri,
   charityBaseGqlAuthUri,
   auth0Config,
