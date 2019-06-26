@@ -103,6 +103,10 @@ CharityOverview.propTypes = {
     email: PropTypes.string,
     phone: PropTypes.string,
     postcode: PropTypes.string,
+    social: PropTypes.arrayOf(PropTypes.shape({
+      platform: PropTypes.string.isRequired,
+      handle: PropTypes.string.isRequired,
+    })),
   }),
   finances: PropTypes.arrayOf(PropTypes.shape({
     income: PropTypes.number.isRequired,

@@ -25,6 +25,10 @@ const GET_CHARITY = gql`
             email
             phone
             postcode
+            social {
+              platform
+              handle
+            }
           }
           finances(all: true) {
             income
