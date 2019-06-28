@@ -27,10 +27,10 @@ const Router = ({ isMobile }, { router }) => (
         return (
           <SearchCHC
             filtersString={queryObj.filters}
-            onChange={({ filters }) => {
+            onChange={q => {
               const queryString = qs.stringify({
                 ...queryObj,
-                filters,
+                ...q,
               })
               return router.history.push(`/chc?${queryString}`)
             }}

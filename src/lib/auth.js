@@ -27,8 +27,8 @@ class Auth {
     return this.isAuthenticated() ? jwtDecode(localStorage.getItem('id_token')) : null
   }
 
-  login(history) {
-    const { pathname, search } = history.location
+  login({ location }) {
+    const { pathname, search } = location
     const origin_uri = `${pathname}${search}`
     localStorage.setItem('origin_uri', origin_uri)
     this.auth0.authorize()
@@ -108,11 +108,11 @@ class Auth {
     return this.auth0.changePassword({ email, connection }, cb)
   }
 
-  wrapAuthentication = history => func => () => {
+  wrapAuthentication = ({ location }) => func => () => {
     if (this.isAuthenticated()) {
       return func()
     }
-    this.login(history)
+    this.login({ location })
   }
 }
 

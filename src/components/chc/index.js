@@ -23,7 +23,7 @@ const {
 } = Layout
 
 
-const CharitiesLayout = ({ filtersList, filtersObj, onAddFilter, onRemoveFilter }) => {
+const CharitiesLayout = ({ filtersList, filtersObj, onAddFilter, onRemoveFilter, onQueryChange }) => {
   const [hoveredItem, setHoveredItem] = useState({})
   return (
     <Layout>
@@ -55,6 +55,7 @@ const CharitiesLayout = ({ filtersList, filtersObj, onAddFilter, onRemoveFilter 
               <CharitiesList
                 filtersObj={filtersObj}
                 onHover={setHoveredItem}
+                onQueryChange={onQueryChange}
               />
             </Col>
             <Col xxl={12} xl={12} lg={12} md={0} sm={0} xs={0} style={{ position: 'relative', height: '100%' }} >
@@ -131,6 +132,7 @@ class Charities extends Component {
               filtersObj={filtersObj}
               onAddFilter={this.onAddFilter(filtersList, client)}
               onRemoveFilter={this.onRemoveFilter(filtersList, client)}
+              onQueryChange={this.props.onChange}
             />
           )
         }}

@@ -9,8 +9,10 @@ const formatCount = x => numeral(x).format('0,0')
 const { Option } = Select
 
 const ListHeader = ({
-  loading,
   count,
+  loading,
+  filtersObj,
+  onQueryChange,
   sort,
   setSort,
 }) => {
@@ -25,7 +27,12 @@ const ListHeader = ({
       type='flex'
     >
       <Col xs={24} sm={16} >
-        {formatCount(count)} results <DownloadResults />
+        {formatCount(count)} results
+        <DownloadResults
+          count={count}
+          filtersObj={filtersObj}
+          onQueryChange={onQueryChange}
+        />
       </Col>
       <Col xs={24} sm={8} style={{ textAlign: 'right' }} >
         <Select
@@ -46,8 +53,10 @@ const ListHeader = ({
   )
 }
 ListHeader.propTypes = {
-  loading: PropTypes.bool.isRequired,
   count: PropTypes.number,
+  filtersObj: PropTypes.object,
+  loading: PropTypes.bool.isRequired,
+  onQueryChange: PropTypes.func.isRequired,
   sort: PropTypes.string.isRequired,
   setSort: PropTypes.func.isRequired,
 }

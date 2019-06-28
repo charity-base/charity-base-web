@@ -74,7 +74,7 @@ LoadMore.propTypes = {
   fetchMore: PropTypes.func.isRequired,
 }
 
-const CharitiesList = ({ onHover, filtersObj }) => {
+const CharitiesList = ({ onHover, filtersObj, onQueryChange }) => {
   const [sort, setSort] = useState('default')
   return (
     <Query
@@ -90,8 +90,10 @@ const CharitiesList = ({ onHover, filtersObj }) => {
               <ListHeader
                 loading={loading}
                 count={data.CHC ? data.CHC.getCharities.count : null}
+                filtersObj={filtersObj}
                 sort={sort}
                 setSort={setSort}
+                onQueryChange={onQueryChange}
               />
               <CenteredContent>
                 <List
@@ -151,6 +153,7 @@ const CharitiesList = ({ onHover, filtersObj }) => {
 CharitiesList.propTypes = {
   filtersObj: PropTypes.object.isRequired,
   onHover: PropTypes.func.isRequired,
+  onQueryChange: PropTypes.func.isRequired,
 }
 
 export default CharitiesList
