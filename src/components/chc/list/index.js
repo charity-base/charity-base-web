@@ -16,6 +16,15 @@ const Income = ({ income }) => (
   </div>
 )
 
+const Img = props => (
+  <img
+    {...props}
+    width={40}
+    height={40}
+    style={{ borderRadius: 20 }}
+  />
+)
+
 const LoadMore = ({ loading, error, data, fetchMore }) => {
   if (loading || error) return null
   const dataLength = data.CHC ? data.CHC.getCharities.list.length : 0
@@ -131,19 +140,15 @@ const CharitiesList = ({ onHover, filtersObj, onQueryChange }) => {
                       onMouseLeave={() => onHover({})}
                     >
                       <List.Item.Meta
-                        avatar={image && image.logo && image.logo.small ? (
-                          <img
-                            src={image.logo.small}
-                            width={40}
-                            height={40}
+                        avatar={
+                          <Img
+                            src={image && image.logo && image.logo.small ? (
+                              image.logo.small
+                            ) : (
+                              `https://ui-avatars.com/api/?size=40&name=${names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)}`
+                            )}
                           />
-                        ) : (
-                          <img
-                            src={`https://ui-avatars.com/api/?size=40&name=${names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)}`}
-                            width={40}
-                            height={40}
-                          />
-                        )}
+                        }
                         title={
                           <Link to={`/chc/${id}`}>
                             {names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)}
