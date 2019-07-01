@@ -141,13 +141,15 @@ const CharitiesList = ({ onHover, filtersObj, onQueryChange }) => {
                     >
                       <List.Item.Meta
                         avatar={
-                          <Img
-                            src={image && image.logo && image.logo.small ? (
-                              image.logo.small
-                            ) : (
-                              `https://ui-avatars.com/api/?size=40&name=${names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)}`
-                            )}
-                          />
+                          <Link to={`/chc/${id}`}>
+                            <Img
+                              src={image && image.logo && image.logo.small ? (
+                                image.logo.small
+                              ) : (
+                                `https://ui-avatars.com/api/?size=40&name=${names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)}`
+                              )}
+                            />
+                          </Link>
                         }
                         title={
                           <Link to={`/chc/${id}`}>
