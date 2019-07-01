@@ -29,6 +29,11 @@ const LIST_CHARITIES = gql`
               handle
             }
           }
+          image {
+            logo {
+              small
+            }
+          }
         }
       }
     }

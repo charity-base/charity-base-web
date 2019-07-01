@@ -110,7 +110,7 @@ const CharitiesList = ({ onHover, filtersObj, onQueryChange }) => {
                   }
                   locale={{ emptyText: 'No Charities Found' }}
                   dataSource={data.CHC ? data.CHC.getCharities.list : []}
-                  renderItem={({ id, names, activities, geo, finances, contact }) => (
+                  renderItem={({ id, names, activities, geo, finances, contact, image }) => (
                     <List.Item
                       actions={
                         contact.social.map((x, i) => {
@@ -131,6 +131,19 @@ const CharitiesList = ({ onHover, filtersObj, onQueryChange }) => {
                       onMouseLeave={() => onHover({})}
                     >
                       <List.Item.Meta
+                        avatar={image && image.logo && image.logo.small ? (
+                          <img
+                            src={image.logo.small}
+                            width={40}
+                            height={40}
+                          />
+                        ) : (
+                          <img
+                            src={`https://ui-avatars.com/api/?size=40&name=${names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)}`}
+                            width={40}
+                            height={40}
+                          />
+                        )}
                         title={
                           <Link to={`/chc/${id}`}>
                             {names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)}
