@@ -6,24 +6,26 @@ const { Paragraph } = Typography
 
 const Contact = ({ contact }) => {
   return (
-    <Card title='Contact' bordered={false} style={{ marginBottom: '2em' }}>
+    <Card
+      title='Contact'
+      bordered={false}
+      style={{ marginBottom: '2em' }}
+      extra={contact.social.map((x, i) => {
+        return (
+          <a
+            key={i}
+            href={`https://${x.platform}.com/${x.handle}`}
+            target='_blank'
+            rel='noopener noreferrer'
+            style={{ padding: '0.3em' }}
+          >
+            <Icon type={x.platform} />
+          </a>
+        )
+      })}
+    >
       {contact ? (
         <Fragment>
-          <Paragraph>
-            {contact.social.map((x, i) => {
-              return (
-                <a
-                  key={i}
-                  href={`https://${x.platform}.com/${x.handle}`}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                  style={{ padding: '0.3em' }}
-                >
-                  <Icon type={x.platform} />
-                </a>
-              )
-            })}
-          </Paragraph>
           <Paragraph>{contact.email}</Paragraph>
           <Paragraph>{contact.phone}</Paragraph>
           <Paragraph>{[...contact.address, contact.postcode].join(', ')}</Paragraph>
