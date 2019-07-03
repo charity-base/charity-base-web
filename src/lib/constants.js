@@ -17,9 +17,12 @@ const auth0Config = {
   scope: 'openid profile email edit:apikeys',
 }
 
+const mapBoxToken = 'my-mapbox-access-token'
+
 export {
   charityBaseApiKey,
   charityBaseGqlApiUri,
   charityBaseGqlAuthUri,
   auth0Config,
+  mapBoxToken,
 }

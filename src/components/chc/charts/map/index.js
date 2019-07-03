@@ -3,18 +3,19 @@ import PropTypes from 'prop-types'
 import {
   Map,
   Rectangle,
-  TileLayer,
   Marker,
 } from 'react-leaflet'
 import { Query } from 'react-apollo'
 import geohash from 'ngeohash'
 import { Button } from 'antd'
 import { AGG_GEOHASH_CHARITIES } from '../../../../lib/gql'
+import { mapBoxToken } from '../../../../lib/constants'
 import cluster from './cluster'
 import ClusterMarker from './ClusterMarker'
 import ClusterListModal from './ClusterListModal'
 import RemoveMarker from './RemoveMarker'
 import { mapItem } from '../../helpers'
+import MapBoxLayer from './MapBoxLayer'
 
 const INITIAL_ZOOM = 5
 const INITIAL_CENTER = [54.91244, -3.05385]
@@ -141,10 +142,7 @@ class CharitiesMap extends Component {
                 style={{ width : '100%', height: '100%', opacity: (zooming || loading) ? 0.5 : 1 }}
                 zoom={zoom}
               >
-                <TileLayer
-                  attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
+                <MapBoxLayer accessToken={mapBoxToken} />
                 {zooming ? null : clusters.map(x => {
                   const size = this.relSize(x.count, clusters[0].count, clusters[clusters.length - 1].count)
                   return (
