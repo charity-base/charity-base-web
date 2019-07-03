@@ -23,6 +23,7 @@ const cleanUrl = url => {
 
 const Img = props => (
   <img
+    alt='logo'
     {...props}
     width={128}
     height={128}

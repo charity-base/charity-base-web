@@ -18,6 +18,7 @@ const Income = ({ income }) => (
 
 const Img = props => (
   <img
+    alt='logo'
     {...props}
     width={40}
     height={40}
