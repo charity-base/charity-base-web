@@ -85,7 +85,9 @@ const GettingStarted = () => {
               Here's a basic example which counts all charities registered with the Charity Commission.
               Remember to replace <code>YOUR_API_KEY</code> with <Link to='/api-portal/keys'>your actual key</Link>.
             </Paragraph>
-            <Example1 />
+            <Paragraph>
+              <Example1 />
+            </Paragraph>
             <Paragraph>
               To experiment with the query language and see what fields are available, <Link to='/api-portal/playground'>visit the playground</Link>.
               The contents of the left panel makes up the query string to send in your request, as shown in the examples above.

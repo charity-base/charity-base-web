@@ -111,7 +111,11 @@ const App = () => {
 const Example1 = () => {
   return (
     <div>
-      <Tabs animated={false} defaultActiveKey='bash'>
+      <Tabs
+        className='multi-lang-code-block'
+        animated={false}
+        defaultActiveKey='bash'
+      >
         <TabPane tab='Bash' key='bash'>
           <CodeBlock
             language='bash'
