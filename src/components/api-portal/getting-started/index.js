@@ -64,8 +64,8 @@ const GettingStarted = () => {
           </Title>
           <SectionText>
             <Paragraph>
-              CharityBase widgets are pre-built components which use the API for common use cases.
-              They're the easiest place to start with the API and can be dropped into your site by copy-pasting a few lines of code.
+              CharityBase widgets are pre-built components for common use cases.
+              They make use of the API under the hood and can be dropped into your site by copy-pasting a few lines of code.
               They're coming soon...
             </Paragraph>
           </SectionText>
