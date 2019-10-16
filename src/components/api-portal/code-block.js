@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-bash'
 import 'prismjs/components/prism-jsx'
@@ -6,12 +6,14 @@ import 'prismjs/components/prism-jsx'
 // https://github.com/mAAdhaTTah/babel-plugin-prismjs
 
 const CodeBlock = ({ language, codeString }) => {
+  const el = useRef(null)
+
   useEffect(() => {
-    Prism.highlightAll()
+    Prism.highlightElement(el.current)
   }, [codeString, language])
 
   return (
-    <pre><code className={`language-${language}`}>{codeString.trim()}</code></pre>
+    <pre><code ref={el} className={`language-${language}`}>{codeString.trim()}</code></pre>
   )
 }
 
