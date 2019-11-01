@@ -1,6 +1,9 @@
 import React from 'react'
 import { Tabs } from 'antd'
 import CodeBlock from '../../code-block'
+import CharityBaseForm from 'charity-base-form'
+import { charityBaseApiKey } from '../../../../lib/constants'
+import 'charity-base-form/es/index.css'
 
 const { TabPane } = Tabs
 
@@ -40,6 +43,13 @@ const Autofill = () => {
         className='multi-lang-code-block'
         animated={false}
       >
+        <TabPane tab='Result' key='result'>
+          <div style={{ padding: '0.5em', background: 'white' }}>
+            <CharityBaseForm
+              apiKey={charityBaseApiKey}
+            />
+          </div>
+        </TabPane>
         <TabPane tab='HTML' key='html'>
           <CodeBlock
             language='html'

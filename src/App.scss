@@ -17,7 +17,14 @@ code[class*="language-"] {
   background-color: rgb(0,21,41);
   border-radius: 0.4em;
   color: rgba(255,255,255,.8);
+  border-color: rgb(0,21,41);
+  border-style: solid;
 }
+.multi-lang-code-block .ant-tabs-content {
+  max-height: 600px;
+  overflow-y: scroll;
+}
+
 .multi-lang-code-block .ant-tabs-bar {
   margin-bottom: 0px;
 }
