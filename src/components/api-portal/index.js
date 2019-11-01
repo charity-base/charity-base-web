@@ -4,6 +4,7 @@ import { Layout } from 'antd'
 import { ContentLayout } from '../general/Layout'
 import SideBar from '../general/side-bar'
 import GettingStarted from './getting-started'
+import Elements from './elements'
 import ApiKeys from './api-keys'
 import Playground from './playground'
 
@@ -27,6 +28,9 @@ const ApiPortal = () => {
           <Switch>
             <Route exact path="/api-portal" render={() => (
               <GettingStarted />
+            )} />
+            <Route exact path="/api-portal/elements" render={() => (
+              <Elements />
             )} />
             <Route path="/api-portal/keys" render={() => (
               <ApiKeys
