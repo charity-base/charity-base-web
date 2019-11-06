@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import CharityBaseSearch from 'charity-base-search'
 import { mapItem } from '../helpers'
+import { charityBaseApiKey } from '../../../lib/constants'
 
 class CharitiesSearch extends Component {
   onSelect = (item) => {
@@ -13,6 +14,7 @@ class CharitiesSearch extends Component {
   render() {
     return (
       <CharityBaseSearch
+        apiKey={charityBaseApiKey}
         label='Search by charity, funder, cause, area...'
         onSelect={this.onSelect}
         mapItem={mapItem}
