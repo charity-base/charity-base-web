@@ -1,6 +1,7 @@
 $mdc-theme-primary: #EC407A;
 @import '~antd/dist/antd.css';
-@import '~charity-base-search/es/index.scss';
+// @import '~charity-base-search/es/index.scss';
+@import 'charity-base-form/es/index.scss';
 @import '~prismjs/themes/prism-tomorrow.css';
 
 pre[class*="language-"] {
@@ -11,6 +12,23 @@ code[class*="language-"] {
   font-size: 0.85rem;
   padding: 0px;
   margin: 0px;
+}
+
+.ant-list-item .ant-list-item-meta .ant-list-item-meta-content .ant-list-item-meta-title {
+  font-size: 1rem !important;
+}
+
+.api-ref-list li.ant-list-item {
+  padding: 1em 0;
+  align-items: start;
+}
+
+.api-ref-autofill-demo {
+  color: rgba(0,0,0,.8);
+  overflow: hidden;
+}
+.api-ref-autofill-demo section {
+  margin-bottom: 2em;
 }
 
 .multi-lang-code-block {

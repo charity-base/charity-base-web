@@ -3,26 +3,25 @@ import { Tabs } from 'antd'
 import CodeBlock from '../../code-block'
 import CharityBaseForm from 'charity-base-form'
 import { charityBaseApiKey } from '../../../../lib/constants'
-import 'charity-base-form/es/index.css'
 
 const { TabPane } = Tabs
 
 const cssString = `
 body {
+  --mdc-theme-primary: #EC407A;
   font-family: sans-serif;
-  --mdc-theme-primary: green;
 }
 `
 
 const htmlString = `
 <html>
   <head>
-    <script src='https://unpkg.com/charity-base-widgets@0.5.0/dist/index.js'></script>
-    <link href='https://unpkg.com/charity-base-widgets@0.5.0/dist/index.css' rel='stylesheet'>
+    <script src='https://unpkg.com/charity-base@4.0.0-beta.3'></script>
+    <link href='https://unpkg.com/charity-base@4.0.0-beta.3/dist/index.css' rel='stylesheet'>
   </head>
   <body>
     <form>
-      <div id='charity-base-autofill'></div>
+      <section id='charity-base-autofill'></section>
       <!-- feel free to add more inputs here -->
     </form>
   </body>
@@ -31,9 +30,14 @@ const htmlString = `
 
 const jsString = `
 var apiKey = 'YOUR_API_KEY' // replace this with your actual key
+// Create a CharityBase client.
 var cb = CharityBase(apiKey)
-var autofill = cb.createAutofill()
-cb.render(autofill, 'charity-base-autofill')
+// Create an instance of Elements.
+var elements = cb.elements()
+// Create an instance of the autofill Element.
+var autofill = elements.createAutofill()
+// Add an instance of the autofill Element into the \`charity-base-autofill\` <section>.
+autofill.mount('charity-base-autofill')
 `
 
 const Autofill = () => {
@@ -47,6 +51,7 @@ const Autofill = () => {
           <div style={{ padding: '0.5em', background: 'white' }}>
             <CharityBaseForm
               apiKey={charityBaseApiKey}
+              className='api-ref-autofill-demo'
             />
           </div>
         </TabPane>

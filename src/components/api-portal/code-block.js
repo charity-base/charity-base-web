@@ -3,6 +3,7 @@ import copy from 'copy-to-clipboard'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-bash'
 import 'prismjs/components/prism-jsx'
+import 'prismjs/components/prism-scss'
 import Button from '../general/Button'
 // TODO: Use the prism babel plugin:
 // https://github.com/mAAdhaTTah/babel-plugin-prismjs
