@@ -2636,12 +2636,13 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
 
-charity-base-form@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/charity-base-form/-/charity-base-form-1.2.5.tgz#db043731abb734f652c439dec381b75c0fa06001"
-  integrity sha512-4yCo17yb+1Gu4EVWYJfRcyK7jXvdPOKh+s6JuvpVRMH4jH1JS2yByhYZKSLAH/I9Si3gpFgi2EYF/soTUbyqLQ==
+charity-base-form@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/charity-base-form/-/charity-base-form-1.5.0.tgz#97ce647dca1eecacfad887a5daa8c5d8051c075c"
+  integrity sha512-u4XP7YsvmdCQ61SuXnN0KRdK/aioW7Ezb3ys7H3Vb4xeFYvOeYsTN07UZNRSs1NiXKIzGX7iiTS3S4Yg4tVKvw==
   dependencies:
     "@material/react-button" "^0.13.0"
+    "@material/react-checkbox" "^0.15.0"
     "@material/react-layout-grid" "^0.13.0"
     charity-base-search "3.0.1"
 
