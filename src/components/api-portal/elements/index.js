@@ -81,8 +81,8 @@ const RenderFields = () => {
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
-              title={<span><code>{item.name}</code>{item.required ? null : <Tag>optional</Tag>}</span>}
-              description={<span>{item.type}</span>}
+              title={<span><strong>{item.name}</strong> {item.required ? null : <Tag>optional</Tag>}</span>}
+              description={item.type}
             />
             <div style={{ padding: '0 1rem' }}>{item.description}</div>
           </List.Item>
@@ -133,7 +133,7 @@ const Elements = () => {
             <Title level={4}>
               <code>elements.createAutofill(<span style={{ color: '#EC407A' }}>[options]</span>)</code>
             </Title>
-            <Paragraph>
+            <div>
               <List
                 className='api-ref-list'
                 itemLayout='horizontal'
@@ -182,14 +182,14 @@ const Elements = () => {
                 renderItem={item => (
                   <List.Item>
                     <List.Item.Meta
-                      title={<span><code>{item.name}</code>{item.required ? null : <Tag>optional</Tag>}</span>}
-                      description={<span>{item.type}</span>}
+                      title={<span><strong>{item.name}</strong> {item.required ? null : <Tag>optional</Tag>}</span>}
+                      description={item.type}
                     />
                     <div style={{ padding: '0 1rem' }}>{item.description}</div>
                   </List.Item>
                 )}
               />
-            </Paragraph>
+            </div>
           </SectionText>
         </Section>
       </CenteredContent>
