@@ -6,14 +6,14 @@ import { charityBaseApiKey } from '../../../../lib/constants'
 
 const { TabPane } = Tabs
 
-const VERSION = '4.0.0-beta.4'
+const VERSION = '4.0.0-beta.5'
 
 const cssString = `
 #charity-base-autofill {
   /* Set the colour of the button and selected text fields */
   --mdc-theme-primary: #EC407A;
   /* Set the colour of selected checkboxes */
-  --mdc-theme-secondary: rgba(0,0,0,.54);
+  --mdc-theme-secondary: #555;
 }
 `
 
