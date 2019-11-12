@@ -2636,22 +2636,22 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
 
-charity-base-form@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/charity-base-form/-/charity-base-form-1.6.1.tgz#fc00aa13443b97bde4ce10f645209195801b04d6"
-  integrity sha512-1EEINy2g0uu2w7UMM5SB4qBT41tRHzAnhGU8KeCCHpVDwDOP3zlmEmOh0BS68mq2sHzTMJE5wZU/c3W3VKqtZg==
+charity-base-form@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/charity-base-form/-/charity-base-form-1.7.0.tgz#a70061588442218b280f1c5c37a1c6ad491be969"
+  integrity sha512-HAPSLezyGPC+N8g5+nwI5Uog9YTpEjQXcMTis08sOFBoFxtcP9q5wCrwcBjBZrnp9c3ovPtm3Czn7roF79SzrA==
   dependencies:
     "@material/react-button" "^0.13.0"
     "@material/react-checkbox" "^0.15.0"
     "@material/react-layout-grid" "^0.13.0"
-    charity-base-search "3.2.1"
+    charity-base-search "3.3.2"
 
-charity-base-search@3.2.1, charity-base-search@^3.2.1:
-  version "3.2.1"
-  resolved "https://registry.yarnpkg.com/charity-base-search/-/charity-base-search-3.2.1.tgz#506df88ae18489a2b12d3ae1d03781f6382ea927"
-  integrity sha512-+3ney9wr4mkraa0fQLdtGjxVWgcFuKgJdgQUAYha5TKmHpvH8CxVOde8gVV+cOL72UFdwEGimTgtFCUGsSntWg==
+charity-base-search@3.3.2, charity-base-search@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/charity-base-search/-/charity-base-search-3.3.2.tgz#551a091de7d9f1515e2c6f2fd3854b686031b18a"
+  integrity sha512-ekCFohBx4GJtEI7IAi3DAclIROH0b3Rvz8nu+SsCAq2Lsu9lxD72JmmEYNI2woxxUUtke9ImMSCHnAB1hGlUBA==
   dependencies:
-    filter-suggest "3.5.2"
+    filter-suggest "3.5.3"
     lodash.debounce "^4.0.8"
 
 check-types@^7.3.0:
@@ -4367,10 +4367,10 @@ fill-range@^4.0.0:
     repeat-string "^1.6.1"
     to-regex-range "^2.1.0"
 
-filter-suggest@3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/filter-suggest/-/filter-suggest-3.5.2.tgz#e22c5ed29737b76e283bff8424a360483df9045d"
-  integrity sha512-5LIPiNQqcrmBdXppDMbrJj75jl8MsWofsR6TORVcRtTh51fX+kTK6FrwP5RwzMVcKnYbXtusLF+GLrsENimLiw==
+filter-suggest@3.5.3:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/filter-suggest/-/filter-suggest-3.5.3.tgz#4c82b7daa567118c7f81c00e58e3f51d5fdaec96"
+  integrity sha512-S+LiKWgGjcWrjPgCbwjMVmmHa3jRsnKRHhqMBKwdiYxtzWhQ7XE1H6HwKTdNOkzZhhea+5PHQqZiOV1BuG97tw==
   dependencies:
     "@material/react-list" "^0.15.0"
     "@material/react-text-field" "^0.15.0"
