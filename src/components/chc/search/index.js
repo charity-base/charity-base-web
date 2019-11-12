@@ -17,6 +17,7 @@ class CharitiesSearch extends Component {
         apiKey={charityBaseApiKey}
         label='Search by charity, funder, cause, area...'
         onSelect={this.onSelect}
+        hideAcknowledgement
         mapItem={mapItem}
       />
     )
