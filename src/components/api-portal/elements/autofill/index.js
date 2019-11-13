@@ -6,7 +6,7 @@ import { charityBaseApiKey } from '../../../../lib/constants'
 
 const { TabPane } = Tabs
 
-const VERSION = '4.0.0-beta.5'
+const VERSION = '4.0.0-beta.6'
 
 const cssString = `
 #charity-base-autofill {
