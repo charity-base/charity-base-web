@@ -2,7 +2,7 @@ import React from 'react'
 import { Tabs } from 'antd'
 import CodeBlock from '../../code-block'
 import CharityBaseForm from 'charity-base-form'
-import { charityBaseApiKey } from '../../../../lib/constants'
+import { charityBaseApiKey, charityBaseGqlApiUri } from '../../../../lib/constants'
 
 const { TabPane } = Tabs
 
@@ -56,6 +56,7 @@ const Autofill = () => {
           <div style={{ padding: '0.5em', background: 'white' }}>
             <CharityBaseForm
               apiKey={charityBaseApiKey}
+              apiUrl={charityBaseGqlApiUri}
               className='api-ref-autofill-demo'
             />
           </div>

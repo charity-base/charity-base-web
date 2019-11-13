@@ -2636,20 +2636,20 @@ chardet@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
 
-charity-base-form@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/charity-base-form/-/charity-base-form-1.7.2.tgz#482a0704d13f2f9b530a3e9d51267986b4e9d47c"
-  integrity sha512-jXW5kxh91WZF57gS/2ScLjrfyz8YJztFCvYtb0m/fc8C4paPq0fwbI4kCpxKWtMoG317byt3vuunUhP6b95bfw==
+charity-base-form@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/charity-base-form/-/charity-base-form-1.8.0.tgz#413eeb836e4626131a83292d4ec2305f6a4da818"
+  integrity sha512-XohBX6U6mLINtW1jGPkPsNzVwcmMGxTGNOssb4uwbgfPbefi+BdskALQ8ft+s8QpPvBwqNFK3D2ZgqUbkHazqA==
   dependencies:
     "@material/react-button" "^0.13.0"
     "@material/react-checkbox" "^0.15.0"
     "@material/react-layout-grid" "^0.13.0"
-    charity-base-search "3.4.1"
+    charity-base-search "^3.5.0"
 
-charity-base-search@3.4.1, charity-base-search@^3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/charity-base-search/-/charity-base-search-3.4.1.tgz#63d0acd96258891ddc40b07dadd1a28220a276b9"
-  integrity sha512-a8DRNfjdqtcr8jdrFqS1NYzyUv8gpRjGIXFhne5skMfR6HytGAL55ERYwbmvBltQZJqyfrfhlMkq8FX5INmJPQ==
+charity-base-search@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/charity-base-search/-/charity-base-search-3.5.0.tgz#9227509f4f01cffdcc7703f64218bdd2a705d2d6"
+  integrity sha512-pFZGdmSkL5lXzxcdqR7LBOoWGq/XN0DtmoOWYRKnRHsvHpe3XcpQ0supJ7ZRrmTyMolu7495D/bZ23XZe2hurg==
   dependencies:
     filter-suggest "3.5.4"
     lodash.debounce "^4.0.8"
