@@ -32,7 +32,7 @@ const SectionText = styled.div`
 const RenderFields = () => {
   return (
     <div>
-      <div>An object to specify which fields to render.  Specify <code>undefined</code> to use your existing fields instead.</div>
+      <div>An object to specify which fields to render.  Specify <code>null</code> to use your existing fields instead.</div>
       <List
         className='api-ref-list'
         itemLayout='horizontal'
