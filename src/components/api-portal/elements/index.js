@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { CenteredContent, ResponsiveScroll } from '../../general/Layout'
-import { Icon, Typography, List, Tag } from 'antd'
+import { Icon, Typography } from 'antd'
 import Autofill from './autofill'
+import PropsList from '../PropsList'
 
 const {
   Paragraph,
@@ -25,17 +26,14 @@ const Section = styled.div`
 
 const SectionText = styled.div`
   font-size: 1.3em;
-  margin: 1.5em auto;
-  max-width: 730px;
+  margin: 1.5em 0;
 `
 
 const RegulatorCheckboxes = () => {
   return (
     <div>
       <div>An object to specify which regulator checkboxes to render.  Specify <code>null</code> to remove all checkboxes.</div>
-      <List
-        className='api-ref-list'
-        itemLayout='horizontal'
+      <PropsList
         dataSource={[
           {
             name: 'GB-COH',
@@ -58,15 +56,6 @@ const RegulatorCheckboxes = () => {
             description: 'Initial state of the CC E&W checkbox',
           },
         ]}
-        renderItem={item => (
-          <List.Item>
-            <List.Item.Meta
-              title={<span><strong>{item.name}</strong> {item.required ? null : <Tag>optional</Tag>}</span>}
-              description={item.type}
-            />
-            <div style={{ padding: '0 1rem' }}>{item.description}</div>
-          </List.Item>
-        )}
       />
     </div>
   )
@@ -76,9 +65,7 @@ const RenderFields = () => {
   return (
     <div>
       <div>An object to specify which fields to render.  Specify <code>null</code> to use your existing fields instead.</div>
-      <List
-        className='api-ref-list'
-        itemLayout='horizontal'
+      <PropsList
         dataSource={[
           {
             name: 'name',
@@ -121,15 +108,6 @@ const RenderFields = () => {
             description: 'Latest income and expenditure',
           },
         ]}
-        renderItem={item => (
-          <List.Item>
-            <List.Item.Meta
-              title={<span><strong>{item.name}</strong> {item.required ? null : <Tag>optional</Tag>}</span>}
-              description={item.type}
-            />
-            <div style={{ padding: '0 1rem' }}>{item.description}</div>
-          </List.Item>
-        )}
       />
     </div>
   )
@@ -137,7 +115,7 @@ const RenderFields = () => {
 
 const Elements = () => {
   return (
-    <ResponsiveScroll>
+    <div style={{ padding: '2em' }}>
       <CenteredContent>
         <Section>
           <Title>
@@ -177,9 +155,7 @@ const Elements = () => {
               <code>elements.createAutofill(<span style={{ color: '#EC407A' }}>[options]</span>)</code>
             </Title>
             <div>
-              <List
-                className='api-ref-list'
-                itemLayout='horizontal'
+              <PropsList
                 dataSource={[
                   {
                     name: 'buttonProps',
@@ -227,21 +203,12 @@ const Elements = () => {
                     description: 'Style object to apply to the autofill element (keys should be camelCase)',
                   },
                 ]}
-                renderItem={item => (
-                  <List.Item>
-                    <List.Item.Meta
-                      title={<span><strong>{item.name}</strong> {item.required ? null : <Tag>optional</Tag>}</span>}
-                      description={item.type}
-                    />
-                    <div style={{ padding: '0 1rem' }}>{item.description}</div>
-                  </List.Item>
-                )}
               />
             </div>
           </SectionText>
         </Section>
       </CenteredContent>
-    </ResponsiveScroll>
+    </div>
   )
 }
 
