@@ -1,6 +1,6 @@
 import React from 'react'
 import { Tabs } from 'antd'
-import CodeBlock from '../../code-block'
+import CodeBlock from '../../CodeBlock'
 import CharityBaseForm from 'charity-base-form'
 import { charityBaseApiKey, charityBaseGqlApiUri } from '../../../../lib/constants'
 
