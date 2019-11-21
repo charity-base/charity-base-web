@@ -6,7 +6,7 @@ import { charityBaseApiKey, charityBaseGqlApiUri } from '../../../../lib/constan
 
 const { TabPane } = Tabs
 
-const VERSION = '4.0.0-beta.6'
+const VERSION = '4.0.0-beta.7'
 
 const cssString = `
 #charity-base-autofill {

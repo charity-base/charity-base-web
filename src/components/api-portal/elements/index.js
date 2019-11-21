@@ -29,6 +29,49 @@ const SectionText = styled.div`
   max-width: 730px;
 `
 
+const RegulatorCheckboxes = () => {
+  return (
+    <div>
+      <div>An object to specify which regulator checkboxes to render.  Specify <code>null</code> to remove all checkboxes.</div>
+      <List
+        className='api-ref-list'
+        itemLayout='horizontal'
+        dataSource={[
+          {
+            name: 'GB-COH',
+            type: 'boolean',
+            description: 'Initial state of the Companies House checkbox',
+          },
+          {
+            name: 'GB-SC',
+            type: 'boolean',
+            description: 'Initial state of the OSCR checkbox',
+          },
+          {
+            name: 'GB-NIC',
+            type: 'boolean',
+            description: 'Initial state of the CC NI checkbox',
+          },
+          {
+            name: 'GB-CHC',
+            type: 'boolean',
+            description: 'Initial state of the CC E&W checkbox',
+          },
+        ]}
+        renderItem={item => (
+          <List.Item>
+            <List.Item.Meta
+              title={<span><strong>{item.name}</strong> {item.required ? null : <Tag>optional</Tag>}</span>}
+              description={item.type}
+            />
+            <div style={{ padding: '0 1rem' }}>{item.description}</div>
+          </List.Item>
+        )}
+      />
+    </div>
+  )
+}
+
 const RenderFields = () => {
   return (
     <div>
@@ -167,6 +210,11 @@ const Elements = () => {
                     name: 'outlined',
                     type: 'boolean',
                     description: 'Whether or not to outline the text fields (true by default)',
+                  },
+                  {
+                    name: 'regulatorCheckboxes',
+                    type: 'object',
+                    description: <RegulatorCheckboxes />,
                   },
                   {
                     name: 'renderFields',
