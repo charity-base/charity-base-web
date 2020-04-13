@@ -7,8 +7,9 @@ const DOWNLOAD_CHARITIES = gql`
     CHC {
       getCharities(filters: $filters) {
         download {
-          url
+          name
           size
+          url
         }
       }
     }

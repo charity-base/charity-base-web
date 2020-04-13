@@ -87,7 +87,7 @@ const DownloadResults = ({ count, filtersObj, onQueryChange }) => {
                       message={`Successfully Created File (${formatBytes(data.CHC.getCharities.download.size)})`}
                       description={
                         <a onClick={onCancel} href={data.CHC.getCharities.download.url} >
-                          {data.CHC.getCharities.download.url.split('https://charity-base-uk-downloads.s3.eu-west-2.amazonaws.com/downloads/')[1].split('?')[0]}
+                          {data.CHC.getCharities.download.name}
                         </a>
                       }
                     />
