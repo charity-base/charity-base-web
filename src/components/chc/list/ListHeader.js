@@ -45,7 +45,7 @@ const ListHeader = ({
           <Option value='income_desc'>Largest</Option>
           <Option value='income_asc'>Smallest</Option>
           <Option value='age_desc'>Oldest</Option>
-          <Option value='age_asc'>Youngest</Option>
+          <Option value='age_asc'>Newest</Option>
           <Option value='random'>Random</Option>
         </Select>
       </Col>
