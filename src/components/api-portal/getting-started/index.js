@@ -50,7 +50,7 @@ const GettingStarted = () => {
               Don't worry about what it stands for.
             </Paragraph>
             <Paragraph>
-              Put simply, the CharityBase API allows anyone to plug into our database.
+              Put simply, the CharityBase API <strong><i>allows anyone to plug into our database</i></strong>.
               A user of the API can send a request for specific information and the API will respond almost immediately with the relevant structured data.
             </Paragraph>
             <Paragraph>
@@ -60,12 +60,12 @@ const GettingStarted = () => {
         </Section>
         <Section>
           <Title level={3}>
-            Widgets
+            CharityBase Elements Overview
           </Title>
           <SectionText>
             <Paragraph>
-              CharityBase widgets are pre-built components for common use cases.
-              They make use of the API under the hood and can be dropped into your site by copy-pasting a few lines of code.
+              CharityBase Elements is a set of prebuilt UI components, like inputs and maps, which utilise the API for common use cases.
+              Elements are completely customisable and you can style Elements to match the look and feel of your site.
               They're coming soon...
             </Paragraph>
           </SectionText>
@@ -75,6 +75,9 @@ const GettingStarted = () => {
             Using the API directly
           </Title>
           <SectionText>
+            <Paragraph>
+              If Elements do not serve your needs...
+            </Paragraph>
             <Paragraph>
               CharityBase is a <a href='https://graphql.org' target='_blank' rel='noopener noreferrer'>GraphQL</a> API which gives you the power to ask for exactly the data you need.
               There's a single endpoint <code>https://charitybase.uk/api/graphql</code> where you can send either a <code>GET</code> or a <code>POST</code> request.

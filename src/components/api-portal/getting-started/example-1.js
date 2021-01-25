@@ -1,6 +1,6 @@
-import React from 'react'
-import { Tabs } from 'antd'
-import CodeBlock from '../CodeBlock'
+import React from "react"
+import { Tabs } from "antd"
+import CodeBlock from "../CodeBlock"
 
 const { TabPane } = Tabs
 
@@ -34,7 +34,7 @@ const QUERY = \`
 \`
 
 // Using GET:
-const URL = \`https://charitybase.uk/api/graphql?query=\$\{QUERY\}\`
+const URL = \`https://charitybase.uk/api/graphql?query=$\{QUERY}\`
 const OPTS = {
   headers: {
     Authorization: 'Apikey YOUR_API_KEY'
@@ -112,27 +112,18 @@ const Example1 = () => {
   return (
     <div>
       <Tabs
-        className='multi-lang-code-block'
+        className="multi-lang-code-block"
         animated={false}
-        defaultActiveKey='bash'
+        defaultActiveKey="bash"
       >
-        <TabPane tab='Bash' key='bash'>
-          <CodeBlock
-            language='bash'
-            codeString={bashString}
-          />
+        <TabPane tab="Bash" key="bash">
+          <CodeBlock language="bash" codeString={bashString} />
         </TabPane>
-        <TabPane tab='JavaScript' key='js'>
-          <CodeBlock
-            language='js'
-            codeString={jsString}
-          />
+        <TabPane tab="JavaScript" key="js">
+          <CodeBlock language="js" codeString={jsString} />
         </TabPane>
-        <TabPane tab='React' key='jsx'>
-          <CodeBlock
-            language='jsx'
-            codeString={jsxString}
-          />
+        <TabPane tab="React" key="jsx">
+          <CodeBlock language="jsx" codeString={jsxString} />
         </TabPane>
       </Tabs>
     </div>
