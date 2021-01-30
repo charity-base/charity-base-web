@@ -1,12 +1,15 @@
-import React from 'react'
-import { Tabs } from 'antd'
-import CodeBlock from '../../CodeBlock'
-import CharityBaseForm from 'charity-base-form'
-import { charityBaseApiKey, charityBaseGqlApiUri } from '../../../../lib/constants'
+import React from "react"
+import { Tabs } from "antd"
+import CodeBlock from "../../CodeBlock"
+import CharityBaseForm from "charity-base-form"
+import {
+  charityBaseApiKey,
+  charityBaseGqlApiUri,
+} from "../../../../lib/constants"
 
 const { TabPane } = Tabs
 
-const VERSION = '4.0.0-beta.7'
+const VERSION = "4.0.0-beta.7"
 
 const cssString = `
 #charity-base-autofill {
@@ -33,7 +36,7 @@ const htmlString = `
 `
 
 const jsString = `
-// Get your key from https://charitybase.uk/api-portal/keys
+// Get your key from https://search.charitybase.uk/api-portal/keys
 var apiKey = 'YOUR_API_KEY'
 // Create a CharityBase client
 var cb = CharityBase(apiKey)
@@ -48,36 +51,24 @@ autofill.mount('charity-base-autofill')
 const Autofill = () => {
   return (
     <div>
-      <Tabs
-        className='multi-lang-code-block'
-        animated={false}
-      >
-        <TabPane tab='Result' key='result'>
-          <div style={{ padding: '0.5em', background: 'white' }}>
+      <Tabs className="multi-lang-code-block" animated={false}>
+        <TabPane tab="Result" key="result">
+          <div style={{ padding: "0.5em", background: "white" }}>
             <CharityBaseForm
               apiKey={charityBaseApiKey}
               apiUrl={charityBaseGqlApiUri}
-              className='api-ref-autofill-demo'
+              className="api-ref-autofill-demo"
             />
           </div>
         </TabPane>
-        <TabPane tab='HTML' key='html'>
-          <CodeBlock
-            language='html'
-            codeString={htmlString}
-          />
+        <TabPane tab="HTML" key="html">
+          <CodeBlock language="html" codeString={htmlString} />
         </TabPane>
-        <TabPane tab='JavaScript' key='js'>
-          <CodeBlock
-            language='js'
-            codeString={jsString}
-          />
+        <TabPane tab="JavaScript" key="js">
+          <CodeBlock language="js" codeString={jsString} />
         </TabPane>
-        <TabPane tab='CSS' key='css'>
-          <CodeBlock
-            language='css'
-            codeString={cssString}
-          />
+        <TabPane tab="CSS" key="css">
+          <CodeBlock language="css" codeString={cssString} />
         </TabPane>
       </Tabs>
     </div>

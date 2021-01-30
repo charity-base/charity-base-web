@@ -1,22 +1,12 @@
-const domain = "https://charitybase.uk"
-
-const isProduction = process.env.NODE_ENV === "production"
-
-const charityBaseGqlApiUri = isProduction
-  ? `${domain}/api/graphql`
-  : "/api/graphql"
-
-const charityBaseGqlAuthUri = isProduction
-  ? `${domain}/auth/graphql`
-  : "/auth/graphql"
-
+const charityBaseGqlApiUri = "https://charitybase.uk/api/graphql"
+const charityBaseGqlAuthUri = "https://charitybase.uk/auth/graphql"
 const charityBaseApiKey = process.env.REACT_APP_CHARITY_BASE_API_KEY
 
 const auth0Config = {
   audience: "https://charitybase.uk/api",
   domain: "charity-base.eu.auth0.com",
   clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
-  redirectUri: isProduction ? domain : "http://localhost:3000",
+  redirectUri: process.env.REACT_APP_URL,
   responseType: "token id_token",
   scope: "openid profile email edit:apikeys",
 }
