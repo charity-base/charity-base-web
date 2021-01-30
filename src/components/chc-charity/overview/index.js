@@ -21,6 +21,16 @@ const cleanUrl = url => {
   return `http://${url}`
 }
 
+const Img = props => (
+  <img
+    alt='logo'
+    {...props}
+    width={128}
+    height={128}
+    style={{ border: '3px solid rgba(0,0,0,0.05)', borderRadius: 64, margin: '1em' }}
+  />
+)
+
 const CharityOverview = ({
   activities,
   areas,
@@ -30,6 +40,7 @@ const CharityOverview = ({
   finances,
   grants,
   id,
+  image,
   names,
   numPeople,
   operations,
@@ -40,12 +51,25 @@ const CharityOverview = ({
   const href = cleanUrl(website)
   return (
     <ResponsiveScroll style={{ backgroundColor: '#fafafa' }}>
-      <Names names={names} />
-      <OrgIds orgIds={orgIds} />
-      <Registrations registrations={registrations} />
-      <div style={{ marginBottom: '1em' }}>
-        {href ? <a href={href}>{href}</a> : 'no website recorded'}
-      </div>
+      <Row gutter={16} type='flex' justify='space-around' style={{ marginBottom: '1em' }}>
+        <Col xs={24} sm={8} md={6} lg={6} xl={4} xxl={4} offset={0} pull={0} push={0}>
+          <Img
+            src={image && image.logo && image.logo.medium ? (
+              image.logo.medium
+            ) : (
+              `https://ui-avatars.com/api/?size=128&name=${names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)}`
+            )}
+          />
+        </Col>
+        <Col xs={24} sm={16} md={18} lg={18} xl={20} xxl={20} offset={0} pull={0} push={0}>
+          <Names names={names} />
+          <OrgIds orgIds={orgIds} />
+          <Registrations registrations={registrations} />
+          <div style={{ marginBottom: '1em' }}>
+            {href ? <a href={href}>{href}</a> : 'no website recorded'}
+          </div>
+        </Col>
+      </Row>
       <Card bordered={false} style={{ marginBottom: '1em' }}>
         <Paragraph style={{ fontSize: '1.5em' }}>
           {activities ? `"${activities}"` : 'No description provided'}
@@ -103,6 +127,10 @@ CharityOverview.propTypes = {
     email: PropTypes.string,
     phone: PropTypes.string,
     postcode: PropTypes.string,
+    social: PropTypes.arrayOf(PropTypes.shape({
+      platform: PropTypes.string.isRequired,
+      handle: PropTypes.string.isRequired,
+    })),
   }),
   finances: PropTypes.arrayOf(PropTypes.shape({
     income: PropTypes.number.isRequired,
@@ -124,6 +152,11 @@ CharityOverview.propTypes = {
     awardDate: PropTypes.string.isRequired,
   })),
   id: PropTypes.string.isRequired,
+  image: PropTypes.shape({
+    logo: PropTypes.shape({
+      medium: PropTypes.string,
+    }),
+  }),
   names: PropTypes.arrayOf(PropTypes.shape({
     primary: PropTypes.bool.isRequired,
     value: PropTypes.string.isRequired,

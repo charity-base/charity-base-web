@@ -23,6 +23,17 @@ const LIST_CHARITIES = gql`
           finances {
             income
           }
+          contact {
+            social {
+              platform
+              handle
+            }
+          }
+          image {
+            logo {
+              small
+            }
+          }
         }
       }
     }

@@ -1,12 +1,29 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Card, Typography } from 'antd'
+import { Card, Typography, Icon } from 'antd'
 
 const { Paragraph } = Typography
 
 const Contact = ({ contact }) => {
   return (
-    <Card title='Contact' bordered={false} style={{ marginBottom: '2em' }}>
+    <Card
+      title='Contact'
+      bordered={false}
+      style={{ marginBottom: '2em' }}
+      extra={contact.social.map((x, i) => {
+        return (
+          <a
+            key={i}
+            href={`https://${x.platform}.com/${x.handle}`}
+            target='_blank'
+            rel='noopener noreferrer'
+            style={{ padding: '0.3em' }}
+          >
+            <Icon type={x.platform} />
+          </a>
+        )
+      })}
+    >
       {contact ? (
         <Fragment>
           <Paragraph>{contact.email}</Paragraph>
@@ -23,6 +40,10 @@ Contact.propTypes = {
     email: PropTypes.string,
     phone: PropTypes.string,
     postcode: PropTypes.string,
+    social: PropTypes.arrayOf(PropTypes.shape({
+      platform: PropTypes.string.isRequired,
+      handle: PropTypes.string.isRequired,
+    })),
   }),
 }
 

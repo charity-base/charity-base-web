@@ -1,22 +1,29 @@
 {
   "name": "charity-base-web",
-  "version": "4.5.0",
+  "version": "4.14.0",
   "private": true,
+  "engines": {
+    "node": "10.x"
+  },
   "dependencies": {
-    "antd": "^3.15.2",
+    "antd": "^3.25.0",
     "apollo-boost": "^0.3.1",
     "auth0-js": "^9.7.3",
-    "charity-base": "3.0.1",
-    "charity-base-search": "3.0.0-alpha.5",
+    "charity-base-form": "^1.8.0",
+    "charity-base-search": "^3.5.0",
+    "copy-to-clipboard": "^3.2.0",
     "graphiql": "^0.13.0",
     "graphql": "^14.1.1",
     "http-proxy-middleware": "^0.19.1",
     "jwt-decode": "^2.2.0",
     "leaflet": "^1.4.0",
+    "mapbox-gl": "^1.1.0",
+    "mapbox-gl-leaflet": "^0.0.7",
     "ngeohash": "^0.6.0",
     "node-sass": "^4.11.0",
     "numeral": "^2.0.6",
     "polished": "^1.9.3",
+    "prismjs": "^1.17.1",
     "prop-types": "^15.7.2",
     "query-string": "^5.1.1",
     "react": "^16.8.1",
@@ -33,10 +40,7 @@
     "start": "export SASS_PATH=./node_modules && react-scripts start",
     "build": "export SASS_PATH=./node_modules && react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "now-build": "yarn build && mv build dist",
-    "deploy:production": "now && now alias https://charity-base-web.now.sh",
-    "deploy:staging": "now && now alias https://charity-base-web-staging.now.sh"
+    "eject": "react-scripts eject"
   },
   "browserslist": [
     ">0.2%",

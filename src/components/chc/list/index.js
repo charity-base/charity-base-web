@@ -1,9 +1,8 @@
 import React, { Fragment, useState } from 'react'
-import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
-import { Button, List } from 'antd'
+import { Button, List, Icon } from 'antd'
 import { Query } from 'react-apollo'
 import { LIST_CHARITIES } from '../../../lib/gql'
 import { CenteredContent, ResponsiveScroll } from '../../general/Layout'
@@ -11,44 +10,20 @@ import ListHeader from './ListHeader'
 
 const MAX_LIST_LENGTH = 500
 
-const IncomeIcon = ({ income }) => (
-  <svg style={{ width: '50px', height: '50px', }}>
-    <circle
-      cx='25px'
-      cy='25px'
-      fill='#EEE'
-      r={2*Math.log10(income || 1)}
-    />
-    <line
-      stroke='#EEE'
-      strokeWidth="1"
-      x1='0px'
-      x2='25px'
-      y1='25px'
-      y2='25px'
-    />
-  </svg>
-)
-IncomeIcon.propTypes = {
-  income: PropTypes.number,
-}
-
-const IncomeLabel = styled.span`
-  height: 50px;
-  line-height: 50px;
-  vertical-align: top;
-  font-size: 16px;
-  margin-right: 5px;
-  letter-spacing: 1px;
-`
-
 const Income = ({ income }) => (
   <div>
-    <IncomeLabel>
-      {numeral(income).format('($0a)').replace('$', '£')}
-    </IncomeLabel>
-    <IncomeIcon type='pay-circle' income={income} />
+    {numeral(income).format('($0a)').replace('$', '£')}
   </div>
+)
+
+const Img = props => (
+  <img
+    alt='logo'
+    {...props}
+    width={40}
+    height={40}
+    style={{ borderRadius: 20 }}
+  />
 )
 
 const LoadMore = ({ loading, error, data, fetchMore }) => {
@@ -109,7 +84,7 @@ LoadMore.propTypes = {
   fetchMore: PropTypes.func.isRequired,
 }
 
-const CharitiesList = ({ onHover, filtersObj }) => {
+const CharitiesList = ({ onHover, filtersObj, onQueryChange }) => {
   const [sort, setSort] = useState('default')
   return (
     <Query
@@ -125,8 +100,10 @@ const CharitiesList = ({ onHover, filtersObj }) => {
               <ListHeader
                 loading={loading}
                 count={data.CHC ? data.CHC.getCharities.count : null}
+                filtersObj={filtersObj}
                 sort={sort}
                 setSort={setSort}
+                onQueryChange={onQueryChange}
               />
               <CenteredContent>
                 <List
@@ -143,20 +120,41 @@ const CharitiesList = ({ onHover, filtersObj }) => {
                   }
                   locale={{ emptyText: 'No Charities Found' }}
                   dataSource={data.CHC ? data.CHC.getCharities.list : []}
-                  renderItem={({ id, names, activities, geo, finances }) => (
+                  renderItem={({ id, names, activities, geo, finances, contact, image }) => (
                     <List.Item
-                      actions={[
-                        // <Link to={`/charities/${ids['GB-CHC']}?view=contact`}><Icon type="phone" /></Link>,
-                        // <Link to={`/charities/${ids['GB-CHC']}?view=people`}><Icon type="team" /></Link>,
-                        // <Link to={`/charities/${ids['GB-CHC']}?view=places`}><Icon type="global" /></Link>,
-                      ]}
+                      actions={
+                        contact.social.map((x, i) => {
+                          return (
+                            <a
+                              href={`https://${x.platform}.com/${x.handle}`}
+                              target='_blank'
+                              rel='noopener noreferrer'
+                              style={{ padding: '0.3em' }}
+                            >
+                              <Icon type={x.platform} />
+                            </a>
+                          )
+                        })
+                      }
+                      extra={<Income income={finances && finances.length > 0 ? finances[0].income : null} />}
                       onMouseEnter={() => onHover(geo)}
                       onMouseLeave={() => onHover({})}
                     >
                       <List.Item.Meta
+                        avatar={
+                          <Link to={`/chc/${id}`}>
+                            <Img
+                              src={image && image.logo && image.logo.small ? (
+                                image.logo.small
+                              ) : (
+                                `https://ui-avatars.com/api/?size=40&name=${names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)}`
+                              )}
+                            />
+                          </Link>
+                        }
                         title={
                           <Link to={`/chc/${id}`}>
-                            {names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)} <Income income={finances && finances.length > 0 ? finances[0].income : null} />
+                            {names && names.reduce((agg, x) => (x.primary ? x.value : agg), null)}
                           </Link>
                         }
                         description={names && names.reduce((agg, x) => (x.primary ? agg : [...agg, x.value]), []).join(', ')}
@@ -176,6 +174,7 @@ const CharitiesList = ({ onHover, filtersObj }) => {
 CharitiesList.propTypes = {
   filtersObj: PropTypes.object.isRequired,
   onHover: PropTypes.func.isRequired,
+  onQueryChange: PropTypes.func.isRequired,
 }
 
 export default CharitiesList

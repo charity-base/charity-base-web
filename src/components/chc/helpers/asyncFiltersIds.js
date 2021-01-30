@@ -44,6 +44,13 @@ const asyncFiltersIds = filtersObj => {
       })
     }
   }
+  if (filtersObj.topics) {
+    if (filtersObj.topics[LIST_LOGIC]) {
+      filtersObj.topics[LIST_LOGIC].forEach(x => {
+        filtersListIds.push(`topic-${x}`)
+      })
+    }
+  }
   return filtersListIds.sort((a, b) => a.localeCompare(b))
 }
 

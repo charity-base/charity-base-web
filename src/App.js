@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
-import { LocaleProvider } from 'antd'
+import { ConfigProvider } from 'antd'
 import enGB from 'antd/lib/locale-provider/en_GB'
 import { charityBaseGqlApiUri, charityBaseApiKey } from './lib/constants'
 import auth from './lib/auth'
@@ -33,9 +33,9 @@ class App extends Component {
     const isMobile = innerWidth < 992
     return (
       <ApolloProvider client={client}>
-        <LocaleProvider locale={enGB}>
+        <ConfigProvider locale={enGB}>
           <Router isMobile={isMobile}/>
-        </LocaleProvider>
+        </ConfigProvider>
       </ApolloProvider>
     )
   }

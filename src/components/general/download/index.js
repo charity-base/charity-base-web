@@ -1,280 +1,116 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
+import { Query } from 'react-apollo'
 import PropTypes from 'prop-types'
 import qs from 'query-string'
 import numeral from 'numeral'
-import { Modal, Button, Alert } from 'antd'
+import { Modal, Button, Alert, Progress, Typography } from 'antd'
 import auth from '../../../lib/auth'
-import { defaultFieldsList } from '../../../lib/allowedFields'
-import charityBase from '../../../lib/charityBaseClient'
-import Selector from '../Selector'
-import { FieldTree } from './FieldTree'
-import TextButton from '../TextButton'
+import { DOWNLOAD_CHARITIES } from '../../../lib/gql'
+import useInterval from './use-interval'
 
-// class DownloadResults extends Component {
-//   state = {
-//     openedManually: false,
-//     isLoading: false,
-//     isUploaded: false,
-//     fileName: null,
-//     fileType: this.props.fileType || 'CSV',
-//     blob: null,
-//     checkedKeys: defaultFieldsList,
-//   }
-//   onCheck = checkedKeys => {
-//     this.setState({ checkedKeys })
-//   }
-//   toggleModal = open => {
-//     const { history } = this.context.router
-//     const newSearch = qs.stringify({
-//       ...qs.parse(history.location.search),
-//       download: open ? true : undefined,
-//     })
-//     if (open) {
-//       this.setState({ openedManually: true })
-//     }
-//     if (open || !this.state.openedManually) {
-//       return history.push({ search: newSearch })
-//     }
-//     history.goBack()
-//   }
-//   downloadResults = () => {
-//     this.setState({
-//       isLoading: true,
-//       isUploaded: false,
-//       fileName: null,
-//       blob: null,
-//       errorMessage: null,
-//     })
+const {
+  Paragraph,
+} = Typography
 
-//     const { fileType, checkedKeys: fieldPaths } = this.state
+const formatCount = x => numeral(x).format('0,0')
+const formatBytes = x => numeral(x).format('0.0 b')
 
-//     const query = qs.parse(this.props.queryString)
+const Loader = ({ count }) => {
+  const [tick, setTick] = useState(0)
+  useInterval(() => {
+    setTick(tick + 0.5 + Math.random())
+  }, 1000)
+  const maxResults = 170000
+  const ratio = 3/60 // ratio of fastest download to longest download
+  const longestDownload = 40 // seconds taken to download maxResults
+  const percent = 100*tick/(longestDownload*(ratio + (1-ratio)*count/maxResults))
+  return (
+    <div>
+      <span>Writing {formatCount(count)} charities to file...</span>
+      <Progress percent={Math.round(Math.min(95, percent))} status='active' />
+    </div>
+  )
+}
 
-//     charityBase.charity.download({
-//       ...query,
-//       accessToken: localStorage.getItem('access_token'),
-//       fields: fieldPaths,
-//       fileType,
-//     })
-//     .then(blob => {
-//       if (!this.state.isLoading) return
-//       const fileExtension = fileType === 'JSON' ? 'jsonl' : 'csv'
-//       const fileName = `charity-base-${Math.round(new Date().getTime()/1000)}.${fileExtension}.gz`
-//       this.setState({ isLoading: false, isUploaded: true, fileName, blob })
-//     })
-//     .catch(x => {
-//       this.setState({
-//         isLoading: false,
-//         errorMessage: x.message || 'Oops, something went wrong',
-//       })
-//     })
-//   }
-//   reset = (closeModal, fileType) => {
-//     this.setState({
-//       isLoading: false,
-//       isUploaded: false,
-//       fileName: null,
-//       fileType: fileType || 'CSV',
-//       blob: null,
-//     })
-//     if (closeModal) {
-//       this.toggleModal(false)
-//     }
-//   }
-//   render() {
-//     const isModalOpen = qs.parse(this.context.router.history.location.search).download === 'true'
-//     const isAuthenticated = auth.isAuthenticated()
-//     const { isLoading, fileType } = this.state
-//     return (
-//       <span>
-//         <Modal
-//           title={`Data Download`}
-//           visible={isModalOpen}
-//           onCancel={() => this.reset(true)}
-//           footer={null}
-//           maskClosable={true}
-//         >
-//           {!isAuthenticated && (
-//             <Alert
-//               description={
-//                 <span>
-//                   Please <TextButton onClick={() => auth.login(this.context.router.history)}>Log In</TextButton> before continuing.
-//                 </span>
-//               }
-//               type='info'
-//               style={{ marginBottom: '10px' }}
-//             />
-//           )}
-//           {this.state.errorMessage && <Alert
-//             message='Oops, something went wrong'
-//             description='Please wait a minute before trying again.'
-//             type='error'
-//             style={{ marginBottom: '10px' }}
-//           />}
-//           <Selector
-//             value={fileType}
-//             options={['CSV', 'JSON']}
-//             onChange={fType => this.reset(false, fType)}
-//           />
-//           <Button
-//             icon='download'
-//             style={{ width: 120 }}
-//             onClick={auth.wrapAuthentication(this.context.router.history)(this.downloadResults)}
-//             loading={isLoading}
-//             disabled={!isAuthenticated}
-//           >
-//             Download
-//           </Button>
-//           {this.state.isUploaded && (
-//             <Alert
-//               style={{ margin: '10px 0 10px 0' }}
-//               type='success'
-//               message={
-//                 <span>
-//                   <a
-//                     href={window.URL.createObjectURL(this.state.blob)}
-//                     target='_blank'
-//                     rel='noopener noreferrer'
-//                     download={this.state.fileName}
-//                     onClick={() => this.reset(true)}
-//                     style={{ marginRight: '10px' }}
-//                   >
-//                     {this.state.fileName}
-//                   </a>
-//                   [{numeral(this.state.blob.size).format('0b')}]
-//                 </span>
-//               }
-//             />
-//           )}
-//           {isLoading && (
-//             <Alert
-//               style={{ margin: '10px 0 10px 0' }}
-//               type='info'
-//               message='Creating file.  This could take a couple of minutes...'
-//             />
-//           )}
-//           {isAuthenticated && fileType === 'CSV' && (
-//             <Alert
-//               style={{ margin: '10px 0 10px 0' }}
-//               type='info'
-//               message={
-//                 <div>
-//                   <b>Note:</b> this CSV only offers a subset of the available fields for each charity.
-//                   For the full database please use JSON instead.
-//                   If there are any fields you'd particularly like in CSV format, email <b>support@charitybase.uk</b>
-//                 </div>
-//               }
-//             />
-//           )}
-//           {isAuthenticated && (
-//             <Alert
-//               style={{ margin: '10px 0 10px 0' }}
-//               type='info'
-//               message="Choose fields below before downloading."
-//             />
-//           )}
-//           <div style={{ maxHeight: '300px', overflowY: 'scroll', border: '1px solid #DDD', borderRadius: '3px' }}>
-//             <FieldTree
-//               checkedKeys={this.state.checkedKeys}
-//               onCheck={this.onCheck}
-//               disabled={!isAuthenticated || isLoading}
-//             />
-//           </div>
-//         </Modal>
-//         {this.props.linkText ? (
-//           <TextButton onClick={() => this.toggleModal(true)}>
-//             {this.props.linkText}
-//           </TextButton>
-//         ) : (
-//           <Button icon='download' style={{ width: '100%' }} onClick={() => this.toggleModal(true)}>
-//             CSV / JSON
-//           </Button>
-//         )}
-//       </span>
-//     )
-//   }
-// }
-// DownloadResults.propTypes = {
-//   queryString: PropTypes.string,
-//   linkText: PropTypes.string,
-//   fileType: PropTypes.string,
-// }
-// DownloadResults.contextTypes = {
-//   router: PropTypes.object,
-// }
-
-
-class DownloadResults extends Component {
-  state = {
-    openedManually: false,
-    isLoading: false,
-    isUploaded: false,
-    fileName: null,
-    fileType: this.props.fileType || 'CSV',
-    blob: null,
-    checkedKeys: defaultFieldsList,
+const DownloadResults = ({ count, filtersObj, onQueryChange }) => {
+  const isOpen = qs.parse(window.location.search).download === 't'
+  const [trigger, setTrigger] = useState(false)
+  const onCancel = () => {
+    onQueryChange({ download: 'f' })
+    setTrigger(false)
   }
-  toggleModal = open => {
-    const { history } = this.context.router
-    const newSearch = qs.stringify({
-      ...qs.parse(history.location.search),
-      download: open ? true : undefined,
-    })
-    if (open) {
-      this.setState({ openedManually: true })
-    }
-    if (open || !this.state.openedManually) {
-      return history.push({ search: newSearch })
-    }
-    history.goBack()
-  }
-  reset = (closeModal, fileType) => {
-    this.setState({
-      isLoading: false,
-      isUploaded: false,
-      fileName: null,
-      fileType: fileType || 'CSV',
-      blob: null,
-    })
-    if (closeModal) {
-      this.toggleModal(false)
-    }
-  }
-  render() {
-    const isModalOpen = qs.parse(this.context.router.history.location.search).download === 'true'
-    return (
-      <span>
-        <Modal
-          title={`Data Download`}
-          visible={isModalOpen}
-          onCancel={() => this.reset(true)}
-          footer={null}
-          maskClosable={true}
-        >
-          <div style={{ textAlign: 'center' }}>
-            <p>Sorry, this functionality is temporarily unavailable.</p>
-            <p>For urgent requests please email <strong>support@charitybase.uk</strong></p>
-          </div>
-        </Modal>
-        {this.props.linkText ? (
-          <TextButton onClick={() => this.toggleModal(true)}>
-            {this.props.linkText}
-          </TextButton>
-        ) : (
-          <Button icon='download' shape='circle' size='small' onClick={() => this.toggleModal(true)} />
-        )}
-      </span>
-    )
-  }
+  const onOk = auth.wrapAuthentication(window)(() => {
+    setTrigger(true)
+  })
+  return (
+    <React.Fragment>
+      <Modal
+        title={`Download ${formatCount(count)} Charities`}
+        visible={isOpen}
+        onCancel={onCancel}
+        onOk={onOk}
+        maskClosable={true}
+        okText='Create File'
+      >
+        <div>
+          <Paragraph>This will create a CSV file containing basic information for each of the {formatCount(count)} charities you've selected.  You'll then be able to download, unzip and open this file on your computer as a spreadsheet.</Paragraph>
+          <Paragraph>For more advanced data fields please use the <Link to='/api-portal'>API</Link> or email your request to <strong>support@charitybase.uk</strong></Paragraph>
+          {count < 10000 ? null : (
+            <Alert
+              type='warning'
+              message='File Size Warning'
+              description='Your computer might struggle to open a spreadsheet with more than 10,000 rows.  Please consider adding more filters to your search before downloading.'
+              style={{ marginTop: '1em', marginBottom: '1em' }}
+            />
+          )}
+          {trigger ? (
+            <Query
+              query={DOWNLOAD_CHARITIES}
+              variables={{ filters: filtersObj }}
+            >
+              {({ loading, error, data }) => {
+                if (loading) return <Loader count={count} />
+                if (error) return (
+                  <Alert
+                    type='error'
+                    message={
+                      <span>Oops, something went wrong.  Please try again.</span>
+                    }
+                  />
+                )
+                if (!data || !data.CHC) return
+                return (
+                  <div>
+                    <Alert
+                      type='success'
+                      message={`Successfully Created File (${formatBytes(data.CHC.getCharities.download.size)})`}
+                      description={
+                        <a onClick={onCancel} href={data.CHC.getCharities.download.url} >
+                          {data.CHC.getCharities.download.name}
+                        </a>
+                      }
+                    />
+                  </div>
+                )
+              }}
+            </Query>
+          ) : null}
+        </div>
+      </Modal>
+      <Button
+        icon='download'
+        size='small'
+        onClick={() => onQueryChange({ download: 't' })}
+        style={{ margin: '0 0.3em 0 0.3em' }}
+      />
+    </React.Fragment>
+  )
 }
 DownloadResults.propTypes = {
-  queryString: PropTypes.string,
-  linkText: PropTypes.string,
-  fileType: PropTypes.string,
+  filtersObj: PropTypes.object,
+  count: PropTypes.number,
+  onQueryChange: PropTypes.func.isRequired,
 }
-DownloadResults.contextTypes = {
-  router: PropTypes.object,
-}
-
 
 export { DownloadResults }

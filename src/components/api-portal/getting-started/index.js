@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { CenteredContent, ResponsiveScroll } from '../../general/Layout'
 import { Icon, Typography } from 'antd'
+import Example1 from './example-1'
 
 const {
   Paragraph,
@@ -49,7 +50,7 @@ const GettingStarted = () => {
               Don't worry about what it stands for.
             </Paragraph>
             <Paragraph>
-              Put simply, the CharityBase API allows anyone to plug into our database.
+              Put simply, the CharityBase API <strong><i>allows anyone to plug into our database</i></strong>.
               A user of the API can send a request for specific information and the API will respond almost immediately with the relevant structured data.
             </Paragraph>
             <Paragraph>
@@ -59,38 +60,41 @@ const GettingStarted = () => {
         </Section>
         <Section>
           <Title level={3}>
-            Applications
+            CharityBase Elements Overview
           </Title>
           <SectionText>
             <Paragraph>
-              "Requesting data" might sound abstract but this encompases lots of utilities in day-to-day things we do online.
-              The API can help almost any digital service that involves charities in the UK.
-            </Paragraph>
-            <Paragraph>
-              Examples coming soon.
+              CharityBase Elements is a set of prebuilt UI components, like inputs and maps, which utilise the API for common use cases.
+              Elements are completely customisable and you can style Elements to match the look and feel of your site.
+              They're coming soon...
             </Paragraph>
           </SectionText>
         </Section>
         <Section>
           <Title level={3}>
-            Usage
+            Using the API directly
           </Title>
           <SectionText>
             <Paragraph>
-              There are a couple of ways to use the API.
-              Either way you need to create a key from the <Link to='/api-portal/keys'>API Keys</Link> management page.
+              If Elements do not serve your needs...
             </Paragraph>
-            <Title level={4}>
-              Widgets
-            </Title>
             <Paragraph>
-              Coming soon.
+              CharityBase is a <a href='https://graphql.org' target='_blank' rel='noopener noreferrer'>GraphQL</a> API which gives you the power to ask for exactly the data you need.
+              There's a single endpoint <code>https://charitybase.uk/api/graphql</code> where you can send either a <code>GET</code> or a <code>POST</code> request.
+              The request must contain a <code>query</code> parameter in the query string or optionally in the JSON body (if using <code>POST</code>).
+              You must also supply an <code>Authorization</code> header of the form <code>Apikey YOUR_API_KEY</code>.
             </Paragraph>
-            <Title level={4}>
-              GraphQL
-            </Title>
             <Paragraph>
-              Instruction coming soon.  In the meantime, <Link to='/api-portal/playground'>visit the playground</Link>.
+              Here's a basic example which counts all charities registered with the Charity Commission.
+              Remember to replace <code>YOUR_API_KEY</code> with <Link to='/api-portal/keys'>your actual key</Link>.
+            </Paragraph>
+            <Paragraph>
+              <Example1 />
+            </Paragraph>
+            <Paragraph>
+              To experiment with the query language and see what fields are available, <Link to='/api-portal/playground'>visit the playground</Link>.
+              The contents of the left panel makes up the query string to send in your request, as shown in the examples above.
+              Click on the "Docs" button in the top right corner of the playground for an interactive schema.
             </Paragraph>
           </SectionText>
         </Section>

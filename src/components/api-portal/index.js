@@ -4,11 +4,12 @@ import { Layout } from 'antd'
 import { ContentLayout } from '../general/Layout'
 import SideBar from '../general/side-bar'
 import GettingStarted from './getting-started'
+import Elements from './elements'
 import ApiKeys from './api-keys'
 import Playground from './playground'
 
 const {
-  Content, Footer,
+  Content
 } = Layout
 
 const ApiPortal = () => {
@@ -18,7 +19,7 @@ const ApiPortal = () => {
       <SideBar />
       <ContentLayout>
         <Content style={{
-          margin: '0 0 0 0',
+          margin: 0,
           overflow: 'initial',
           zIndex: 1,
           position: 'relative',
@@ -27,6 +28,9 @@ const ApiPortal = () => {
           <Switch>
             <Route exact path="/api-portal" render={() => (
               <GettingStarted />
+            )} />
+            <Route exact path="/api-portal/elements" render={() => (
+              <Elements />
             )} />
             <Route path="/api-portal/keys" render={() => (
               <ApiKeys
@@ -42,15 +46,6 @@ const ApiPortal = () => {
             <Redirect to="/api-portal"/>
           </Switch>
         </Content>
-        <Footer style={{
-          background: '#fafafa',
-          textAlign: 'center',
-          padding: '0.5em 1em',
-          fontSize: '0.8em',
-          lineHight: '0.8em',
-        }}>
-          CharityBase 2019 - created open source by <a href='https://worthwhile.app'>worthwhile.app</a>
-        </Footer>
       </ContentLayout>
     </Layout>
   )

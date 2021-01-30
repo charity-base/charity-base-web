@@ -37,9 +37,6 @@ const KeysTable = ({ keys, loading, footer, emptyText, onDelete }) => {
       <Column
         dataIndex='createdAt'
         key='createdAt'
-        sortDirections={['ascend']}
-        sorter={(a, b) => (new Date(a.createdAt) - new Date(b.createdAt))}
-        sortOrder='ascend'
         title='Created (GMT)'
       />
       <Column

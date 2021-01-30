@@ -93,6 +93,16 @@ const mapItem = ({ id, filterType, value, label }) => {
         primary: label || value,
         secondary: `Filter by Trustee`,
       }
+    case 'topic':
+      return {
+        id,
+        filterType,
+        value,
+        label: label,
+        icon: <Icon type='tag' />,
+        primary: label.split(' ').join(' - '),
+        secondary: `Filter by auto-generated theme (experimental)`,
+      }
     default:
       return {}
   }

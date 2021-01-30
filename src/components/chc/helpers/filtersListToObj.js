@@ -30,6 +30,9 @@ const filtersListToObj = filtersList => {
   if (filterTypes.trustee) {
     filters.trustees = { [LIST_LOGIC]: filterTypes.trustee.map(x => x.value) }
   }
+  if (filterTypes.topic) {
+    filters.topics = { [LIST_LOGIC]: filterTypes.topic.map(x => x.value) }
+  }
   return filters
 }
 

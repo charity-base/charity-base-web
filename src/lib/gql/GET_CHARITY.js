@@ -25,6 +25,10 @@ const GET_CHARITY = gql`
             email
             phone
             postcode
+            social {
+              platform
+              handle
+            }
           }
           finances(all: true) {
             income
@@ -46,6 +50,11 @@ const GET_CHARITY = gql`
             awardDate
           }
           id
+          image {
+            logo {
+              medium
+            }
+          }
           names(all: true) {
             value
             primary
