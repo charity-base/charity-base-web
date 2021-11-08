@@ -12,7 +12,7 @@
     "charity-base-form": "^1.8.0",
     "charity-base-search": "^3.5.0",
     "copy-to-clipboard": "^3.2.0",
-    "graphiql": "^0.13.0",
+    "graphiql": "^1.4.7",
     "graphql": "^14.1.1",
     "http-proxy-middleware": "^0.19.1",
     "jwt-decode": "^2.2.0",
