@@ -20,7 +20,7 @@
     "mapbox-gl": "^1.1.0",
     "mapbox-gl-leaflet": "^0.0.7",
     "ngeohash": "^0.6.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "numeral": "^2.0.6",
     "polished": "^1.9.3",
     "prismjs": "^1.17.1",
