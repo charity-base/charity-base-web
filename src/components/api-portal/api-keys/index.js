@@ -17,7 +17,7 @@ const ApiKeys = ({ setPlaygroundKey }) => {
       query={LIST_KEYS}
     >
       {({ loading, error, data }) => {
-        if (error) return 'error oops'
+        if (error) return 'error oops' + error
         const keys = data && data.apiKeys ? data.apiKeys.listKeys : []
         return (
           <KeysTable
